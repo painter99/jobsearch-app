@@ -1,7 +1,7 @@
 package io.github.painter99.jobsearch.core.model
 
 /**
- * Směnnost — MPSV číselník `Smennost/*` (10 hodnot, ověřeno 6. 10. 2026).
+ * Směnnost — MPSV číselník `Smennost/<id>` (10 hodnot, ověřeno 6. 10. 2026).
  */
 enum class Smennost(val mpsvKod: String) {
     JEDNOSMENNA("jednoSm"),
@@ -66,7 +66,7 @@ data class MistoVykonu(
 }
 
 /**
- * Výhoda volného místa — MPSV číselník `VyhodyVolnehoMista/*` (10 hodnot).
+ * Výhoda volného místa — MPSV číselník `VyhodyVolnehoMista/<id>` (10 hodnot).
  */
 enum class Vyhoda(val mpsvKod: String, val ceskyNazev: String) {
     UBYT("ubyt", "Ubytování"),
