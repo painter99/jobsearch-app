@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Unit tests
+        run: |
+          set -o pipefail
+          ./gradlew testDebugUnitTest --stacktrace 2>&1 | tee build_output.txt
+
+      - name: Build debug APK
+        run: |
+          set -o pipefail
+          ./gradlew assembleDebug --stacktrace 2>&1 | tee apk_build_output.txt
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: jobsearch-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+      # Logs are not publicly readable without a token, so the job mirrors
+      # them onto the ci-logs branch (raw file). Commit message contains
+      # [skip ci] to prevent workflow recursion.
+      - name: Publish logs to ci-logs branch
+        if: always()
+        run: |
+          git config user.name "ci-log-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin ci-logs >/dev/null 2>&1; then
+            git fetch origin ci-logs
+            git checkout ci-logs
+          else
+            git checkout --orphan ci-logs
+            git rm -rf --cached -q . || true
+          fi
+          mkdir -p ci-logs
+          {
+            echo "# CI run ${GITHUB_RUN_NUMBER} — commit ${GITHUB_SHA::7} — ${GITHUB_REF_NAME}"
+            echo
+            for f in build_output.txt apk_build_output.txt; do
+              if [ -f "$f" ]; then
+                echo "===== $f ====="
+                tail -c 2000000 "$f"
+                echo
+              fi
+            done
+            if [ -d app/build/test-results/testDebugUnitTest ]; then
+              echo "===== junit summary ====="
+              grep -h "<testsuite\|<failure\|<error" app/build/test-results/testDebugUnitTest/*.xml || true
+            fi
+          } > ci-logs/latest.txt
+          git add ci-logs/latest.txt
+          git commit -q -m "[skip ci] logs: run ${GITHUB_RUN_NUMBER} commit ${GITHUB_SHA::7}" || true
+          git push origin ci-logs
+
+      - name: Emit failure details as annotations
+        if: failure()
+        run: |
+          python3 .github/ci_failure_report.py build_output.txt app/build/test-results/testDebugUnitTest || true
+          python3 .github/ci_failure_report.py apk_build_output.txt app/build/test-results/testDebugUnitTest
