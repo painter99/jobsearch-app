@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
                     ) {
                         Text(text = "Jobsearch", fontSize = 32.sp)
-                        Text(text = "Skeleton M0.1 — PRD v0.1 schváleno 6. 10. 2026")
+                        Text(text = "Skeleton M0.1 — PRD v0.2 schváleno 6. 10. 2026")
                     }
                 }
             }
