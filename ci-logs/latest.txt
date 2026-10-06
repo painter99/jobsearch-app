@@ -1,4 +1,4 @@
-# CI run 4 — commit 9398956 — m1.1-core
+# CI run 5 — commit 4c47dcd — main
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -28,10 +28,10 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
-> Task :app:javaPreCompileDebug
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebugUnitTest
+> Task :app:javaPreCompileDebug
 > Task :app:processDebugResources
 > Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
@@ -43,8 +43,8 @@ Note: /home/runner/work/jobsearch-app/jobsearch-app/app/build/generated/hilt/com
 Note: Recompile with -Xlint:deprecation for details.
 
 > Task :app:processDebugJavaRes
-> Task :app:transformDebugClassesWithAsm
 > Task :app:bundleDebugClassesToCompileJar
+> Task :app:transformDebugClassesWithAsm
 > Task :app:bundleDebugClassesToRuntimeJar
 > Task :app:kspDebugUnitTestKotlin
 > Task :app:compileDebugUnitTestKotlin
@@ -55,7 +55,7 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
 
-BUILD SUCCESSFUL in 2m 30s
+BUILD SUCCESSFUL in 2m 5s
 30 actionable tasks: 30 executed
 
 ===== apk_build_output.txt =====
@@ -96,12 +96,12 @@ BUILD SUCCESSFUL in 2m 30s
 > Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugNativeLibs
 > Task :app:mergeLibDexDebug
-> Task :app:mergeDebugJavaResource
 > Task :app:mergeProjectDexDebug
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so.
 
+> Task :app:mergeDebugJavaResource
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
@@ -110,12 +110,12 @@ Unable to strip the following libraries, packaging them as they are: libandroidx
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 50s
+BUILD SUCCESSFUL in 52s
 40 actionable tasks: 19 executed, 21 up-to-date
 
 ===== junit summary =====
-<testsuite name="io.github.painter99.jobsearch.LatkaFilterTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:29:46" hostname="runnervmmprz5" time="0.023">
-<testsuite name="io.github.painter99.jobsearch.LokalitniFiltrTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:29:46" hostname="runnervmmprz5" time="0.027">
-<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:29:46" hostname="runnervmmprz5" time="0.024">
-<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:29:46" hostname="runnervmmprz5" time="0.0">
-<testsuite name="io.github.painter99.jobsearch.VyhodyChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:29:46" hostname="runnervmmprz5" time="0.004">
+<testsuite name="io.github.painter99.jobsearch.LatkaFilterTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:48:49" hostname="runnervm8df0l" time="0.021">
+<testsuite name="io.github.painter99.jobsearch.LokalitniFiltrTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:48:49" hostname="runnervm8df0l" time="0.032">
+<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:48:49" hostname="runnervm8df0l" time="0.035">
+<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:48:49" hostname="runnervm8df0l" time="0.0">
+<testsuite name="io.github.painter99.jobsearch.VyhodyChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:48:49" hostname="runnervm8df0l" time="0.002">
