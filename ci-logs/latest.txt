@@ -1,4 +1,4 @@
-# CI run 2 — commit 27a5067 — m1.1-core
+# CI run 3 — commit 2a624cc — m1.1-core
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -28,23 +28,112 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
-> Task :app:javaPreCompileDebug
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebugUnitTest
+> Task :app:javaPreCompileDebug
 > Task :app:processDebugResources
-
 > Task :app:kspDebugKotlin
-e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
-    1. Kotlin compile daemon is ready
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/core/model/Models.kt:120:2 Unclosed comment
+> Task :app:compileDebugKotlin
+> Task :app:compileDebugJavaWithJavac
+> Task :app:hiltAggregateDepsDebug
 
-> Task :app:kspDebugKotlin FAILED
+> Task :app:hiltJavaCompileDebug
+Note: /home/runner/work/jobsearch-app/jobsearch-app/app/build/generated/hilt/component_sources/debug/io/github/painter99/jobsearch/Hilt_JobsearchApplication.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:processDebugJavaRes
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:transformDebugClassesWithAsm
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:kspDebugUnitTestKotlin
+
+> Task :app:compileDebugUnitTestKotlin FAILED
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:55:23 Unresolved reference 'MpsvRecordParser'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:57:41 Unresolved reference 'portalId'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:58:45 Unresolved reference 'referencniCislo'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:59:51 Unresolved reference 'profese'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:60:22 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:60:52 Unresolved reference 'smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:61:37 Unresolved reference 'mzdaOd'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:62:28 Unresolved reference 'mzdaDo'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:63:34 Unresolved reference 'pocetHodinTydne'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:64:42 Unresolved reference 'zamestnavatel'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:65:74 Unresolved reference 'zamestnavatel'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:66:22 Unresolved reference 'MistoVykonu'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:66:63 Unresolved reference 'misto'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:67:45 Unresolved reference 'misto'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:68:22 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:68:22 Not enough information to infer type argument for 'T'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:68:29 Unresolved reference 'Vyhoda'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:68:29 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:68:43 Unresolved reference 'Vyhoda'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:68:66 Unresolved reference 'vyhody'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:69:28 Unresolved reference 'urlAdresa'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:70:37 Unresolved reference 'agenturaSouhlas'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:71:37 Unresolved reference 'uzivatelSouhlas'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:76:23 Unresolved reference 'MpsvRecordParser'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:101:23 Unresolved reference 'MpsvRecordParser'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:102:28 Unresolved reference 'smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:103:28 Unresolved reference 'mzdaOd'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:104:22 Unresolved reference 'MistoVykonu'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:104:47 Unresolved reference 'misto'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:105:28 Unresolved reference 'vyhody'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:110:24 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:110:24 Not enough information to infer type argument for 'V'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:111:32 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:111:32 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:111:35 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:112:31 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:112:31 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:112:34 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:113:30 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:113:30 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:113:33 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:114:31 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:114:31 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:114:34 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:115:33 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:115:33 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:115:36 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:116:36 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:116:36 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:116:39 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:117:30 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:117:30 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:117:33 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:118:33 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:118:33 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:118:36 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:119:31 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:119:31 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:119:34 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:120:33 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:120:33 Not enough information to infer type argument for 'B'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:120:36 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:122:18 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:122:18 Not enough information to infer type argument for 'V'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:122:29 Not enough information to infer type argument for 'V'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:122:33 Not enough information to infer type argument for 'V'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:123:36 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:125:20 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:126:20 Unresolved reference 'Smennost'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:161:23 Unresolved reference 'MpsvRecordParser'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:162:22 Unresolved reference 'MistoVykonu'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:162:76 Unresolved reference 'misto'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:163:53 Unresolved reference 'misto'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:185:23 Unresolved reference 'MpsvRecordParser'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:186:66 Unresolved reference 'misto'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:205:23 Unresolved reference 'MpsvRecordParser'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:206:22 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:206:22 Not enough information to infer type argument for 'T'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:206:29 Unresolved reference 'Vyhoda'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/MpsvRecordParserTest.kt:206:53 Unresolved reference 'vyhody'.
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:kspDebugKotlin'.
+Execution failed for task ':app:compileDebugUnitTestKotlin'.
 > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
    > Compilation error. See log for more details
 
@@ -54,7 +143,7 @@ Execution failed for task ':app:kspDebugKotlin'.
 > Get more help at https://help.gradle.org.
 
 * Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:kspDebugKotlin'.
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugUnitTestKotlin'.
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
@@ -84,6 +173,35 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:ksp
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:267)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
@@ -208,6 +326,35 @@ Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionExcept
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:267)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
@@ -243,6 +390,6 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 	... 2 more
 
 
-BUILD FAILED in 1m 21s
-16 actionable tasks: 16 executed
+BUILD FAILED in 2m 3s
+26 actionable tasks: 26 executed
 
