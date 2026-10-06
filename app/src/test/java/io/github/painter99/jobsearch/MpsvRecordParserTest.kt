@@ -1,5 +1,9 @@
 package io.github.painter99.jobsearch
 
+import io.github.painter99.jobsearch.core.model.MistoVykonu
+import io.github.painter99.jobsearch.core.model.Smennost
+import io.github.painter99.jobsearch.core.model.Vyhoda
+import io.github.painter99.jobsearch.data.mpsv.MpsvRecordParser
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
