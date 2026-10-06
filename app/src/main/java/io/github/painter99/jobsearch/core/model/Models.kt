@@ -111,4 +111,10 @@ data class Nabidka(
     val urlAdresa: String?,
     val agenturaSouhlas: Boolean?,  // souhlasAgenturyAgentura
     val uzivatelSouhlas: Boolean?,  // souhlasAgenturyUzivatel
-)
+) {
+    /** Signál pro auto-fill checklistu latky: „Dovolená navíc" (MPSV kód dovol). */
+    fun maDovolenouNavic(): Boolean = Vyhoda.DOVOL in vyhody
+
+    /** Signál pro auto-fill checklistu latky: „Zvláštní prémie" (MPSV kód premie). */
+    fun maZvlastniPremie(): Boolean = Vyhoda.PREMIE in vyhody
+}
