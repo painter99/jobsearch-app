@@ -97,24 +97,36 @@ class DossierViewModel @Inject constructor(
             val criteria = criteriaProvider.load()
             val profile = profileProvider.load()
             val dossier = ensureDossier(offerKey)
-            val checked = checklistDao.checkedKeys(offerKey).toSet()
+            val entries = checklistDao.forOffer(offerKey)
+            val storedChecked = entries.filter { it.checked }.map { it.itemKey }.toSet()
             val rows = ChecklistTemplate.items.map { item ->
+                val autoFilled = item.autoFill?.invoke(offer, criteria, profile) == true
+                // Auto-fill (US4): při prvním otevření (žádné položky v DB) se
+                // auto položky předvyplní do DB — od té chvíle je zdrojem pravdy
+                // databáze (toggle přepisuje; odškrtnutá položka zůstává).
+                // Detekce prvního otevření = forOffer().isEmpty(), ne prázdné
+                // checkedKeys (odškrtnutí všeho nesmí spustit re-prefill).
+                if (entries.isEmpty() && autoFilled) {
+                    checklistDao.upsert(ChecklistEntryEntity(offerKey, item.key, checked = true))
+                }
                 ChecklistRow(
                     item = item,
-                    checked = item.key in checked,
-                    autoFilled = item.autoFill?.invoke(offer, criteria, profile) == true,
+                    checked = if (entries.isEmpty()) autoFilled else item.key in storedChecked,
+                    autoFilled = autoFilled,
                 )
             }
             _state.update {
                 it.copy(
-                    loading = false,
                     offer = offer,
                     verdict = DossierVerdict.fromName(dossier.verdict),
                     notes = dossier.notes,
                     checklist = rows,
                 )
             }
+            // Agenturní sekce běží ještě pod loading — první načtení je hotové
+            // až s ní (UI i testy čekají na loading=false; lekce run #31).
             loadAgencySection(offer)
+            _state.update { it.copy(loading = false) }
         }
     }
 

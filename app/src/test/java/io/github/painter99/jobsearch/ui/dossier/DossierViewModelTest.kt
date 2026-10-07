@@ -21,6 +21,7 @@ import io.github.painter99.jobsearch.data.storage.LocationProfile
 import io.github.painter99.jobsearch.data.storage.ProfileProvider
 import io.github.painter99.jobsearch.db.ChecklistDao
 import io.github.painter99.jobsearch.db.DossierDao
+import io.github.painter99.jobsearch.db.DossierEntity
 import io.github.painter99.jobsearch.db.JobsearchDatabase
 import io.github.painter99.jobsearch.pipeline.AgencyDetector
 import io.github.painter99.jobsearch.pipeline.AgencyStatus
@@ -274,10 +275,23 @@ class DossierViewModelTest {
         awaitSettled(vm)
         vm.setVerdict(DossierVerdict.CONDITIONAL)
         vm.setNotes("Zavolat na pracoviště")
+        // Room píše na vlastním executoru — advanceUntilIdle na něj nečeká
+        // (lekce run #31): polluje se, dokud se zápis neobjeví v DB.
+        val deadline = System.nanoTime() + 10_000_000_000
+        var dossier: DossierEntity? = null
+        while (System.nanoTime() < deadline) {
+            advanceUntilIdle()
+            dossier = db.dossierDao().byOfferKey("mpsv/4")
+            if (dossier != null &&
+                dossier.verdict == DossierVerdict.CONDITIONAL.name &&
+                dossier.notes == "Zavolat na pracoviště"
+            ) break
+            Thread.sleep(20)
+        }
         advanceUntilIdle()
-        val dossier = db.dossierDao().byOfferKey("mpsv/4")!!
-        assertEquals(DossierVerdict.CONDITIONAL.name, dossier.verdict)
-        assertEquals("Zavolat na pracoviště", dossier.notes)
+        assertNotNull(dossier)
+        assertEquals(DossierVerdict.CONDITIONAL.name, dossier?.verdict)
+        assertEquals("Zavolat na pracoviště", dossier?.notes)
         assertEquals(DossierVerdict.CONDITIONAL, vm.state.value.verdict)
         assertEquals("Zavolat na pracoviště", vm.state.value.notes)
     }
@@ -293,6 +307,13 @@ class DossierViewModelTest {
         awaitSettled(vm)
         // salary byla auto-zaškrtnutá → uživatel ji odškrtne
         vm.toggleChecklist("salary")
+        // Room píše na vlastním executoru — polluje se (lekce run #31).
+        val deadline = System.nanoTime() + 10_000_000_000
+        while (System.nanoTime() < deadline) {
+            advanceUntilIdle()
+            if ("salary" !in db.checklistDao().checkedKeys("mpsv/5")) break
+            Thread.sleep(20)
+        }
         advanceUntilIdle()
         assertFalse("salary" in db.checklistDao().checkedKeys("mpsv/5"))
         assertFalse(vm.state.value.checklist.first { it.item.key == "salary" }.checked)
