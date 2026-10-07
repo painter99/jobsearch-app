@@ -34,7 +34,16 @@
 
 ## Status
 
-M0.1 — skeleton (Kotlin + Compose + Hilt), CI pipeline (šablona [WSW Olomouc](https://github.com/painter99/wsw-olomouc)). PRD v0.2 schváleno 6. 10. 2026. Další milníky: M1.1 core-models/filters → M1.2 detekce agentury → M1.3 resolver → M1.4 data MPSV → M1.5 storage → M1.6 UI. Python referenční vrstva slouží jako testovací oracle (stejné vstupy → stejné výstupy).
+**v0.1.0 (M1.6 hotovo, 7. 10. 2026):** funkční cesta sync → seznam → dossier.
+- **M0.1** skeleton (Kotlin + Compose + Hilt), CI pipeline (šablona [WSW Olomouc](https://github.com/painter99/wsw-olomouc)).
+- **M1.1** core-models + filtry (latka: mzda, jednosměnná, lokalita).
+- **M1.2** detekce agentury (MPSV seznam + ARES VR doplněk).
+- **M1.3** resolver koncové firmy (ARES vyhledat + deterministický scoring, N7 — jen kandidáti).
+- **M1.4** data MPSV (bootstrap 187 MB streamem, GDPR whitelist, denní přírůstky) + číselník obcí + prace.cz opt-in deep linky.
+- **M1.5** storage (Room dossier/checklist/seen, DataStore látka/API klíč/sync kotva).
+- **M1.6** UI — vlna A: seznam nabídek s filtry + Locations autocomplete; vlna B: dossier detail (checklist látky s auto-fillem, poznámky, verdikt, agenturní sekce s N7 disclaimery, D5 fallback „Vyhledat na ÚP"). 177 unit testů.
+
+**Další kroky:** M1.6b prace.cz opt-in toggle v UI → M1.7 volitelná AI vrstva (OpenRouter BYOK — seřazení/shrnutí dossieru; appka plně funkční i bez klíče). Python referenční vrstva slouží jako testovací oracle (stejné vstupy → stejné výstupy).
 
 ## Tech stack
 
