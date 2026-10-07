@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.painter99.jobsearch.core.model.JobOffer
 import io.github.painter99.jobsearch.ui.theme.OfferRow
+import io.github.painter99.jobsearch.ui.theme.key
 
 /**
  * Obrazovka Seznam (M1.6 vlna A): nabídky dle latky + lokalitního profilu.

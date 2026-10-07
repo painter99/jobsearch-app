@@ -10,6 +10,7 @@ import io.github.painter99.jobsearch.data.FetchResult
 import io.github.painter99.jobsearch.data.mpsv.MpsvOffersClient
 import io.github.painter99.jobsearch.data.mpsv.OfferStore
 import io.github.painter99.jobsearch.data.storage.CriteriaProvider
+import io.github.painter99.jobsearch.data.storage.LocationProfile
 import io.github.painter99.jobsearch.data.storage.ProfileProvider
 import io.github.painter99.jobsearch.db.SeenDao
 import io.github.painter99.jobsearch.db.SeenOfferEntity
@@ -76,7 +77,7 @@ class OffersViewModel @Inject constructor(
             val seen = seenDao.seenKeys().toSet()
             val all = offerStore.all()
             val filtered = all.filter { offer ->
-                matchesCriteria(offer, criteria) &&
+                offer.matchesCriteria(criteria) &&
                     LocationFilter.matches(
                         offer = offer,
                         profileMunicipalities = profile.municipalityIds,

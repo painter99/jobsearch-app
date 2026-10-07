@@ -30,7 +30,7 @@ interface CriteriaProvider {
 class CriteriaStore(private val dataStore: DataStore<Preferences>) : CriteriaProvider {
 
     /** Aktuální latka (suspend — jednorázové čtení pro sync/pipeline). */
-    suspend fun load(): UserCriteria {
+    override suspend fun load(): UserCriteria {
         return try {
             val prefs = dataStore.data.first()
             UserCriteria(

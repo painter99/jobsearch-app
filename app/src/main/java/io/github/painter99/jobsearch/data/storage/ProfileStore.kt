@@ -38,7 +38,7 @@ data class LocationProfile(
 class ProfileStore(private val dataStore: DataStore<Preferences>) : ProfileProvider {
 
     /** Aktuální profil (suspend — jednorázové čtení pro pipeline). */
-    suspend fun load(): LocationProfile {
+    override suspend fun load(): LocationProfile {
         return try {
             val prefs = dataStore.data.first()
             LocationProfile(
