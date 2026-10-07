@@ -13,9 +13,9 @@ import io.github.painter99.jobsearch.data.storage.CriteriaProvider
 import io.github.painter99.jobsearch.data.storage.LocationProfile
 import io.github.painter99.jobsearch.data.storage.ProfileProvider
 import io.github.painter99.jobsearch.db.FakeSeenDao
-import io.github.painter99.jobsearch.pipeline.DayResult
 import io.github.painter99.jobsearch.pipeline.InMemorySyncAnchorStore
 import io.github.painter99.jobsearch.pipeline.OfferSyncEngine
+import io.github.painter99.jobsearch.pipeline.OfferSyncEngine.DayResult
 import java.io.File
 import java.time.Clock
 import java.time.Instant
