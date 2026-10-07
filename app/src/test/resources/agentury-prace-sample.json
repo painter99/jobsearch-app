@@ -1,0 +1,86 @@
+{
+  "polozky": [
+    {
+      "ico": "17181879",
+      "nazev": "Jobs Contact Personal, s.r.o.",
+      "povoleni": [
+        {
+          "druhyPraci": {
+            "cs": "Bez omezení"
+          },
+          "platnostOd": "2022-08-27",
+          "platnostDo": null,
+          "poradenskaCinnost": true,
+          "predmetProCizinceMimoEu": false,
+          "predmetProObcanyCr": false,
+          "predmetProObcanyEu": false,
+          "vyhledavaniZamestnani": true,
+          "zamestnavaniOsob": false,
+          "uzemniPlatnost": {
+            "id": "UzemniPlatnostAgentury/neomez"
+          }
+        }
+      ]
+    },
+    {
+      "ico": "29813158",
+      "nazev": "AG MIRASTAFF s.r.o.",
+      "povoleni": [
+        {
+          "druhyPraci": {
+            "cs": "Bez omezení"
+          },
+          "platnostOd": "2026-10-02",
+          "platnostDo": "2029-10-02",
+          "poradenskaCinnost": false,
+          "predmetProCizinceMimoEu": false,
+          "predmetProObcanyCr": false,
+          "predmetProObcanyEu": false,
+          "vyhledavaniZamestnani": false,
+          "zamestnavaniOsob": true,
+          "uzemniPlatnost": {
+            "id": "UzemniPlatnostAgentury/neomez"
+          }
+        },
+        {
+          "druhyPraci": {
+            "cs": "Bez omezení"
+          },
+          "platnostOd": "2026-10-02",
+          "platnostDo": null,
+          "poradenskaCinnost": true,
+          "predmetProCizinceMimoEu": false,
+          "predmetProObcanyCr": false,
+          "predmetProObcanyEu": false,
+          "vyhledavaniZamestnani": true,
+          "zamestnavaniOsob": false,
+          "uzemniPlatnost": {
+            "id": "UzemniPlatnostAgentury/neomez"
+          }
+        }
+      ]
+    },
+    {
+      "ico": "26910560",
+      "nazev": "A-WebSys, spol. s r.o.",
+      "povoleni": [
+        {
+          "druhyPraci": {
+            "cs": "Bez omezení"
+          },
+          "platnostOd": "2026-10-01",
+          "platnostDo": null,
+          "poradenskaCinnost": true,
+          "predmetProCizinceMimoEu": false,
+          "predmetProObcanyCr": false,
+          "predmetProObcanyEu": false,
+          "vyhledavaniZamestnani": true,
+          "zamestnavaniOsob": false,
+          "uzemniPlatnost": {
+            "id": "UzemniPlatnostAgentury/neomez"
+          }
+        }
+      ]
+    }
+  ]
+}
