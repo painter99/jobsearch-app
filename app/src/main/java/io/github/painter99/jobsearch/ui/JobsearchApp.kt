@@ -2,15 +2,13 @@ package io.github.painter99.jobsearch.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.github.painter99.jobsearch.ui.dossier.DossierDetailRoute
 import io.github.painter99.jobsearch.ui.offers.OffersRoute
 
 /**
@@ -29,25 +27,10 @@ fun JobsearchApp() {
                 onManageLocations = { /* vlna A: obrazovka lokalit (T2b) */ },
             )
         } else {
-            DossierDetailScreen(
+            DossierDetailRoute(
                 offerKey = selectedOfferKey!!,
                 onBack = { selectedOfferKey = null },
             )
-        }
-    }
-}
-
-/**
- * Placeholder detailu dossieru (vlna B — naplní DossierViewModel).
- */
-@Composable
-fun DossierDetailScreen(
-    offerKey: String,
-    onBack: () -> Unit,
-) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Button(onClick = onBack) {
-            Text(text = "Dossier $offerKey — vlna B (zpět)")
         }
     }
 }

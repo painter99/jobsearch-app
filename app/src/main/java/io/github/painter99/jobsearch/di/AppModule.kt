@@ -71,4 +71,29 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFilesDir(@ApplicationContext context: Context): File = context.filesDir
+
+    @Provides
+    @Singleton
+    fun provideAgencyDetector(
+        mpsvAgencyClient: io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient,
+        aresClient: io.github.painter99.jobsearch.data.ares.AresClient,
+    ): io.github.painter99.jobsearch.pipeline.AgencyDetector =
+        io.github.painter99.jobsearch.pipeline.AgencyDetector(mpsvAgencyClient, aresClient)
+
+    @Provides
+    @Singleton
+    fun provideAresClient(client: OkHttpClient): io.github.painter99.jobsearch.data.ares.AresClient =
+        io.github.painter99.jobsearch.data.ares.AresClient(client)
+
+    @Provides
+    @Singleton
+    fun provideMpsvAgencyClient(client: OkHttpClient): io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient =
+        io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient(client)
+
+    @Provides
+    @Singleton
+    fun provideEndEmployerResolver(
+        aresClient: io.github.painter99.jobsearch.data.ares.AresClient,
+    ): io.github.painter99.jobsearch.pipeline.EndEmployerResolver =
+        io.github.painter99.jobsearch.pipeline.EndEmployerResolver(aresClient)
 }
