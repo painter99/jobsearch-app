@@ -12,10 +12,10 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * MpsvAgenturyClient integration testy přes MockWebServer — žádná reálná síť
+ * MpsvAgencyClient integration testy přes MockWebServer — žádná reálná síť
  * (WSW ChmuDataSourceTest vzor). Fixture = živá data 7. 10. 2026.
  */
-class MpsvAgenturyClientTest {
+class MpsvAgencyClientTest {
 
     private lateinit var server: MockWebServer
 
@@ -34,25 +34,25 @@ class MpsvAgenturyClientTest {
         javaClass.getResourceAsStream("/agentury-prace-sample.json")!!
             .bufferedReader().use { it.readText() }
 
-    private fun client() = MpsvAgenturyClient(
+    private fun client() = MpsvAgencyClient(
         client = OkHttpClient(),
         baseUrl = server.url("/od/soubory/agentury-prace/agentury-prace.json").toString(),
     )
 
     @Test
-    fun fetch_parseFixtureVraciAgentury() = runTest {
+    fun fetch_parsesFixtureIntoAgencies() = runTest {
         server.enqueue(MockResponse().setBody(fixture()))
 
         val result = client().fetch()
 
         assertTrue("očekáván Success, byl: $result", result is FetchResult.Success)
-        val agentury = (result as FetchResult.Success).data
-        assertEquals(3, agentury.size)
-        assertTrue(agentury.any { it.ico == "17181879" })
+        val agencies = (result as FetchResult.Success).data
+        assertEquals(3, agencies.size)
+        assertTrue(agencies.any { it.ico == "17181879" })
     }
 
     @Test
-    fun fetch_http500VraciHttpError() = runTest {
+    fun fetch_http500ReturnsHttpError() = runTest {
         server.enqueue(MockResponse().setResponseCode(500))
 
         val result = client().fetch()
@@ -62,7 +62,7 @@ class MpsvAgenturyClientTest {
     }
 
     @Test
-    fun fetch_nevalidniJsonVraciParseError() = runTest {
+    fun fetch_invalidJsonReturnsParseError() = runTest {
         server.enqueue(MockResponse().setBody("tohle není JSON"))
 
         val result = client().fetch()
@@ -71,7 +71,7 @@ class MpsvAgenturyClientTest {
     }
 
     @Test
-    fun fetch_prazdnePolozkyVraciParseError() = runTest {
+    fun fetch_emptyItemsReturnsParseError() = runTest {
         // 2xx s prázdným seznamem = podezřelý payload (seznam má ~1900 záznamů)
         server.enqueue(MockResponse().setBody("""{"polozky": []}"""))
 
@@ -81,8 +81,8 @@ class MpsvAgenturyClientTest {
     }
 
     @Test
-    fun fetch_sitovaChybaVraciNetworkError() = runTest {
-        val dead = MpsvAgenturyClient(
+    fun fetch_networkFailureReturnsNetworkError() = runTest {
+        val dead = MpsvAgencyClient(
             client = OkHttpClient(),
             baseUrl = "http://127.0.0.1:1/agentury-prace.json", // nikdo nenaslouchá
         )

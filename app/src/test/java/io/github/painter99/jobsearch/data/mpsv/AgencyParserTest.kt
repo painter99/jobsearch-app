@@ -1,7 +1,7 @@
 package io.github.painter99.jobsearch.data.mpsv
 
-import io.github.painter99.jobsearch.core.model.Agentura
-import io.github.painter99.jobsearch.core.model.AgenturaPovoleni
+import io.github.painter99.jobsearch.core.model.Agency
+import io.github.painter99.jobsearch.core.model.AgencyPermit
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -10,10 +10,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * AgenturyParser testy na reálné fixtuře (staženo živě 7. 10. 2026,
- * whitelist pole: ico, nazev, povoleni — GDPR pole se nemapují).
+ * AgencyParser testy na reálné fixtuře (staženo živě 7. 10. 2026,
+ * whitelist pole: ico, name, permits — GDPR pole se nemapují).
  */
-class AgenturyParserTest {
+class AgencyParserTest {
 
     private fun fixture(): JSONObject {
         val text = javaClass.getResourceAsStream("/agentury-prace-sample.json")!!
@@ -22,27 +22,27 @@ class AgenturyParserTest {
     }
 
     @Test
-    fun parse_vraci1912AgenturZPlnehoSeznamu() {
-        val parser = AgenturyParser()
-        val result = parser.parsePolozky(fixture())
+    fun parse_returnsAllItemsFromFixture() {
+        val parser = AgencyParser()
+        val result = parser.parseItems(fixture())
         assertEquals(3, result.size)
     }
 
     @Test
-    fun parse_jobsContactVSeznamu() {
-        val parser = AgenturyParser()
-        val result = parser.parsePolozky(fixture())
+    fun parse_jobsContactInList() {
+        val parser = AgencyParser()
+        val result = parser.parseItems(fixture())
         val jc = result.firstOrNull { it.ico == "17181879" }
         assertTrue("Jobs Contact musí být v evidenci", jc != null)
-        assertEquals("Jobs Contact Personal, s.r.o.", jc!!.nazev)
-        // povolení od 27. 8. 2022, bez omezení (platnostDo null)
-        assertEquals("2022-08-27", jc.povoleni.first().platnostOd)
-        assertNull(jc.povoleni.first().platnostDo)
+        assertEquals("Jobs Contact Personal, s.r.o.", jc!!.name)
+        // povolení od 27. 8. 2022, bez omezení (validTo null)
+        assertEquals("2022-08-27", jc.permits.first().validFrom)
+        assertNull(jc.permits.first().validTo)
     }
 
     @Test
-    fun parse_gdprOsobniUdajeSeNemapou() {
-        // GDPR whitelist vynucený modelem: Agentura nemá pole pro
+    fun parse_gdprPersonalDataNeverMapped() {
+        // GDPR whitelist vynucený modelem: Agency nemá pole pro
         // odpovednyZastupce/kontaktniOsoby — test dokládá, že parser
         // nezachovává žádný string obsahující jméno zástupce.
         val raw = JSONObject(
@@ -57,17 +57,17 @@ class AgenturyParserTest {
             }]}
             """.trimIndent()
         )
-        val result = AgenturyParser().parsePolozky(raw)
+        val result = AgencyParser().parseItems(raw)
         assertEquals(1, result.size)
         val a = result[0]
         assertEquals("12345678", a.ico)
-        assertEquals("Test Agentura s.r.o.", a.nazev)
+        assertEquals("Test Agentura s.r.o.", a.name)
         // žádné pole modelu nesmí obsahovat osobní údaje
-        assertEquals(listOf("Bez omezení"), a.povoleni.map { it.druhyPraci })
+        assertEquals(listOf("Bez omezení"), a.permits.map { it.workTypes })
     }
 
     @Test
-    fun parse_tolerantni_nullPovoleniANazev() {
+    fun parse_tolerant_nullPermitsAndName() {
         val raw = JSONObject(
             """
             {"polozky": [
@@ -77,26 +77,26 @@ class AgenturyParserTest {
             ]}
             """.trimIndent()
         )
-        val result = AgenturyParser().parsePolozky(raw)
-        // záznamy bez IČO se zahodí (IČO je klíč detekce), null nazev → ""
+        val result = AgencyParser().parseItems(raw)
+        // záznamy bez IČO se zahodí (IČO je klíč detekce), null name → ""
         assertEquals(1, result.size)
         assertEquals("11111111", result[0].ico)
-        assertEquals("", result[0].nazev)
-        assertTrue(result[0].povoleni.isEmpty())
+        assertEquals("", result[0].name)
+        assertTrue(result[0].permits.isEmpty())
     }
 
     @Test
-    fun maPlatnePovoleniK_hraniceAPrazdneDatumy() {
-        val a = Agentura(
+    fun hasValidPermitOn_boundaryAndEmptyDates() {
+        val a = Agency(
             ico = "1",
-            nazev = "X",
-            povoleni = listOf(
-                AgenturaPovoleni("Bez omezení", "2022-08-27", null),
-                AgenturaPovoleni("Zprostředkování", "2020-01-01", "2021-12-31"),
+            name = "X",
+            permits = listOf(
+                AgencyPermit("Bez omezení", "2022-08-27", null),
+                AgencyPermit("Zprostředkování", "2020-01-01", "2021-12-31"),
             ),
         )
-        assertTrue(a.maPlatnePovoleniK("2026-10-07"))
-        assertTrue(a.maPlatnePovoleniK("2022-08-27")) // den vzniku = platné
-        assertFalse(a.maPlatnePovoleniK("2022-08-26"))
+        assertTrue(a.hasValidPermitOn("2026-10-07"))
+        assertTrue(a.hasValidPermitOn("2022-08-27")) // den vzniku = platné
+        assertFalse(a.hasValidPermitOn("2022-08-26"))
     }
 }

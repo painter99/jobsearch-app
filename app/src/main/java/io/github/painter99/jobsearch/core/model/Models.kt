@@ -3,20 +3,20 @@ package io.github.painter99.jobsearch.core.model
 /**
  * Směnnost — MPSV číselník `Smennost/<id>` (10 hodnot, ověřeno 6. 10. 2026).
  */
-enum class Smennost(val mpsvKod: String) {
-    JEDNOSMENNA("jednoSm"),
-    DVOUSMENNA("dvouSm"),
-    TRISMENNA("triSm"),
-    CTYRSMENNA("ctyrSm"),
-    DELENE_SMENY("deleneSm"),
-    NEPRETRZITY("nepretrzity"),
-    NOCNI("nocni"),
-    PRUZNA("pruznaPd"),
-    TURNUS("turnus"),
-    NEURCENO("neurceno");
+enum class ShiftPattern(val mpsvKod: String) {
+    SINGLE_SHIFT("jednoSm"),
+    TWO_SHIFT("dvouSm"),
+    THREE_SHIFT("triSm"),
+    FOUR_SHIFT("ctyrSm"),
+    SPLIT_SHIFTS("deleneSm"),
+    CONTINUOUS("nepretrzity"),
+    NIGHT_SHIFT("nocni"),
+    FLEXIBLE("pruznaPd"),
+    ROTATING("turnus"),
+    UNSPECIFIED("neurceno");
 
     companion object {
-        fun fromMpsvId(id: String?): Smennost? {
+        fun fromMpsvId(id: String?): ShiftPattern? {
             if (id == null) return null
             val kod = id.substringAfterLast('/')
             return entries.firstOrNull { it.mpsvKod == kod }
@@ -27,32 +27,32 @@ enum class Smennost(val mpsvKod: String) {
 /**
  * Zaměstnavatel z MPSV záznamu (GDPR whitelist: jen IČO a název, žádné kontakty).
  */
-data class Zamestnavatel(
+data class Employer(
     val ico: String?,
-    val nazev: String,
+    val name: String,
 )
 
 /**
  * Místo výkonu práce z MPSV záznamu — varianty dle `typMistaVykonuPrace`
- * (obec/okres/adrprov/adrvolna/neurceno/celaCR; strategie matchingu viz MistoVykonuMatcher).
+ * (obec/okres/adrprov/adrvolna/neurceno/celaCR; strategie matchingu viz LocationFilter).
  */
-data class MistoVykonu(
-    val typ: TypMistaVykonu?,
-    val obecId: String?,        // "Obec/<ruian>"
-    val okresy: List<String>,   // "Okres/<lau>"
-    val adresaText: String?,
-    val pracovisteObecIds: List<String>, // RÚIAN kódy obcí z pracovišť (adrprov)
+data class WorkLocation(
+    val type: LocationType?,
+    val municipalityId: String?,          // "Obec/<ruian>"
+    val districts: List<String>,          // "Okres/<lau>"
+    val addressText: String?,
+    val worksiteMunicipalityIds: List<String>, // RÚIAN kódy obcí z pracovišť (adrprov)
 ) {
-    enum class TypMistaVykonu(val mpsvKod: String) {
-        OBEC("obec"),
-        OKRES("okres"),
-        ADRESA_PRACOVISTE("adrprov"),
-        ADRESA_VOLNA("adrvolna"),
-        NEURCENO("neurceno"),
-        CELA_CR("celaCR");
+    enum class LocationType(val mpsvKod: String) {
+        MUNICIPALITY("obec"),
+        DISTRICT("okres"),
+        WORKSITE_ADDRESS("adrprov"),
+        FREE_ADDRESS("adrvolna"),
+        UNSPECIFIED("neurceno"),
+        WHOLE_CR("celaCR");
 
         companion object {
-            fun fromMpsvId(id: String?): TypMistaVykonu? {
+            fun fromMpsvId(id: String?): LocationType? {
                 if (id == null) return null
                 val kod = id.substringAfterLast('/')
                 return entries.firstOrNull { it.mpsvKod == kod }
@@ -61,27 +61,27 @@ data class MistoVykonu(
     }
 
     companion object {
-        val NIC = MistoVykonu(null, null, emptyList(), null, emptyList())
+        val NONE = WorkLocation(type = null, municipalityId = null, districts = emptyList(), addressText = null, worksiteMunicipalityIds = emptyList())
     }
 }
 
 /**
  * Výhoda volného místa — MPSV číselník `VyhodyVolnehoMista/<id>` (10 hodnot).
  */
-enum class Vyhoda(val mpsvKod: String, val ceskyNazev: String) {
-    UBYT("ubyt", "Ubytování"),
-    PREDSK("predsk", "Předškolní zařízení"),
-    NATUR("natur", "Naturální výhody"),
-    JIZDNE("jizdne", "Jízdní výhody"),
-    JINE("jine", "Jiné výhody"),
-    STRAV("strav", "Podnikové stravování"),
-    DOVOL("dovol", "Dovolená navíc"),
-    PREMIE("premie", "Zvláštní prémie"),
-    MIMO("mimo", "Mimo okres bydliště"),
-    ZAHR("zahr", "V zahraničí");
+enum class Benefit(val mpsvKod: String, val czechName: String) {
+    ACCOMMODATION("ubyt", "Ubytování"),
+    PRESCHOOL("predsk", "Předškolní zařízení"),
+    NATURAL("natur", "Naturální výhody"),
+    TRANSPORT("jizdne", "Jízdní výhody"),
+    OTHER("jine", "Jiné výhody"),
+    CANTEEN("strav", "Podnikové stravování"),
+    EXTRA_VACATION("dovol", "Dovolená navíc"),
+    SPECIAL_BONUS("premie", "Zvláštní prémie"),
+    OUT_OF_DISTRICT("mimo", "Mimo okres bydliště"),
+    ABROAD("zahr", "V zahraničí");
 
     companion object {
-        fun fromMpsvId(id: String?): Vyhoda? {
+        fun fromMpsvId(id: String?): Benefit? {
             if (id == null) return null
             val kod = id.substringAfterLast('/')
             return entries.firstOrNull { it.mpsvKod == kod }
@@ -97,24 +97,24 @@ enum class Vyhoda(val mpsvKod: String, val ceskyNazev: String) {
  * v `prvniKontaktSeZamestnavatelem`, `kdeSeHlasit`, `pracoviste[].telefon/email`,
  * `upresnujiciInformace`) se do modelu NEMAPUJÍ — viz MpsvRecordParser.
  */
-data class Nabidka(
+data class JobOffer(
     val portalId: Long,
-    val referencniCislo: String,
-    val profese: String,
-    val smennost: Smennost?,
-    val mzdaOd: Int?,
-    val mzdaDo: Int?,
-    val pocetHodinTydne: Int?,
-    val zamestnavatel: Zamestnavatel?,
-    val misto: MistoVykonu,
-    val vyhody: List<Vyhoda>,
-    val urlAdresa: String?,
-    val agenturaSouhlas: Boolean?,  // souhlasAgenturyAgentura
-    val uzivatelSouhlas: Boolean?,  // souhlasAgenturyUzivatel
+    val referenceNumber: String,
+    val profession: String,
+    val shiftPattern: ShiftPattern?,
+    val salaryFrom: Int?,
+    val salaryTo: Int?,
+    val hoursPerWeek: Int?,
+    val employer: Employer?,
+    val location: WorkLocation,
+    val benefits: List<Benefit>,
+    val url: String?,
+    val agencyConsent: Boolean?,   // souhlasAgenturyAgentura
+    val userConsent: Boolean?,     // souhlasAgenturyUzivatel
 ) {
     /** Signál pro auto-fill checklistu latky: „Dovolená navíc" (MPSV kód dovol). */
-    fun maDovolenouNavic(): Boolean = Vyhoda.DOVOL in vyhody
+    fun hasExtraVacation(): Boolean = Benefit.EXTRA_VACATION in benefits
 
     /** Signál pro auto-fill checklistu latky: „Zvláštní prémie" (MPSV kód premie). */
-    fun maZvlastniPremie(): Boolean = Vyhoda.PREMIE in vyhody
+    fun hasSpecialBonus(): Boolean = Benefit.SPECIAL_BONUS in benefits
 }

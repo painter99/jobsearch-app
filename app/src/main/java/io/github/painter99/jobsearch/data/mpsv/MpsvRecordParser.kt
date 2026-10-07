@@ -1,15 +1,15 @@
 package io.github.painter99.jobsearch.data.mpsv
 
-import io.github.painter99.jobsearch.core.model.MistoVykonu
-import io.github.painter99.jobsearch.core.model.Nabidka
-import io.github.painter99.jobsearch.core.model.Smennost
-import io.github.painter99.jobsearch.core.model.Vyhoda
-import io.github.painter99.jobsearch.core.model.Zamestnavatel
+import io.github.painter99.jobsearch.core.model.WorkLocation
+import io.github.painter99.jobsearch.core.model.JobOffer
+import io.github.painter99.jobsearch.core.model.ShiftPattern
+import io.github.painter99.jobsearch.core.model.Benefit
+import io.github.painter99.jobsearch.core.model.Employer
 import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * Mapování surového MPSV záznamu (JSONObject) na doménový model [Nabidka].
+ * Mapování surového MPSV záznamu (JSONObject) na doménový model [JobOffer].
  *
  * GDPR whitelist: do modelu se mapují POUZE pole bez osobních údajů.
  * Osobní údaje (prvniKontaktSeZamestnavatelem, kdeSeHlasit,
@@ -20,68 +20,68 @@ import org.json.JSONObject
  */
 class MpsvRecordParser {
 
-    fun parse(raw: JSONObject): Nabidka? {
-        val referencniCislo = raw.optString("referencniCislo")
-        val profese = raw.optJSONObject("pozadovanaProfese")?.optString("cs") ?: return null
-        if (profese.isBlank()) return null
+    fun parse(raw: JSONObject): JobOffer? {
+        val referenceNumber = raw.optString("referencniCislo")
+        val profession = raw.optJSONObject("pozadovanaProfese")?.optString("cs") ?: return null
+        if (profession.isBlank()) return null
 
-        val zamestnavatelJson = raw.optJSONObject("zamestnavatel")
-        val zamestnavatel = zamestnavatelJson?.let {
-            Zamestnavatel(
+        val employerJson = raw.optJSONObject("zamestnavatel")
+        val employer = employerJson?.let {
+            Employer(
                 ico = it.optStringOrNull("ico"),
-                nazev = it.optStringOrNull("nazev") ?: "",
+                name = it.optStringOrNull("nazev") ?: "",
             )
         }
 
-        return Nabidka(
+        return JobOffer(
             portalId = raw.optLong("portalId"),
-            referencniCislo = referencniCislo,
-            profese = profese,
-            smennost = Smennost.fromMpsvId(raw.optJSONObject("smennost")?.optString("id")),
-            mzdaOd = raw.optIntOrNull("mesicniMzdaOd"),
-            mzdaDo = raw.optIntOrNull("mesicniMzdaDo"),
-            pocetHodinTydne = raw.optIntOrNull("pocetHodinTydne"),
-            zamestnavatel = zamestnavatel,
-            misto = parseMisto(raw.optJSONObject("mistoVykonuPrace")),
-            vyhody = parseVyhody(raw.optJSONArray("vyhodyVolnehoMista")),
-            urlAdresa = raw.optStringOrNull("urlAdresa"),
-            agenturaSouhlas = raw.optBooleanOrNull("souhlasAgenturyAgentura"),
-            uzivatelSouhlas = raw.optBooleanOrNull("souhlasAgenturyUzivatel"),
+            referenceNumber = referenceNumber,
+            profession = profession,
+            shiftPattern = ShiftPattern.fromMpsvId(raw.optJSONObject("smennost")?.optString("id")),
+            salaryFrom = raw.optIntOrNull("mesicniMzdaOd"),
+            salaryTo = raw.optIntOrNull("mesicniMzdaDo"),
+            hoursPerWeek = raw.optIntOrNull("pocetHodinTydne"),
+            employer = employer,
+            location = parseLocation(raw.optJSONObject("mistoVykonuPrace")),
+            benefits = parseBenefits(raw.optJSONArray("vyhodyVolnehoMista")),
+            url = raw.optStringOrNull("urlAdresa"),
+            agencyConsent = raw.optBooleanOrNull("souhlasAgenturyAgentura"),
+            userConsent = raw.optBooleanOrNull("souhlasAgenturyUzivatel"),
         )
     }
 
-    private fun parseMisto(misto: JSONObject?): MistoVykonu {
-        if (misto == null) return MistoVykonu.NIC
+    private fun parseLocation(location: JSONObject?): WorkLocation {
+        if (location == null) return WorkLocation.NONE
 
-        val typ = MistoVykonu.TypMistaVykonu.fromMpsvId(
-            misto.optJSONObject("typMistaVykonuPrace")?.optString("id")
+        val type = WorkLocation.LocationType.fromMpsvId(
+            location.optJSONObject("typMistaVykonuPrace")?.optString("id")
         )
-        val obecId = misto.optJSONObject("obec")?.optStringOrNull("id")
+        val municipalityId = location.optJSONObject("obec")?.optStringOrNull("id")
 
-        val okresy = mutableListOf<String>()
-        misto.optJSONArray("okresy")?.forEachObject { okresy.add(it.optString("id")) }
+        val districts = mutableListOf<String>()
+        location.optJSONArray("okresy")?.forEachObject { districts.add(it.optString("id")) }
 
-        val pracovisteObecIds = mutableListOf<String>()
-        misto.optJSONArray("pracoviste")?.forEachObject { pracoviste ->
-            pracoviste.optJSONObject("adresa")?.optJSONObject("obec")?.optStringOrNull("id")
-                ?.let { pracovisteObecIds.add(it) }
+        val worksiteMunicipalityIds = mutableListOf<String>()
+        location.optJSONArray("pracoviste")?.forEachObject { worksite ->
+            worksite.optJSONObject("adresa")?.optJSONObject("obec")?.optStringOrNull("id")
+                ?.let { worksiteMunicipalityIds.add(it) }
         }
 
-        return MistoVykonu(
-            typ = typ,
-            obecId = obecId,
-            okresy = okresy,
-            adresaText = misto.optStringOrNull("adresaText"),
-            pracovisteObecIds = pracovisteObecIds,
+        return WorkLocation(
+            type = type,
+            municipalityId = municipalityId,
+            districts = districts,
+            addressText = location.optStringOrNull("adresaText"),
+            worksiteMunicipalityIds = worksiteMunicipalityIds,
         )
     }
 
-    private fun parseVyhody(vyhody: JSONArray?): List<Vyhoda> {
-        if (vyhody == null) return emptyList()
-        val result = mutableListOf<Vyhoda>()
-        vyhody.forEachObject { item ->
+    private fun parseBenefits(benefits: JSONArray?): List<Benefit> {
+        if (benefits == null) return emptyList()
+        val result = mutableListOf<Benefit>()
+        benefits.forEachObject { item ->
             val id = item.optJSONObject("vyhoda")?.optString("id")
-            Vyhoda.fromMpsvId(id)?.let { result.add(it) } // neznámý kód → ignorovat (tolerantně)
+            Benefit.fromMpsvId(id)?.let { result.add(it) } // neznámý kód → ignorovat (tolerantně)
         }
         return result
     }
