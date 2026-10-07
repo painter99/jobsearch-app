@@ -1,4 +1,4 @@
-# CI run 10 — commit 80336f9 — m1.3-resolver
+# CI run 11 — commit da2693d — m1.3-resolver
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -28,10 +28,10 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest
 > Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
 > Task :app:processDebugResources
 > Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
@@ -47,24 +47,42 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :app:transformDebugClassesWithAsm
 > Task :app:bundleDebugClassesToRuntimeJar
 > Task :app:kspDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltAggregateDepsDebugUnitTest
+> Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:transformDebugUnitTestClassesWithAsm
 
-> Task :app:compileDebugUnitTestKotlin FAILED
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/pipeline/EndEmployerResolverTest.kt:154:37 This type is final, so it cannot be extended.
+> Task :app:testDebugUnitTest
+
+EndEmployerResolverTest > rodinná firma +1 jen pro známé právní formy FAILED
+    java.lang.AssertionError at EndEmployerResolverTest.kt:107
+
+EndEmployerResolverTest > oracle - ISH PUMPS score 4,0 (obec + NACE) nad živou fixturou 28130 FAILED
+    java.lang.AssertionError at EndEmployerResolverTest.kt:71
+
+EndEmployerResolverTest > okres-only shoda +1, obec mimo FAILED
+    java.lang.AssertionError at EndEmployerResolverTest.kt:97
+
+OfferDedupeTest > kanonizace URL - rps a utm se stripnou, host lowercase FAILED
+    org.junit.ComparisonFailure at OfferDedupeTest.kt:64
+
+72 tests completed, 4 failed
+
+> Task :app:testDebugUnitTest FAILED
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:compileDebugUnitTestKotlin'.
-> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-   > Compilation error. See log for more details
+Execution failed for task ':app:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/runner/work/jobsearch-app/jobsearch-app/app/build/reports/tests/testDebugUnitTest/index.html
 
 * Try:
-> Run with --info or --debug option to get more log output.
 > Run with --scan to get full insights.
-> Get more help at https://help.gradle.org.
 
 * Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugUnitTestKotlin'.
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:testDebugUnitTest'.
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
@@ -96,18 +114,20 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:com
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:287)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
-	at org.gradle.internal.Factories$1.create(Factories.java:31)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:339)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:322)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:327)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
-	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:252)
+Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There were failing tests. See the report at: file:///home/runner/work/jobsearch-app/jobsearch-app/app/build/reports/tests/testDebugUnitTest/index.html
+	at org.gradle.api.tasks.testing.AbstractTestTask.handleTestFailures(AbstractTestTask.java:705)
+	at org.gradle.api.tasks.testing.AbstractTestTask.handleCollectedResults(AbstractTestTask.java:539)
+	at org.gradle.api.tasks.testing.AbstractTestTask.executeTests(AbstractTestTask.java:534)
+	at org.gradle.api.tasks.testing.Test.executeTests(Test.java:715)
+	at com.android.build.gradle.tasks.factory.AndroidUnitTest.executeTests(AndroidUnitTest.java:171)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.doExecute(StandardTaskAction.java:58)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:51)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:29)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
@@ -220,39 +240,24 @@ Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionExcept
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
-	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
-	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:119)
-	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
-	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
-	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
-	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
-	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
-	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
-	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
-	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
-	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
-	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:195)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:128)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:170)
-	at org.gradle.internal.Factories$1.create(Factories.java:31)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:267)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:136)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:165)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:134)
-	... 2 more
 
 
-BUILD FAILED in 1m 27s
-26 actionable tasks: 26 executed
+BUILD FAILED in 1m 55s
+30 actionable tasks: 30 executed
 
+===== junit summary =====
+<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:10" hostname="runnervm8df0l" time="0.047">
+<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:10" hostname="runnervm8df0l" time="0.019">
+<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:10" hostname="runnervm8df0l" time="0.029">
+<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:11" hostname="runnervm8df0l" time="0.002">
+<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:11" hostname="runnervm8df0l" time="0.014">
+<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:11" hostname="runnervm8df0l" time="0.683">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:11" hostname="runnervm8df0l" time="0.004">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:11" hostname="runnervm8df0l" time="0.04">
+<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:43:11" hostname="runnervm8df0l" time="0.07">
+<testsuite name="io.github.painter99.jobsearch.pipeline.EndEmployerResolverTest" tests="8" skipped="0" failures="3" errors="0" timestamp="2026-10-07T05:43:11" hostname="runnervm8df0l" time="0.027">
+    <failure message="java.lang.AssertionError: expected:&lt;4.0&gt; but was:&lt;5.0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;4.0&gt; but was:&lt;5.0&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;4.0&gt; but was:&lt;5.0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;4.0&gt; but was:&lt;5.0&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;3.0&gt; but was:&lt;2.0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3.0&gt; but was:&lt;2.0&gt;
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferDedupeTest" tests="8" skipped="0" failures="1" errors="0" timestamp="2026-10-07T05:43:11" hostname="runnervm8df0l" time="0.005">
+    <failure message="org.junit.ComparisonFailure: expected:&lt;https://[PORTAL].cz/Path&gt; but was:&lt;https://[portal].cz/Path&gt;" type="org.junit.ComparisonFailure">org.junit.ComparisonFailure: expected:&lt;https://[PORTAL].cz/Path&gt; but was:&lt;https://[portal].cz/Path&gt;
