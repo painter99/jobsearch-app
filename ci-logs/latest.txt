@@ -1,4 +1,4 @@
-# CI run 8 — commit 5d492f6 — rename-en
+# CI run 9 — commit 05e1588 — main
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -28,10 +28,10 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
-> Task :app:javaPreCompileDebug
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
 > Task :app:javaPreCompileDebugUnitTest
+> Task :app:processDebugManifestForPackage
+> Task :app:javaPreCompileDebug
 > Task :app:processDebugResources
 > Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
@@ -55,7 +55,7 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
 
-BUILD SUCCESSFUL in 2m 3s
+BUILD SUCCESSFUL in 2m 14s
 30 actionable tasks: 30 executed
 
 ===== apk_build_output.txt =====
@@ -97,11 +97,11 @@ BUILD SUCCESSFUL in 2m 3s
 > Task :app:mergeDebugNativeLibs
 > Task :app:mergeLibDexDebug
 > Task :app:mergeProjectDexDebug
-> Task :app:mergeDebugJavaResource
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so.
 
+> Task :app:mergeDebugJavaResource
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
@@ -110,16 +110,16 @@ Unable to strip the following libraries, packaging them as they are: libandroidx
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 46s
+BUILD SUCCESSFUL in 57s
 40 actionable tasks: 19 executed, 21 up-to-date
 
 ===== junit summary =====
-<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.03">
-<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.022">
-<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.035">
-<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.004">
-<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.013">
-<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.533">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.007">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.057">
-<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:53" hostname="runnervm8df0l" time="0.076">
+<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:46" hostname="runnervm8df0l" time="0.036">
+<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:46" hostname="runnervm8df0l" time="0.017">
+<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:46" hostname="runnervm8df0l" time="0.036">
+<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:46" hostname="runnervm8df0l" time="0.001">
+<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:46" hostname="runnervm8df0l" time="0.025">
+<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:46" hostname="runnervm8df0l" time="0.583">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:47" hostname="runnervm8df0l" time="0.004">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:47" hostname="runnervm8df0l" time="0.035">
+<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:17:47" hostname="runnervm8df0l" time="0.07">
