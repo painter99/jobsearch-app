@@ -12,6 +12,7 @@ import io.github.painter99.jobsearch.data.ares.AresClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClient
 import io.github.painter99.jobsearch.data.mpsv.MunicipalityRepository
+import io.github.painter99.jobsearch.data.mpsv.FileOfferStore
 import io.github.painter99.jobsearch.data.mpsv.OfferStore
 import io.github.painter99.jobsearch.data.storage.CriteriaProvider
 import io.github.painter99.jobsearch.data.storage.LocationProfile
