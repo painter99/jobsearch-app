@@ -1,4 +1,4 @@
-# CI run 16 — commit ae45e26 — m1.4-data-sync
+# CI run 17 — commit b9da772 — m1.4-data-sync
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -22,9 +22,9 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:mapDebugSourceSetPaths
 > Task :app:generateDebugResources
 > Task :app:packageDebugResources
+> Task :app:mergeDebugResources
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
-> Task :app:mergeDebugResources
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
@@ -47,29 +47,66 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :app:transformDebugClassesWithAsm
 > Task :app:bundleDebugClassesToRuntimeJar
 > Task :app:kspDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltAggregateDepsDebugUnitTest
+> Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:transformDebugUnitTestClassesWithAsm
 
-> Task :app:compileDebugUnitTestKotlin FAILED
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/data/mpsv/FileOfferStoreTest.kt:48:22 Unresolved reference 'ShiftPattern'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/data/mpsv/FileOfferStoreTest.kt:129:22 Unresolved reference 'ShiftPattern'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/data/mpsv/FileOfferStoreTest.kt:158:30 Unresolved reference 'GZIPInputStream'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/data/mpsv/IncrementParserTest.kt:21:26 Unresolved reference 'GZIPInputStream'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClientTest.kt:58:30 Expression 'length' of type 'kotlin.Int' cannot be invoked as a function. Function 'invoke()' is not found.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClientTest.kt:88:109 Unresolved reference 'path'.
+> Task :app:testDebugUnitTest
+
+FileOfferStoreTest > applyIncrement_changedOfferUpdated FAILED
+    java.lang.AssertionError at FileOfferStoreTest.kt:108
+
+FileOfferStoreTest > applyIncrement_removedOfferDeleted FAILED
+    java.lang.AssertionError at FileOfferStoreTest.kt:135
+
+FileOfferStoreTest > applyIncrement_newOfferInserted FAILED
+    java.lang.AssertionError at FileOfferStoreTest.kt:84
+
+FileOfferStoreTest > applyIncrement_emptyBatchChangesNothing FAILED
+    java.lang.AssertionError at FileOfferStoreTest.kt:196
+
+FileOfferStoreTest > applyIncrement_liveFixture_appliesAllValidRecords FAILED
+    java.lang.AssertionError at FileOfferStoreTest.kt:155
+
+IncrementParserTest > parse_newRecordsHaveOffersWithUrl FAILED
+    java.lang.AssertionError at IncrementParserTest.kt:57
+
+PraceCzClientTest > fetchListing_parsesServerResponse FAILED
+    java.lang.AssertionError at PraceCzClientTest.kt:85
+
+PraceCzClientTest > parser_extractsUniqueDeepLinksAndStripsTracking FAILED
+    java.lang.AssertionError at PraceCzClientTest.kt:50
+
+OfferSyncEngineTest > syncDaily_appliesIncrementAndMovesAnchor FAILED
+    java.lang.AssertionError at OfferSyncEngineTest.kt:83
+
+OfferSyncEngineTest > syncDaily_anchorAdvancesOnlyPastAppliedDays FAILED
+    java.lang.AssertionError at OfferSyncEngineTest.kt:139
+
+OfferSyncEngineTest > syncDaily_serverErrorStopsCatchUp FAILED
+    java.lang.AssertionError at OfferSyncEngineTest.kt:125
+
+OfferSyncEngineTest > syncDaily_catchUpAppliesMultipleDays FAILED
+    java.lang.AssertionError at OfferSyncEngineTest.kt:110
+
+118 tests completed, 12 failed
+
+> Task :app:testDebugUnitTest FAILED
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:compileDebugUnitTestKotlin'.
-> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-   > Compilation error. See log for more details
+Execution failed for task ':app:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/runner/work/jobsearch-app/jobsearch-app/app/build/reports/tests/testDebugUnitTest/index.html
 
 * Try:
-> Run with --info or --debug option to get more log output.
 > Run with --scan to get full insights.
-> Get more help at https://help.gradle.org.
 
 * Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugUnitTestKotlin'.
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:testDebugUnitTest'.
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
@@ -130,18 +167,20 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:com
 	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:287)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
-	at org.gradle.internal.Factories$1.create(Factories.java:31)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:339)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:322)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:327)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
-	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
-	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:252)
+Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There were failing tests. See the report at: file:///home/runner/work/jobsearch-app/jobsearch-app/app/build/reports/tests/testDebugUnitTest/index.html
+	at org.gradle.api.tasks.testing.AbstractTestTask.handleTestFailures(AbstractTestTask.java:705)
+	at org.gradle.api.tasks.testing.AbstractTestTask.handleCollectedResults(AbstractTestTask.java:539)
+	at org.gradle.api.tasks.testing.AbstractTestTask.executeTests(AbstractTestTask.java:534)
+	at org.gradle.api.tasks.testing.Test.executeTests(Test.java:715)
+	at com.android.build.gradle.tasks.factory.AndroidUnitTest.executeTests(AndroidUnitTest.java:171)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.doExecute(StandardTaskAction.java:58)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:51)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:29)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
@@ -283,39 +322,38 @@ Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionExcept
 	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
-	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
-	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:119)
-	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
-	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
-	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
-	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
-	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
-	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
-	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
-	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
-	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
-	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:195)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:128)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:170)
-	at org.gradle.internal.Factories$1.create(Factories.java:31)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:267)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:136)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:165)
-	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:134)
-	... 2 more
 
 
-BUILD FAILED in 1m 27s
-26 actionable tasks: 26 executed
+BUILD FAILED in 2m 15s
+30 actionable tasks: 30 executed
 
+===== junit summary =====
+<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:32" hostname="runnervm8df0l" time="0.065">
+<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:32" hostname="runnervm8df0l" time="0.014">
+<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:32" hostname="runnervm8df0l" time="0.032">
+<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:32" hostname="runnervm8df0l" time="0.0">
+<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:32" hostname="runnervm8df0l" time="0.008">
+<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:32" hostname="runnervm8df0l" time="0.684">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:33" hostname="runnervm8df0l" time="0.003">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.FileOfferStoreTest" tests="10" skipped="0" failures="5" errors="0" timestamp="2026-10-07T07:04:33" hostname="runnervm8df0l" time="0.131">
+    <failure message="java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;6&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;6&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;2&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;2&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;4&gt; but was:&lt;7&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;4&gt; but was:&lt;7&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;6&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;6&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;9&gt; but was:&lt;12&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;9&gt; but was:&lt;12&gt;
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.IncrementParserTest" tests="7" skipped="0" failures="1" errors="0" timestamp="2026-10-07T07:04:33" hostname="runnervm8df0l" time="0.014">
+    <failure message="java.lang.AssertionError" type="java.lang.AssertionError">java.lang.AssertionError
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:33" hostname="runnervm8df0l" time="0.071">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:33" hostname="runnervm8df0l" time="0.053">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvOffersClientTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:33" hostname="runnervm8df0l" time="0.069">
+<testsuite name="io.github.painter99.jobsearch.data.pracecz.PraceCzClientTest" tests="9" skipped="0" failures="2" errors="0" timestamp="2026-10-07T07:04:33" hostname="runnervm8df0l" time="0.153">
+    <failure message="java.lang.AssertionError: expected:&lt;5&gt; but was:&lt;4&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;5&gt; but was:&lt;4&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;5&gt; but was:&lt;4&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;5&gt; but was:&lt;4&gt;
+<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:33" hostname="runnervm8df0l" time="0.094">
+<testsuite name="io.github.painter99.jobsearch.pipeline.EndEmployerResolverTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:34" hostname="runnervm8df0l" time="0.018">
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferDedupeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T07:04:34" hostname="runnervm8df0l" time="0.006">
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferSyncEngineTest" tests="6" skipped="0" failures="4" errors="0" timestamp="2026-10-07T07:04:34" hostname="runnervm8df0l" time="0.083">
+    <failure message="java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;0&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;0&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;0&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;0&gt;
