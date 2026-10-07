@@ -5,6 +5,8 @@ import io.github.painter99.jobsearch.core.model.JobOffer
 import io.github.painter99.jobsearch.core.model.WorkLocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okio.buffer
+import okio.source
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -128,7 +130,7 @@ class FileOfferStore(
     private fun streamBootstrap(dumpFile: File): List<String> {
         val result = ArrayList<String>()
         dumpFile.inputStream().buffered().use { input ->
-            val reader = JsonReader.of(okio.buffer(okio.source(input)))
+            val reader = JsonReader.of(input.source().buffer())
             reader.beginObject()
             while (reader.hasNext()) {
                 if (reader.selectName(POLOZKY) == 0) {
