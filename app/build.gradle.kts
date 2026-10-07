@@ -33,13 +33,6 @@ android {
     buildFeatures {
         compose = true
     }
-    testOptions {
-        unitTests {
-            // DossierViewModel (vlna B) používá org.json (android.jar stuby) —
-            // na JVM se metody vrátí default (null/0), parser běží přes Robolectric.
-            isReturnDefaultValues = true
-        }
-    }
 }
 
 dependencies {

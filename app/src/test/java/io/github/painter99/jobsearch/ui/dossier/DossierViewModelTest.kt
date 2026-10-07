@@ -12,7 +12,9 @@ import io.github.painter99.jobsearch.data.ares.AresClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClient
 import io.github.painter99.jobsearch.data.mpsv.MunicipalityRepository
+import io.github.painter99.jobsearch.data.mpsv.ChangeType
 import io.github.painter99.jobsearch.data.mpsv.FileOfferStore
+import io.github.painter99.jobsearch.data.mpsv.IncrementRecord
 import io.github.painter99.jobsearch.data.mpsv.OfferStore
 import io.github.painter99.jobsearch.data.storage.CriteriaProvider
 import io.github.painter99.jobsearch.data.storage.LocationProfile
@@ -143,15 +145,19 @@ class DossierViewModelTest {
         userConsent = null,
     )
 
-    /** Reálný FileOfferStore nad temp JSON Lines souborem (lekce run #10). */
-    private fun offerStore(vararg offers: JobOffer): FileOfferStore {
+    /**
+     * Reálný FileOfferStore nad temp JSON Lines souborem (lekce run #10).
+     * Seed přes [FileOfferStore.applyIncrement] — řádek serializuje samotný
+     * store (offerToLine), žádné duplikování formátu v testu (lekce run #29/#30:
+     * ruční `{"portalId": X}` řádky parser neumí → store prázdný → loadError).
+     */
+    private suspend fun offerStore(vararg offers: JobOffer): FileOfferStore {
         val file = File("/tmp/offers-dossier-test-${System.nanoTime()}.json")
+        val store = FileOfferStore(file)
         if (offers.isNotEmpty()) {
-            file.writeText(offers.joinToString("\n") { o ->
-                """{"portalId": ${o.portalId}}"""
-            })
+            store.applyIncrement(offers.map { IncrementRecord(it.portalId, ChangeType.NEW, it) })
         }
-        return FileOfferStore(file)
+        return store
     }
 
     private fun viewModel(
@@ -259,6 +265,9 @@ class DossierViewModelTest {
 
     @Test
     fun `setVerdict a setNotes se uloží do DB`() = runTest(dispatcher) {
+        enqueueAgentury()          // detekce agentury (17181879 v MPSV seznamu)
+        enqueueAresDetail("17181879") // NACE stopy pro resolver
+        enqueueAresVyhledat()      // resolver vyhledat — jinak 2× 10s socket timeout
         val store = offerStore(offer(4L, employerIco = "17181879"))
         val vm = viewModel(store)
         vm.load("mpsv/4")
