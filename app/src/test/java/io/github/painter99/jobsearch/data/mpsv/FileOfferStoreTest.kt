@@ -1,5 +1,6 @@
 package io.github.painter99.jobsearch.data.mpsv
 
+import io.github.painter99.jobsearch.core.model.ShiftPattern
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -155,7 +156,7 @@ class FileOfferStoreTest {
         val store = store()
         store.importBootstrap(fixture("bootstrap-sample.json"))
         val gz = javaClass.getResourceAsStream("/prirustek-sample.json.gz")!!.readBytes()
-        val text = java.util.GZIPInputStream(gz.inputStream()).readBytes().toString(Charsets.UTF_8)
+        val text = java.util.zip.GZIPInputStream(gz.inputStream()).readBytes().toString(Charsets.UTF_8)
         val records = IncrementParser().parseText(text)
 
         // živý přírůstek: 8 validních záznamů (3 novy + 3 zmeneny + 2 zruseny)

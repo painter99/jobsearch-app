@@ -55,7 +55,7 @@ class MpsvOffersClientTest {
 
         assertTrue("očekáván Success, byl: $result", result is FetchResult.Success)
         assertEquals(target, (result as FetchResult.Success).data)
-        assertEquals(payload.length().toLong(), target.length())
+        assertEquals(payload.length.toLong(), target.length())
     }
 
     @Test
@@ -85,14 +85,16 @@ class MpsvOffersClientTest {
     fun fetchIncrement_gzFixtureParses() = runTest {
         val gz = javaClass.getResourceAsStream("/prirustek-sample.json.gz")!!.readBytes()
         server.enqueue(MockResponse().setBody(okio.Buffer().apply { write(gz) }))
-        val path = server.url("/od/soubory/volna-mista-prirustek/volna-mista-prirustek-2026-10-05.json.gz").path!!
 
         val result = client().fetchIncrement(LocalDate.parse("2026-10-05"))
 
         assertTrue("očekáván Success, byl: $result", result is FetchResult.Success)
         val text = (result as FetchResult.Success).data
         assertTrue(text.contains("polozky"))
-        assertEquals(path, server.takeRequest().path)
+        assertEquals(
+            "/od/soubory/volna-mista-prirustek/volna-mista-prirustek-2026-10-05.json.gz",
+            server.takeRequest().path,
+        )
     }
 
     @Test

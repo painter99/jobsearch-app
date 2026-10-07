@@ -18,7 +18,7 @@ class IncrementParserTest {
 
     private fun fixtureText(): String {
         val bytes = javaClass.getResourceAsStream("/prirustek-sample.json.gz")!!.readBytes()
-        return java.util.GZIPInputStream(bytes.inputStream()).readBytes().toString(Charsets.UTF_8)
+        return java.util.zip.GZIPInputStream(bytes.inputStream()).readBytes().toString(Charsets.UTF_8)
     }
 
     @Test
