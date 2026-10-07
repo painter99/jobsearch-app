@@ -1,4 +1,4 @@
-# CI run 22 — commit 03dc1e9 — m1.6-ui-list
+# CI run 23 — commit c4f2e03 — m1.6-ui-list
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -33,32 +33,24 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
 > Task :app:javaPreCompileDebugUnitTest
 > Task :app:processDebugResources
+> Task :app:kspDebugKotlin
 
-> Task :app:kspDebugKotlin FAILED
-e: [ksp] ModuleProcessingStep was unable to process 'io.github.painter99.jobsearch.db.OffersFileModule' because 'error.NonExistentClass' could not be resolved.
-
-Dependency trace:
-    => element (OBJECT): io.github.painter99.jobsearch.db.OffersFileModule
-    => element (METHOD): provideOffersFile(error.NonExistentClass)
-    => element (PARAMETER): context
-    => type (ERROR parameter type): error.NonExistentClass
-
-If type 'error.NonExistentClass' is a generated type, check above for compilation errors that may have prevented the type from being generated. Otherwise, ensure that type 'error.NonExistentClass' is on your classpath.
-e: [ksp] BindingMethodProcessingStep was unable to process 'provideOffersFile(error.NonExistentClass)' because 'error.NonExistentClass' could not be resolved.
-
-Dependency trace:
-    => element (OBJECT): io.github.painter99.jobsearch.db.OffersFileModule
-    => element (METHOD): provideOffersFile(error.NonExistentClass)
-    => element (PARAMETER): context
-    => type (ERROR parameter type): error.NonExistentClass
-
-If type 'error.NonExistentClass' is a generated type, check above for compilation errors that may have prevented the type from being generated. Otherwise, ensure that type 'error.NonExistentClass' is on your classpath.
-e: Error occurred in KSP, check log for detail
+> Task :app:compileDebugKotlin FAILED
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/storage/CriteriaStore.kt:33:17 'load' hides member of supertype 'CriteriaProvider' and needs an 'override' modifier.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/storage/ProfileStore.kt:41:17 'load' hides member of supertype 'ProfileProvider' and needs an 'override' modifier.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/ui/offers/OffersScreen.kt:38:38 Unresolved reference 'key'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/ui/offers/OffersScreen.kt:39:33 Unresolved reference 'key'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/ui/offers/OffersScreen.kt:87:48 Unresolved reference 'key'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/ui/offers/OffersScreen.kt:90:38 Unresolved reference 'key'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/ui/offers/OffersViewModel.kt:37:18 Unresolved reference 'LocationProfile'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/ui/offers/OffersViewModel.kt:37:36 Unresolved reference 'LocationProfile'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/ui/offers/OffersViewModel.kt:79:33 Argument type mismatch: actual type is 'io.github.painter99.jobsearch.core.model.JobOffer', but 'io.github.painter99.jobsearch.core.filter.UserCriteria' was expected.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/ui/offers/OffersViewModel.kt:79:40 Too many arguments for 'fun JobOffer.matchesCriteria(criteria: UserCriteria): Boolean'.
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:kspDebugKotlin'.
+Execution failed for task ':app:compileDebugKotlin'.
 > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
    > Compilation error. See log for more details
 
@@ -68,7 +60,7 @@ Execution failed for task ':app:kspDebugKotlin'.
 > Get more help at https://help.gradle.org.
 
 * Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:kspDebugKotlin'.
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugKotlin'.
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
@@ -257,6 +249,6 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 	... 2 more
 
 
-BUILD FAILED in 1m 30s
-16 actionable tasks: 16 executed
+BUILD FAILED in 1m 31s
+17 actionable tasks: 17 executed
 
