@@ -71,7 +71,7 @@ class EndEmployerResolverTest {
         assertEquals(4.0, ish.score, 0.001)
         assertTrue(ish.reasons.any { it.contains("sídlo v hledané obci") })
         assertTrue(ish.reasons.any { it.contains("NACE") })
-        // Edwards, s.r.o. (Lutín, okres Olomouc) = okres + NACE + rodinná firma = 4.0
+        // Edwards, s.r.o. (Lutín, okres Olomouc) = okres + NACE + rodinná firma (112) = 4.0
         val edwards = candidates.first { it.company.ico == "26461498" }
         assertEquals(4.0, edwards.score, 0.001)
         assertTrue(edwards.reasons.any { it.contains("okres") })
@@ -94,21 +94,21 @@ class EndEmployerResolverTest {
         val c = company("2", "B s.r.o.", municipality = "Hranice", districtName = "Přerov", czNace = listOf("28130"))
         val r = EndEmployerResolver(deadAres).score(listOf(c), hints)
         assertEquals(1, r.size)
-        assertEquals(3.0, r[0].score, 0.001) // okres 1 + NACE 2
+        assertEquals(2.0, r[0].score, 0.001) // NACE 2 (okres Přerov ≠ Olomouc, obec Hranice ≠ Olomouc)
+        assertTrue(r[0].reasons.none { it.contains("sídlo") })
     }
 
     @Test
     fun `rodinná firma +1 jen pro známé právní formy`() {
         val sro = company("3", "C s.r.o.", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "112")
-        val as_ = company("4", "D a.s.", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "121")
         val osvc = company("5", "E", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "70653")
-        val akciovaNeznama = company("6", "F a.s.", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "999")
-        val r = EndEmployerResolver(deadAres).score(listOf(sro, as_, osvc, akciovaNeznama), hints)
-        assertEquals(4.0, r.first { it.company.ico == "3" }.score, 0.001)
-        assertEquals(4.0, r.first { it.company.ico == "4" }.score, 0.001)
-        assertEquals(4.0, r.first { it.company.ico == "5" }.score, 0.001)
-        assertEquals(4.0, r.first { it.company.ico == "6" }.score, 0.001) // neznámá forma → bonus nepřidá, ale obec+NACE = 4.0? NE — obec 2 + NACE 2 = 4.0
-        // kontrola důvodů: neznámá forma NEMÁ rodinný důvod
+        val komanditni = company("6", "F a.s.", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "999")
+        val r = EndEmployerResolver(deadAres).score(listOf(sro, osvc, komanditni), hints)
+        // s.r.o. (112) + OSVČ (70653) = obec 2 + NACE 2 + rodinná 1 = 5.0
+        assertEquals(5.0, r.first { it.company.ico == "3" }.score, 0.001)
+        assertEquals(5.0, r.first { it.company.ico == "5" }.score, 0.001)
+        // neznámá forma (999) → rodinný bonus nepřidá; obec 2 + NACE 2 = 4.0
+        assertEquals(4.0, r.first { it.company.ico == "6" }.score, 0.001)
         assertTrue(r.first { it.company.ico == "6" }.reasons.none { it.contains("rodinnou firmu") })
         assertTrue(r.first { it.company.ico == "3" }.reasons.any { it.contains("rodinnou firmu") })
     }

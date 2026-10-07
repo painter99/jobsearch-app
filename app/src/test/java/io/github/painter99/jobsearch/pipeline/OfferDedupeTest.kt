@@ -62,8 +62,8 @@ class OfferDedupeTest {
             OfferDedupe.canonicalUrl("https://prace.cz/nabidka/abc?keep=1&utm_source=x&UTM_MEDIUM=y&rps=z"),
         )
         assertEquals(
-            "https://PORTAL.cz/Path",
-            OfferDedupe.canonicalUrl("https://portal.cz/Path"),
+            "https://portal.cz/Path",
+            OfferDedupe.canonicalUrl("https://PORTAL.cz/Path"),
         )
     }
 

@@ -77,7 +77,11 @@ class EndEmployerResolver(
     }
 
     companion object {
-        /** Právní formy (ARES kódy) typické pro rodinné firmy — heuristika. */
-        val FAMILY_BUSINESS_LEGAL_FORMS = setOf("112", "121", "70653")
+        /**
+         * Právní formy (ARES kódy) typické pro rodinné firmy — heuristika.
+         * Shoda s oraclem (prototyp: 145, 112, 70653). a.s. (121) záměrně
+         * bez bonusu — každé a.s. v ČR by bonus roztřásl; rozšíření = tuning.
+         */
+        val FAMILY_BUSINESS_LEGAL_FORMS = setOf("112", "145", "70653")
     }
 }
