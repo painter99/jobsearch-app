@@ -56,11 +56,19 @@ object StorageModule {
 
     @Provides
     @Singleton
+    fun provideCriteriaProvider(store: CriteriaStore): io.github.painter99.jobsearch.data.storage.CriteriaProvider = store
+
+    @Provides
+    @Singleton
     fun provideApiKeyStore(dataStore: DataStore<Preferences>): ApiKeyStore = ApiKeyStore(dataStore)
 
     @Provides
     @Singleton
     fun provideProfileStore(dataStore: DataStore<Preferences>): ProfileStore = ProfileStore(dataStore)
+
+    @Provides
+    @Singleton
+    fun provideProfileProvider(store: ProfileStore): io.github.painter99.jobsearch.data.storage.ProfileProvider = store
 
     @Provides
     @Singleton
