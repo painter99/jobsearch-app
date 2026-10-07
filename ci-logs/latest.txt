@@ -1,4 +1,4 @@
-# CI run 7 — commit 3c5d630 — main
+# CI run 8 — commit 5d492f6 — rename-en
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -55,7 +55,7 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
 
-BUILD SUCCESSFUL in 2m 7s
+BUILD SUCCESSFUL in 2m 3s
 30 actionable tasks: 30 executed
 
 ===== apk_build_output.txt =====
@@ -110,16 +110,16 @@ Unable to strip the following libraries, packaging them as they are: libandroidx
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 55s
+BUILD SUCCESSFUL in 46s
 40 actionable tasks: 19 executed, 21 up-to-date
 
 ===== junit summary =====
-<testsuite name="io.github.painter99.jobsearch.LatkaFilterTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:28" hostname="runnervm8df0l" time="0.024">
-<testsuite name="io.github.painter99.jobsearch.LokalitniFiltrTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:28" hostname="runnervm8df0l" time="0.053">
-<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:28" hostname="runnervm8df0l" time="0.036">
-<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:28" hostname="runnervm8df0l" time="0.0">
-<testsuite name="io.github.painter99.jobsearch.VyhodyChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:28" hostname="runnervm8df0l" time="0.002">
-<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:28" hostname="runnervm8df0l" time="0.468">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgenturyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:29" hostname="runnervm8df0l" time="0.005">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgenturyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:29" hostname="runnervm8df0l" time="0.043">
-<testsuite name="io.github.painter99.jobsearch.pipeline.AgenturaDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T04:48:29" hostname="runnervm8df0l" time="0.082">
+<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.03">
+<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.022">
+<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.035">
+<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.004">
+<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.013">
+<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.533">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.007">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:52" hostname="runnervm8df0l" time="0.057">
+<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T05:04:53" hostname="runnervm8df0l" time="0.076">
