@@ -1,5 +1,6 @@
 package io.github.painter99.jobsearch.db
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
