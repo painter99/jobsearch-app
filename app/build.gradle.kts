@@ -70,6 +70,9 @@ dependencies {
 
     // Testing
     testImplementation("junit:junit:4.13.2")
+    // Robolectric — Room DAO testy na JVM (M1.5, D1 GO: „Robolectric: ano")
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("androidx.test:core:1.6.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
     testImplementation("org.json:json:20240303")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
