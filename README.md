@@ -14,8 +14,15 @@
 | [ÚP ČR/MPSV — Volná místa](https://data.mpsv.cz/od/soubory/volna-mista/volna-mista.json) (~187 MB) | otevřená data | jednorázový bootstrap | obsahuje osobní údaje → ukládáme jen pole z whitelistu (GDPR) |
 | [ÚP ČR/MPSV — Přírůstky volných míst](https://data.mpsv.cz/od/soubory/volna-mista-prirustek/) (~1 MB gz/den) | otevřená data | denní sync | novy/zmeneny/zruseny; `urlAdresa` = hotový deep link na portál ÚP |
 | [MPSV — Agentury práce](https://data.mpsv.cz/od/soubory/agentury-prace/agentury-prace.json) | otevřená data | denně | ukládáme jen množinu IČO |
+| [MPSV — číselník obcí](https://data.mpsv.cz/od/soubory/ciselniky/obce.json) (6 258 obcí) | otevřená data | občas | autocomplete lokalit + join RÚIAN kódů |
 | [ARES REST](https://ares.gov.cz/ekonomicke-subjekty-v-be/rest) (MF ČR) | otevřené API | on-demand | limit 500 dotazů/min, bez tokenu |
 | [prace.cz](https://www.prace.cz) výpisové stránky (sitemap index) | deep linky | **opt-in, default OFF** | ToS §4.7(e) → in-app disclosure + rate limit |
+
+## Datové vrstvy (M1.4)
+
+- **Bootstrap:** full dump MPSV (187 MB) se stahuje jednorázově streamem do souboru (nikdy celý v paměti) a parsuje streamujícím JSON parserem (Moshi `JsonReader.nextSource()`) — do lokálního úložiště se zapisuje jen whitelistovaná podmnožina (~12 MB JSON Lines). Osobní údaje (kontaktní osoby, telefony, e-maily) se do modelu nemapují a na disk se nedostanou.
+- **Denní sync:** přírůstek `volna-mista-prirustek-YYYY-MM-DD.json.gz` (~1 MB gz, ~1 650 záznamů/den) — `novy` = insert, `zmeneny` = update, `zruseny` = delete. Chybějící den (HTTP 404) je běžný stav publikace MPSV — přeskočí se a zkusí se příště. Catch-up po offline dnech projde všechny dny od poslední kotvy.
+- **prace.cz (opt-in):** stahuje JEN výpisové stránky sledovaných lokalit (`/nabidky/{kraj}/{obec}/`), extrahuje deep linky na detaily inzerátů (bez tracking parametrů `?rps=`/`utm_*`). Nikdy se nestahuje obsah inzerátů. Volá se pouze na explicitní opt-in uživatele (default OFF).
 
 ## Funkce (plán dle PRD v0.2)
 
@@ -31,7 +38,7 @@ M0.1 — skeleton (Kotlin + Compose + Hilt), CI pipeline (šablona [WSW Olomouc]
 
 ## Tech stack
 
-Kotlin, Jetpack Compose, Hilt, OkHttp, Room, DataStore, WorkManager. JDK 17, Android SDK 35 (minSdk 26).
+Kotlin, Jetpack Compose, Hilt, OkHttp, Moshi (JSON streaming), jsoup (HTML výpisy), Room, DataStore, WorkManager. JDK 17, Android SDK 35 (minSdk 26).
 
 ## Build
 

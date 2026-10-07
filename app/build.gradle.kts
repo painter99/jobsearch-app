@@ -54,6 +54,12 @@ dependencies {
     // Network — plain OkHttp (WSW M1.4 pattern: simple GET/POST, no Retrofit)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
+    // JSON streaming pro 187 MB bootstrap dump (JsonReader.nextSource, M1.4)
+    implementation("com.squareup.moshi:moshi:1.15.2")
+
+    // HTML parsing výpisových stránek prace.cz (MIT, M1.4)
+    implementation("org.jsoup:jsoup:1.23.2")
+
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
