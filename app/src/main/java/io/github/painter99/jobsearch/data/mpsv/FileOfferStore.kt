@@ -80,6 +80,7 @@ class FileOfferStore(
     override suspend fun importBootstrap(dumpFile: File): Int = withContext(Dispatchers.IO) {
         val imported = streamBootstrap(dumpFile)
         rewriteFile(imported)
+        loaded = true // jinak by load() v applyIncrement načetla soubor znovu (doubling bug, run #17)
         imported.size
     }
 

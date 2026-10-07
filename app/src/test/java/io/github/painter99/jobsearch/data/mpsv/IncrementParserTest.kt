@@ -46,15 +46,16 @@ class IncrementParserTest {
     }
 
     @Test
-    fun parse_newRecordsHaveOffersWithUrl() {
+    fun parse_newRecordsHaveOffers() {
         val records = IncrementParser().parseText(fixtureText())
         val new = records.filter { it.changeType == ChangeType.NEW }
 
         new.forEach { record ->
             assertNotNull(record.offer)
         }
-        // živá data: novy nese urlAdresa (deep link ÚP) — ověřeno 7. 10.
-        assertTrue(new.any { it.offer?.url != null })
+        // živá data 7. 10.: urlAdresa je většinou null (1 z 8 záznamů ji nese,
+        // zmeneny) — klíč ve schématu ≠ vyplněná hodnota
+        assertTrue(records.any { it.offer?.url != null })
     }
 
     @Test

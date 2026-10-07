@@ -45,6 +45,14 @@ class OfferSyncEngineTest {
         return """{"polozky": [$items]}"""
     }
 
+    /** fetchIncrement gunzipuje tělo — testovací response musí být skutečně gzipped (run #17 lekce). */
+    private fun enqueueIncrement(vararg portalIds: Long) {
+        val bytes = incrementBody(*portalIds).toByteArray(Charsets.UTF_8)
+        val bos = java.io.ByteArrayOutputStream()
+        java.util.zip.GZIPOutputStream(bos).use { it.write(bytes) }
+        server.enqueue(MockResponse().setBody(okio.Buffer().apply { write(bos.toByteArray()) }))
+    }
+
     private fun engine(anchor: LocalDate, store: OfferStore = FakeStore()): Pair<OfferSyncEngine, FakeStore> {
         val fake = store as? FakeStore ?: store as FakeStore
         val offersClient = MpsvOffersClient(
@@ -81,7 +89,7 @@ class OfferSyncEngineTest {
 
     @Test
     fun syncDaily_appliesIncrementAndMovesAnchor() = runTest {
-        server.enqueue(MockResponse().setBody(incrementBody(1L)))
+        enqueueIncrement(1L)
         val (engine, store) = engine(LocalDate.parse("2026-10-05"))
 
         val results = engine.syncDaily(LocalDate.parse("2026-10-06"))
@@ -108,9 +116,9 @@ class OfferSyncEngineTest {
 
     @Test
     fun syncDaily_catchUpAppliesMultipleDays() = runTest {
-        server.enqueue(MockResponse().setBody(incrementBody(10L)))
-        server.enqueue(MockResponse().setBody(incrementBody(20L)))
-        server.enqueue(MockResponse().setBody(incrementBody(30L)))
+        enqueueIncrement(10L)
+        enqueueIncrement(20L)
+        enqueueIncrement(30L)
         val (engine, store) = engine(LocalDate.parse("2026-10-02"))
 
         val results = engine.syncDaily(LocalDate.parse("2026-10-05"))
@@ -123,7 +131,7 @@ class OfferSyncEngineTest {
 
     @Test
     fun syncDaily_serverErrorStopsCatchUp() = runTest {
-        server.enqueue(MockResponse().setBody(incrementBody(10L)))
+        enqueueIncrement(10L)
         server.enqueue(MockResponse().setResponseCode(500))
         val (engine, store) = engine(LocalDate.parse("2026-10-02"))
 
@@ -138,8 +146,8 @@ class OfferSyncEngineTest {
     @Test
     fun syncDaily_anchorAdvancesOnlyPastAppliedDays() = runTest {
         // den 1 OK, den 2 OK, den 3 404 → kotva = den 3 (den 2 + 1), den 3 se zkusí příště
-        server.enqueue(MockResponse().setBody(incrementBody(10L)))
-        server.enqueue(MockResponse().setBody(incrementBody(20L)))
+        enqueueIncrement(10L)
+        enqueueIncrement(20L)
         server.enqueue(MockResponse().setResponseCode(404))
         val (engine, _) = engine(LocalDate.parse("2026-10-02"))
 
