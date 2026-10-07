@@ -1,6 +1,6 @@
 package io.github.painter99.jobsearch.data.mpsv
 
-import io.github.painter99.jobsearch.core.model.Agentura
+import io.github.painter99.jobsearch.core.model.Agency
 import io.github.painter99.jobsearch.data.FetchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,12 +16,12 @@ import org.json.JSONObject
  * Seznam má ~1 912 záznamů (~1 MB JSON), update 1x denně — stahuje se
  * celý soubor, žádné přírůstky.
  */
-class MpsvAgenturyClient(
+class MpsvAgencyClient(
     private val client: OkHttpClient,
     private val baseUrl: String = DEFAULT_URL,
 ) {
 
-    suspend fun fetch(): FetchResult<List<Agentura>> = withContext(Dispatchers.IO) {
+    suspend fun fetch(): FetchResult<List<Agency>> = withContext(Dispatchers.IO) {
         try {
             val request = Request.Builder().url(baseUrl).build()
             client.newCall(request).execute().use { response ->
@@ -35,18 +35,18 @@ class MpsvAgenturyClient(
         }
     }
 
-    private fun parseBody(body: String): FetchResult<List<Agentura>> {
+    private fun parseBody(body: String): FetchResult<List<Agency>> {
         val root = try {
             JSONObject(body)
         } catch (e: Exception) {
             return FetchResult.ParseError("not JSON: ${e.message}")
         }
-        val agentury = AgenturyParser().parse(root)
-        if (agentury.isEmpty()) {
+        val agencies = AgencyParser().parse(root)
+        if (agencies.isEmpty()) {
             // živý seznam má ~1900 záznamů; prázdný = podezřelý payload
             return FetchResult.ParseError("empty polozky — suspicious payload")
         }
-        return FetchResult.Success(agentury)
+        return FetchResult.Success(agencies)
     }
 
     companion object {

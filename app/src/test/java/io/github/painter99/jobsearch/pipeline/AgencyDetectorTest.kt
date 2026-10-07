@@ -1,9 +1,9 @@
 package io.github.painter99.jobsearch.pipeline
 
-import io.github.painter99.jobsearch.core.model.Agentura
+import io.github.painter99.jobsearch.core.model.Agency
 import io.github.painter99.jobsearch.data.FetchResult
 import io.github.painter99.jobsearch.data.ares.AresClient
-import io.github.painter99.jobsearch.data.mpsv.MpsvAgenturyClient
+import io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient
 import kotlinx.coroutines.test.runTest
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
@@ -15,10 +15,10 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * AgenturaDetector = pilíř č. 1A (US1): primárně MPSV oficiální seznam IČO,
+ * AgencyDetector = pilíř č. 1A (US1): primárně MPSV oficiální seznam IČO,
  * doplněk ARES VR text. N7: výstup nikdy netvrdí fakt bez zdroje.
  */
-class AgenturaDetectorTest {
+class AgencyDetectorTest {
 
     private lateinit var server: MockWebServer
 
@@ -37,8 +37,8 @@ class AgenturaDetectorTest {
         javaClass.getResourceAsStream("/agentury-prace-sample.json")!!
             .bufferedReader().use { it.readText() }
 
-    private fun detector(): AgenturaDetector {
-        val mpsv = MpsvAgenturyClient(
+    private fun detector(): AgencyDetector {
+        val mpsv = MpsvAgencyClient(
             client = OkHttpClient(),
             baseUrl = server.url("/od/soubory/agentury-prace/agentury-prace.json").toString(),
         )
@@ -46,7 +46,7 @@ class AgenturaDetectorTest {
             client = OkHttpClient(),
             baseUrl = server.url("/ekonomicke-subjekty-v-be/rest").toString(),
         )
-        return AgenturaDetector(mpsv, ares)
+        return AgencyDetector(mpsv, ares)
     }
 
     private fun enqueueMpsv() {
@@ -54,16 +54,16 @@ class AgenturaDetectorTest {
     }
 
     @Test
-    fun jobsContact_agenturaMpsv() = runTest {
+    fun jobsContact_agencyMpsv() = runTest {
         enqueueMpsv()
 
-        val status = detector().jeAgentura("17181879")
+        val status = detector().isAgency("17181879")
 
-        assertEquals(AgenturaStatus.AGENTURA_MPSV, status)
+        assertEquals(AgencyStatus.AGENCY_MPSV, status)
     }
 
     @Test
-    fun icoMimoSeznam_bezAresVr_NENI() = runTest {
+    fun icoNotInList_emptyVr_NOT_AGENCY() = runTest {
         // MPSV odpoví (ico není v seznamu), ARES VR vrátí prázdné předměty
         enqueueMpsv()
         server.enqueue(
@@ -72,13 +72,13 @@ class AgenturaDetectorTest {
             )
         )
 
-        val status = detector().jeAgentura("99999999")
+        val status = detector().isAgency("99999999")
 
-        assertEquals(AgenturaStatus.NENI_AGENTURA, status)
+        assertEquals(AgencyStatus.NOT_AGENCY, status)
     }
 
     @Test
-    fun icoMimoSeznam_aresVrShoda_AGENTURA_VR() = runTest {
+    fun icoNotInList_vrMatch_AGENCY_VR() = runTest {
         enqueueMpsv()
         server.enqueue(
             MockResponse().setBody(
@@ -87,35 +87,35 @@ class AgenturaDetectorTest {
             )
         )
 
-        val status = detector().jeAgentura("88888888")
+        val status = detector().isAgency("88888888")
 
-        assertEquals(AgenturaStatus.AGENTURA_VR, status)
+        assertEquals(AgencyStatus.AGENCY_VR, status)
     }
 
     @Test
-    fun aresNedostupny_NEVYDECENO() = runTest {
+    fun aresUnavailable_UNDETERMINED() = runTest {
         // MPSV odpoví (ico mimo seznam), ARES VR vrátí 500 → graceful degradation
         enqueueMpsv()
         server.enqueue(MockResponse().setResponseCode(500))
 
-        val status = detector().jeAgentura("99999999")
+        val status = detector().isAgency("99999999")
 
-        assertEquals(AgenturaStatus.NEVYDECENO, status)
+        assertEquals(AgencyStatus.UNDETERMINED, status)
     }
 
     @Test
-    fun mpsvSeznamNedostupny_NEVYDECENO() = runTest {
+    fun mpsvListUnavailable_UNDETERMINED() = runTest {
         // MPSV 503 + ARES VR 500 → ani jeden zdroj nedává důvod k tvrzení
         server.enqueue(MockResponse().setResponseCode(503))
         server.enqueue(MockResponse().setResponseCode(500))
 
-        val status = detector().jeAgentura("17181879")
+        val status = detector().isAgency("17181879")
 
-        assertEquals(AgenturaStatus.NEVYDECENO, status)
+        assertEquals(AgencyStatus.UNDETERMINED, status)
     }
 
     @Test
-    fun mpsvSeznamNedostupny_aresVrShoda_AGENTURA_VR() = runTest {
+    fun mpsvListUnavailable_vrMatch_AGENCY_VR() = runTest {
         // degradation: i bez MPSV seznamu dokáže VR shoda označit agenturu
         server.enqueue(MockResponse().setResponseCode(503))
         server.enqueue(
@@ -125,39 +125,39 @@ class AgenturaDetectorTest {
             )
         )
 
-        val status = detector().jeAgentura("77777777")
+        val status = detector().isAgency("77777777")
 
-        assertEquals(AgenturaStatus.AGENTURA_VR, status)
+        assertEquals(AgencyStatus.AGENCY_VR, status)
     }
 
     @Test
-    fun nevalidniIco_vraciNEVYDECENO_bezSite() = runTest {
+    fun invalidIco_returnsUNDETERMINED_withoutNetwork() = runTest {
         // krátké/nevalidní IČO se neposílá nikam (žádný enqueue → MockWebServer by spadl)
-        val status = detector().jeAgentura("123")
-        assertEquals(AgenturaStatus.NEVYDECENO, status)
+        val status = detector().isAgency("123")
+        assertEquals(AgencyStatus.UNDETERMINED, status)
     }
 
     @Test
-    fun fetch_vraciSeznamProZobrazeni() = runTest {
+    fun fetch_loadsAgencyList() = runTest {
         enqueueMpsv()
 
-        val result = detector().nactiSeznamAgentur()
+        val result = detector().loadAgencies()
 
         assertTrue(result is FetchResult.Success)
         assertEquals(3, (result as FetchResult.Success).data.size)
     }
 
     @Test
-    fun nazevAgentury_jeVDetekci() = runTest {
+    fun agencyName_availableInDetector() = runTest {
         enqueueMpsv()
         val d = detector()
 
-        val result = d.nactiSeznamAgentur()
+        val result = d.loadAgencies()
         assertTrue(result is FetchResult.Success)
 
-        // název agentury je k dispozici pro UI (není osobní údaj);
-        // druhé volání jeAgentura už čte in-memory seznam (fetch-once)
-        assertEquals(AgenturaStatus.AGENTURA_MPSV, d.jeAgentura("17181879"))
-        assertEquals("Jobs Contact Personal, s.r.o.", d.nazevAgentury("17181879"))
+        // název agencies je k dispozici pro UI (není osobní údaj);
+        // druhé volání isAgency už čte in-memory seznam (fetch-once)
+        assertEquals(AgencyStatus.AGENCY_MPSV, d.isAgency("17181879"))
+        assertEquals("Jobs Contact Personal, s.r.o.", d.agencyName("17181879"))
     }
 }

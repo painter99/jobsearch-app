@@ -1,24 +1,24 @@
 package io.github.painter99.jobsearch.pipeline
 
-import io.github.painter99.jobsearch.core.model.Agentura
+import io.github.painter99.jobsearch.core.model.Agency
 import io.github.painter99.jobsearch.data.FetchResult
 import io.github.painter99.jobsearch.data.ares.AresClient
-import io.github.painter99.jobsearch.data.mpsv.MpsvAgenturyClient
+import io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient
 
 /**
  * Výsledek detekce agenturní nabídky (pilíř č. 1A, US1).
  *
  * Zdroj detekce je součástí statusu — UI ukazuje PROČ:
- * AGENTURA_MPSV = IČO je v oficiálním MPSV seznamu agentur (deterministické),
- * AGENTURA_VR   = ARES VR má předmět „Zprostředkování zaměstnání" (doplněk),
- * NENI_AGENTURA = obě vrstvy prošly bez shody,
- * NEVYDECENO    = data nedostupná/nevalidní — netvrdíme ani negativ (N7).
+ * AGENCY_MPSV  = IČO je v oficiálním MPSV seznamu agentur (deterministické),
+ * AGENCY_VR    = ARES VR má předmět „Zprostředkování zaměstnání" (doplněk),
+ * NOT_AGENCY   = obě vrstvy prošly bez shody,
+ * UNDETERMINED = data nedostupná/nevalidní — netvrdíme ani negativ (N7).
  */
-enum class AgenturaStatus {
-    AGENTURA_MPSV,
-    AGENTURA_VR,
-    NENI_AGENTURA,
-    NEVYDECENO,
+enum class AgencyStatus {
+    AGENCY_MPSV,
+    AGENCY_VR,
+    NOT_AGENCY,
+    UNDETERMINED,
 }
 
 /**
@@ -29,21 +29,21 @@ enum class AgenturaStatus {
  * jednou za běh procesu (in-memory; trvalý cache až M1.5 — schválený
  * předpoklad TASKS M1.2).
  *
- * N7: NEVYDECENO nikdy netvrdí „není agentura" — jen říká, že nemáme data.
+ * N7: UNDETERMINED nikdy netvrdí „není agentura" — jen říká, že nemáme data.
  */
-class AgenturaDetector(
-    private val mpsvClient: MpsvAgenturyClient,
+class AgencyDetector(
+    private val mpsvClient: MpsvAgencyClient,
     private val aresClient: AresClient,
 ) {
 
-    private var seznamAgentur: List<Agentura>? = null
+    private var agencies: List<Agency>? = null
 
     /** Načte (a cachuje) oficiální seznam agentur; chyby se necachují. */
-    suspend fun nactiSeznamAgentur(): FetchResult<List<Agentura>> {
-        seznamAgentur?.let { return FetchResult.Success(it) }
+    suspend fun loadAgencies(): FetchResult<List<Agency>> {
+        agencies?.let { return FetchResult.Success(it) }
         return when (val r = mpsvClient.fetch()) {
             is FetchResult.Success -> {
-                seznamAgentur = r.data
+                agencies = r.data
                 r
             }
             is FetchResult.HttpError -> r
@@ -53,39 +53,39 @@ class AgenturaDetector(
     }
 
     /**
-     * Detekce agentury podle IČO. Nevalidní IČO → NEVYDECENO bez síťového
+     * Detekce agentury podle IČO. Nevalidní IČO → UNDETERMINED bez síťového
      * volání. MPSV seznam má prioritu; VR text se dotazuje jen když IČO
      * v seznamu není (nebo seznam není dostupný).
      */
-    suspend fun jeAgentura(ico: String): AgenturaStatus {
+    suspend fun isAgency(ico: String): AgencyStatus {
         val clean = ico.trim()
         if (clean.length != 8 || clean.any { it !in '0'..'9' }) {
-            return AgenturaStatus.NEVYDECENO
+            return AgencyStatus.UNDETERMINED
         }
 
-        val seznam = when (val r = nactiSeznamAgentur()) {
+        val agencyList = when (val r = loadAgencies()) {
             is FetchResult.Success -> r.data
             else -> null
         }
-        if (seznam?.any { it.ico == clean } == true) {
-            return AgenturaStatus.AGENTURA_MPSV
+        if (agencyList?.any { it.ico == clean } == true) {
+            return AgencyStatus.AGENCY_MPSV
         }
 
-        return when (val vr = aresClient.vrPredmetyPodnikani(clean)) {
+        return when (val vr = aresClient.vrBusinessActivities(clean)) {
             is FetchResult.Success ->
                 if (vr.data.any {
                         it.contains("zprostředkování zaměstnání", ignoreCase = true)
                     }
                 ) {
-                    AgenturaStatus.AGENTURA_VR
+                    AgencyStatus.AGENCY_VR
                 } else {
-                    AgenturaStatus.NENI_AGENTURA
+                    AgencyStatus.NOT_AGENCY
                 }
-            else -> AgenturaStatus.NEVYDECENO
+            else -> AgencyStatus.UNDETERMINED
         }
     }
 
     /** Název agentury z MPSV seznamu pro UI (není osobní údaj); null = nevíme. */
-    fun nazevAgentury(ico: String): String? =
-        seznamAgentur?.firstOrNull { it.ico == ico.trim() }?.nazev
+    fun agencyName(ico: String): String? =
+        agencies?.firstOrNull { it.ico == ico.trim() }?.name
 }

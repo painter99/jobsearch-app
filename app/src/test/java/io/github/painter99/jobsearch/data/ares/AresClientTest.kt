@@ -48,17 +48,17 @@ class AresClientTest {
         val result = client().detail("17181879")
 
         assertTrue(result is FetchResult.Success)
-        val subjekt = (result as FetchResult.Success).data
-        assertEquals("17181879", subjekt.ico)
-        assertEquals("Jobs Contact Personal, s.r.o.", subjekt.obchodniJmeno)
-        assertEquals("Brno", subjekt.obec)
-        assertEquals("Brno-město", subjekt.nazevOkresu)
-        assertEquals("2022-05-26", subjekt.datumVzniku)
-        assertTrue(subjekt.czNace.contains("73110"))
+        val subject = (result as FetchResult.Success).data
+        assertEquals("17181879", subject.ico)
+        assertEquals("Jobs Contact Personal, s.r.o.", subject.businessName)
+        assertEquals("Brno", subject.municipality)
+        assertEquals("Brno-město", subject.districtName)
+        assertEquals("2022-05-26", subject.foundedOn)
+        assertTrue(subject.czNace.contains("73110"))
     }
 
     @Test
-    fun detail_http404VraciHttpError() = runTest {
+    fun detail_http404ReturnsHttpError() = runTest {
         server.enqueue(MockResponse().setResponseCode(404))
 
         val result = client().detail("99999999")
@@ -68,7 +68,7 @@ class AresClientTest {
     }
 
     @Test
-    fun detail_nevalidniJsonVraciParseError() = runTest {
+    fun detail_invalidJsonReturnsParseError() = runTest {
         server.enqueue(MockResponse().setBody("<html>error</html>"))
 
         val result = client().detail("17181879")
@@ -79,36 +79,36 @@ class AresClientTest {
     // --- vr (předměty podnikání) ---
 
     @Test
-    fun vr_predmetyPodnikani() = runTest {
+    fun vr_businessActivities() = runTest {
         server.enqueue(MockResponse().setBody(fixture("ares-vr-17181879.json")))
 
-        val result = client().vrPredmetyPodnikani("17181879")
+        val result = client().vrBusinessActivities("17181879")
 
         assertTrue(result is FetchResult.Success)
-        val predmety = (result as FetchResult.Success).data
+        val activities = (result as FetchResult.Success).data
         assertTrue(
             "VR musí obsahovat Zprostředkování zaměstnání",
-            predmety.any { it.equals("Zprostředkování zaměstnání", ignoreCase = true) },
+            activities.any { it.equals("Zprostředkování zaměstnání", ignoreCase = true) },
         )
     }
 
     @Test
-    fun vr_sigmaNemaZprostredkovani() = runTest {
+    fun vr_sigmaHasNoIntermediation() = runTest {
         server.enqueue(MockResponse().setBody(fixture("ares-vr-64608212.json")))
 
-        val result = client().vrPredmetyPodnikani("64608212")
+        val result = client().vrBusinessActivities("64608212")
 
         assertTrue(result is FetchResult.Success)
-        val predmety = (result as FetchResult.Success).data
-        assertTrue(predmety.isNotEmpty())
-        assertTrue(predmety.none { it.contains("zprostředkování zaměstnání", ignoreCase = true) })
+        val activities = (result as FetchResult.Success).data
+        assertTrue(activities.isNotEmpty())
+        assertTrue(activities.none { it.contains("zprostředkování zaměstnání", ignoreCase = true) })
     }
 
     @Test
-    fun vr_http500VraciHttpError() = runTest {
+    fun vr_http500ReturnsHttpError() = runTest {
         server.enqueue(MockResponse().setResponseCode(500))
 
-        val result = client().vrPredmetyPodnikani("17181879")
+        val result = client().vrBusinessActivities("17181879")
 
         assertTrue(result is FetchResult.HttpError)
     }

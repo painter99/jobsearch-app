@@ -1,6 +1,6 @@
 package io.github.painter99.jobsearch.data.ares
 
-import io.github.painter99.jobsearch.core.model.ObchodniSubjekt
+import io.github.painter99.jobsearch.core.model.Company
 import io.github.painter99.jobsearch.data.FetchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,7 +18,7 @@ import org.json.JSONObject
  *   (předměty podnikání na cestě zaznamy[].cinnosti.predmetPodnikani[].hodnota)
  *
  * Vyhledat POST (dávky 100 IČO) až M1.3 (resolver) — scope tight.
- * Gotchy: sidlo nemá `obec` s názvem — název obce nese `nazevObce`
+ * Gotcha: sidlo nemá klíč `obec` s názvem — název obce nese `nazevObce`
  * (ověřeno na živé odpovědi 7. 10. 2026).
  */
 class AresClient(
@@ -26,7 +26,7 @@ class AresClient(
     private val baseUrl: String = DEFAULT_BASE,
 ) {
 
-    suspend fun detail(ico: String): FetchResult<ObchodniSubjekt> =
+    suspend fun detail(ico: String): FetchResult<Company> =
         when (val r = getJson("ekonomicke-subjekty/$ico?detail=2")) {
             is FetchResult.Success -> parseDetail(r.data)
             is FetchResult.HttpError -> r
@@ -35,9 +35,9 @@ class AresClient(
         }
 
     /** Předměty podnikání z VR (pro detekci „Zprostředkování zaměstnání"). */
-    suspend fun vrPredmetyPodnikani(ico: String): FetchResult<List<String>> =
+    suspend fun vrBusinessActivities(ico: String): FetchResult<List<String>> =
         when (val r = getJson("ekonomicke-subjekty-vr/$ico?detail=2")) {
-            is FetchResult.Success -> FetchResult.Success(parseVrPredmety(r.data))
+            is FetchResult.Success -> FetchResult.Success(parseVrActivities(r.data))
             is FetchResult.HttpError -> r
             is FetchResult.NetworkError -> r
             is FetchResult.ParseError -> r
@@ -62,30 +62,30 @@ class AresClient(
             }
         }
 
-    private fun parseDetail(json: JSONObject): FetchResult<ObchodniSubjekt> {
+    private fun parseDetail(json: JSONObject): FetchResult<Company> {
         val sidlo = json.optJSONObject("sidlo")
-        val subjekt = ObchodniSubjekt(
+        val company = Company(
             ico = json.optStringOrNull("ico") ?: "",
-            obchodniJmeno = json.optStringOrNull("obchodniJmeno") ?: "",
-            obec = sidlo?.optStringOrNull("nazevObce"),
-            nazevOkresu = sidlo?.optStringOrNull("nazevOkresu"),
-            datumVzniku = json.optStringOrNull("datumVzniku"),
+            businessName = json.optStringOrNull("obchodniJmeno") ?: "",
+            municipality = sidlo?.optStringOrNull("nazevObce"),
+            districtName = sidlo?.optStringOrNull("nazevOkresu"),
+            foundedOn = json.optStringOrNull("datumVzniku"),
             czNace = json.optJSONArray("czNace").toStringList(),
-            pravniForma = json.optStringOrNull("pravniForma"),
+            legalForm = json.optStringOrNull("pravniForma"),
         )
-        if (subjekt.ico.isBlank() && subjekt.obchodniJmeno.isBlank()) {
+        if (company.ico.isBlank() && company.businessName.isBlank()) {
             return FetchResult.ParseError("detail bez ico i obchodniJmeno")
         }
-        return FetchResult.Success(subjekt)
+        return FetchResult.Success(company)
     }
 
-    private fun parseVrPredmety(json: JSONObject): List<String> {
+    private fun parseVrActivities(json: JSONObject): List<String> {
         val result = mutableListOf<String>()
-        json.optJSONArray("zaznamy")?.forEachObject { zaznam ->
-            zaznam.optJSONObject("cinnosti")
+        json.optJSONArray("zaznamy")?.forEachObject { record ->
+            record.optJSONObject("cinnosti")
                 ?.optJSONArray("predmetPodnikani")
-                ?.forEachObject { predmet ->
-                    predmet.optStringOrNull("hodnota")?.let { result.add(it.trim()) }
+                ?.forEachObject { activity ->
+                    activity.optStringOrNull("hodnota")?.let { result.add(it.trim()) }
                 }
         }
         return result

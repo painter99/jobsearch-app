@@ -1,8 +1,8 @@
 package io.github.painter99.jobsearch
 
-import io.github.painter99.jobsearch.core.model.MistoVykonu
-import io.github.painter99.jobsearch.core.model.Smennost
-import io.github.painter99.jobsearch.core.model.Vyhoda
+import io.github.painter99.jobsearch.core.model.WorkLocation
+import io.github.painter99.jobsearch.core.model.ShiftPattern
+import io.github.painter99.jobsearch.core.model.Benefit
 import io.github.painter99.jobsearch.data.mpsv.MpsvRecordParser
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
@@ -55,32 +55,32 @@ class MpsvRecordParserTest {
     )
 
     @Test
-    fun `parsuje whitelist pole z reálného záznamu`() {
-        val nabidka = MpsvRecordParser().parse(dhlFixture())!!
+    fun `parses whitelist fields from real record`() {
+        val offer = MpsvRecordParser().parse(dhlFixture())!!
 
-        assertEquals(67299543L, nabidka.portalId)
-        assertEquals("35101880724", nabidka.referencniCislo)
-        assertEquals("Vývojáři softwaru", nabidka.profese)
-        assertEquals(Smennost.JEDNOSMENNA, nabidka.smennost)
-        assertEquals(98300, nabidka.mzdaOd)
-        assertNull(nabidka.mzdaDo)
-        assertEquals(40, nabidka.pocetHodinTydne)
-        assertEquals("27080439", nabidka.zamestnavatel?.ico)
-        assertEquals("DHL Information Services (Europe) s.r.o.", nabidka.zamestnavatel?.nazev)
-        assertEquals(MistoVykonu.TypMistaVykonu.OBEC, nabidka.misto.typ)
-        assertEquals("Obec/554782", nabidka.misto.obecId)
-        assertEquals(listOf(Vyhoda.DOVOL, Vyhoda.STRAV), nabidka.vyhody)
-        assertNull(nabidka.urlAdresa)
-        assertEquals(false, nabidka.agenturaSouhlas)
-        assertEquals(false, nabidka.uzivatelSouhlas)
+        assertEquals(67299543L, offer.portalId)
+        assertEquals("35101880724", offer.referenceNumber)
+        assertEquals("Vývojáři softwaru", offer.profession)
+        assertEquals(ShiftPattern.SINGLE_SHIFT, offer.shiftPattern)
+        assertEquals(98300, offer.salaryFrom)
+        assertNull(offer.salaryTo)
+        assertEquals(40, offer.hoursPerWeek)
+        assertEquals("27080439", offer.employer?.ico)
+        assertEquals("DHL Information Services (Europe) s.r.o.", offer.employer?.name)
+        assertEquals(WorkLocation.LocationType.MUNICIPALITY, offer.location.type)
+        assertEquals("Obec/554782", offer.location.municipalityId)
+        assertEquals(listOf(Benefit.EXTRA_VACATION, Benefit.CANTEEN), offer.benefits)
+        assertNull(offer.url)
+        assertEquals(false, offer.agencyConsent)
+        assertEquals(false, offer.userConsent)
     }
 
     @Test
-    fun `GDPR - osobní údaje se do modelu nedostanou`() {
-        val nabidka = MpsvRecordParser().parse(dhlFixture())!!
+    fun `GDPR - personal data never reach the model`() {
+        val offer = MpsvRecordParser().parse(dhlFixture())!!
         // Model nemá žádné pole, kam by se osobní údaje mohly dostat:
         // kontrola reflectionem — žádné pole nesmí obsahovat hodnoty z GDPR polí
-        val json = JSONObject(nabidka) // pokus o serializaci nesmí vyhodit GDPR pole
+        val json = JSONObject(offer) // pokus o serializaci nesmí vyhodit GDPR pole
         assertFalse(json.toString().contains("Novák"))
         assertFalse(json.toString().contains("jan.novak"))
         assertFalse(json.toString().contains("123456789"))
@@ -90,7 +90,7 @@ class MpsvRecordParserTest {
     }
 
     @Test
-    fun `tolerantní parsing - null vs hodnota vs chybějící pole`() {
+    fun `tolerant parsing - null vs value vs missing field`() {
         val minimal = JSONObject(
             """
             {
@@ -102,36 +102,36 @@ class MpsvRecordParserTest {
             }
             """.trimIndent()
         )
-        val nabidka = MpsvRecordParser().parse(minimal)!!
-        assertNull(nabidka.smennost)
-        assertNull(nabidka.mzdaOd)
-        assertEquals(MistoVykonu.NIC, nabidka.misto)
-        assertTrue(nabidka.vyhody.isEmpty())
+        val offer = MpsvRecordParser().parse(minimal)!!
+        assertNull(offer.shiftPattern)
+        assertNull(offer.salaryFrom)
+        assertEquals(WorkLocation.NONE, offer.location)
+        assertTrue(offer.benefits.isEmpty())
     }
 
     @Test
-    fun `všechny směnnosti z číselníku mapují`() {
-        val mapovani = mapOf(
-            "Smennost/jednoSm" to Smennost.JEDNOSMENNA,
-            "Smennost/dvouSm" to Smennost.DVOUSMENNA,
-            "Smennost/triSm" to Smennost.TRISMENNA,
-            "Smennost/ctyrSm" to Smennost.CTYRSMENNA,
-            "Smennost/deleneSm" to Smennost.DELENE_SMENY,
-            "Smennost/nepretrzity" to Smennost.NEPRETRZITY,
-            "Smennost/nocni" to Smennost.NOCNI,
-            "Smennost/pruznaPd" to Smennost.PRUZNA,
-            "Smennost/turnus" to Smennost.TURNUS,
-            "Smennost/neurceno" to Smennost.NEURCENO,
+    fun `all shift pattern codes from codelist map`() {
+        val expectedMapping = mapOf(
+            "Smennost/jednoSm" to ShiftPattern.SINGLE_SHIFT,
+            "Smennost/dvouSm" to ShiftPattern.TWO_SHIFT,
+            "Smennost/triSm" to ShiftPattern.THREE_SHIFT,
+            "Smennost/ctyrSm" to ShiftPattern.FOUR_SHIFT,
+            "Smennost/deleneSm" to ShiftPattern.SPLIT_SHIFTS,
+            "Smennost/nepretrzity" to ShiftPattern.CONTINUOUS,
+            "Smennost/nocni" to ShiftPattern.NIGHT_SHIFT,
+            "Smennost/pruznaPd" to ShiftPattern.FLEXIBLE,
+            "Smennost/turnus" to ShiftPattern.ROTATING,
+            "Smennost/neurceno" to ShiftPattern.UNSPECIFIED,
         )
-        mapovani.forEach { (id, expected) ->
-            assertEquals(expected, Smennost.fromMpsvId(id))
+        expectedMapping.forEach { (id, expected) ->
+            assertEquals(expected, ShiftPattern.fromMpsvId(id))
         }
-        assertNull(Smennost.fromMpsvId(null))
-        assertNull(Smennost.fromMpsvId("Smennost/neznamyKod"))
+        assertNull(ShiftPattern.fromMpsvId(null))
+        assertNull(ShiftPattern.fromMpsvId("Smennost/neznamyKod"))
     }
 
     @Test
-    fun `pracoviste (adrprov) - RÚIAN kódy obcí se extrahují`() {
+    fun `worksite (adrprov) - RUIAN municipality codes extracted`() {
         val adrprov = JSONObject(
             """
             {
@@ -162,14 +162,14 @@ class MpsvRecordParserTest {
             }
             """.trimIndent()
         )
-        val nabidka = MpsvRecordParser().parse(adrprov)!!
-        assertEquals(MistoVykonu.TypMistaVykonu.ADRESA_PRACOVISTE, nabidka.misto.typ)
-        assertEquals(listOf("Obec/537683"), nabidka.misto.pracovisteObecIds)
+        val offer = MpsvRecordParser().parse(adrprov)!!
+        assertEquals(WorkLocation.LocationType.WORKSITE_ADDRESS, offer.location.type)
+        assertEquals(listOf("Obec/537683"), offer.location.worksiteMunicipalityIds)
     }
 
     @Test
-    fun `okresy i celaCR se mapují, Okres 9999 je placeholder`() {
-        val okresFixture = JSONObject(
+    fun `districts i celaCR se mapují, Okres 9999 je placeholder`() {
+        val districtFixture = JSONObject(
             """
             {
               "portalId": 3,
@@ -186,13 +186,13 @@ class MpsvRecordParserTest {
             }
             """.trimIndent()
         )
-        val nabidka = MpsvRecordParser().parse(okresFixture)!!
-        assertEquals(listOf("Okres/3210", "Okres/9999"), nabidka.misto.okresy)
+        val offer = MpsvRecordParser().parse(districtFixture)!!
+        assertEquals(listOf("Okres/3210", "Okres/9999"), offer.location.districts)
     }
 
     @Test
-    fun `neznámý kód výhody neprolomí parsing`() {
-        val sNeznamou = JSONObject(
+    fun `unknown benefit code does not break parsing`() {
+        val withUnknownCode = JSONObject(
             """
             {
               "portalId": 4,
@@ -206,7 +206,7 @@ class MpsvRecordParserTest {
             }
             """.trimIndent()
         )
-        val nabidka = MpsvRecordParser().parse(sNeznamou)!!
-        assertEquals(listOf(Vyhoda.PREMIE), nabidka.vyhody)
+        val offer = MpsvRecordParser().parse(withUnknownCode)!!
+        assertEquals(listOf(Benefit.SPECIAL_BONUS), offer.benefits)
     }
 }
