@@ -1,0 +1,936 @@
+{
+ "pocetCelkem": 44,
+ "ekonomickeSubjekty": [
+  {
+   "ico": "00527149",
+   "obchodniJmeno": "Sauer Žandov, a.s.",
+   "sidlo": {
+    "nazevObce": "Žandov",
+    "nazevOkresu": "Česká Lípa"
+   },
+   "datumVzniku": "1990-09-26",
+   "czNace": [
+    "35",
+    "46900",
+    "683",
+    "47780",
+    "28130"
+   ],
+   "pravniForma": "121"
+  },
+  {
+   "ico": "02879875",
+   "obchodniJmeno": "HOSYN kompresory s.r.o.",
+   "sidlo": {
+    "nazevObce": "Brno",
+    "nazevOkresu": "Brno-město"
+   },
+   "datumVzniku": "2014-04-09",
+   "czNace": [
+    "255",
+    "49320",
+    "461",
+    "74990",
+    "25",
+    "28130"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "03123014",
+   "obchodniJmeno": "MK kompresory s.r.o.",
+   "sidlo": {
+    "nazevObce": "Střížov",
+    "nazevOkresu": "České Budějovice"
+   },
+   "datumVzniku": "2014-06-19",
+   "czNace": [
+    "331",
+    "77220",
+    "952",
+    "G",
+    "00",
+    "28130",
+    "4779"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "03855511",
+   "obchodniJmeno": "Kompresory Vzduchotechnika s.r.o.",
+   "sidlo": {
+    "nazevObce": "Žebrák",
+    "nazevOkresu": "Beroun"
+   },
+   "datumVzniku": "2015-03-04",
+   "czNace": [
+    "00",
+    "28130"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "04798261",
+   "obchodniJmeno": "Kumulus s.r.o.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "2016-02-10",
+   "czNace": [
+    "00",
+    "25630",
+    "26110",
+    "25620",
+    "33140",
+    "431",
+    "433",
+    "4322",
+    "471",
+    "81230",
+    "46900",
+    "28130",
+    "33120",
+    "461",
+    "70200",
+    "27900",
+    "711",
+    "439"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "09894390",
+   "obchodniJmeno": "CONDE Technik s.r.o.",
+   "sidlo": {
+    "nazevObce": "Brno",
+    "nazevOkresu": "Brno-město"
+   },
+   "datumVzniku": "2021-02-04",
+   "czNace": [
+    "71120",
+    "74990",
+    "26510",
+    "46900",
+    "71200",
+    "28130",
+    "33120",
+    "72100",
+    "25110",
+    "28290",
+    "33200",
+    "33130",
+    "68200",
+    "28210"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "14283999",
+   "obchodniJmeno": "Haus-Energy PB s.r.o.",
+   "sidlo": {
+    "nazevObce": "Příbram",
+    "nazevOkresu": "Příbram"
+   },
+   "datumVzniku": "2022-02-23",
+   "czNace": [
+    "00",
+    "28",
+    "28130",
+    "431",
+    "46900",
+    "016",
+    "28250"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "17190231",
+   "obchodniJmeno": "H-KOMPRESORY s.r.o.",
+   "sidlo": {
+    "nazevObce": "Libeř",
+    "nazevOkresu": "Praha-západ"
+   },
+   "datumVzniku": "2022-05-30",
+   "czNace": [
+    "4322",
+    "46900",
+    "28130",
+    "33200",
+    "00",
+    "71110",
+    "71120",
+    "74990"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "17978351",
+   "obchodniJmeno": "AF Cooling s.r.o.",
+   "sidlo": {
+    "nazevObce": "Chlustina",
+    "nazevOkresu": "Beroun"
+   },
+   "datumVzniku": "2023-01-27",
+   "czNace": [
+    "43210",
+    "33200",
+    "28130",
+    "95310"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "19403518",
+   "obchodniJmeno": "Instal Sun s.r.o.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "2023-06-02",
+   "czNace": [
+    "28130"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "22050582",
+   "obchodniJmeno": "Intelligent Design s.r.o.",
+   "sidlo": {
+    "nazevObce": "Jindřichův Hradec",
+    "nazevOkresu": "Jindřichův Hradec"
+   },
+   "datumVzniku": "2024-09-16",
+   "czNace": [
+    "00",
+    "28",
+    "28130",
+    "G"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "25272365",
+   "obchodniJmeno": "ISH PUMPS OLOMOUC a.s.",
+   "sidlo": {
+    "nazevObce": "Olomouc",
+    "nazevOkresu": "Olomouc"
+   },
+   "datumVzniku": "1997-07-10",
+   "czNace": [
+    "471",
+    "46900",
+    "25110",
+    "72",
+    "461",
+    "71120",
+    "74990",
+    "28130",
+    "32990",
+    "69200",
+    "255",
+    "28"
+   ],
+   "pravniForma": "121"
+  },
+  {
+   "ico": "25626108",
+   "obchodniJmeno": "Bonett Group a.s.",
+   "sidlo": {
+    "nazevObce": "Klecany",
+    "nazevOkresu": "Praha-východ"
+   },
+   "datumVzniku": "1997-11-25",
+   "czNace": [
+    "43240",
+    "72100",
+    "27120",
+    "43210",
+    "70200",
+    "711",
+    "71120",
+    "28130",
+    "33120",
+    "46900",
+    "28290",
+    "27900",
+    "33190",
+    "33200",
+    "33140",
+    "25220",
+    "33130",
+    "42210",
+    "4322",
+    "68200",
+    "41000"
+   ],
+   "pravniForma": "121"
+  },
+  {
+   "ico": "25999419",
+   "obchodniJmeno": "Condete s.r.o.",
+   "sidlo": {
+    "nazevObce": "Ústí nad Orlicí",
+    "nazevOkresu": "Ústí nad Orlicí"
+   },
+   "datumVzniku": "2003-11-07",
+   "czNace": [
+    "28130",
+    "46900",
+    "71200",
+    "00",
+    "683"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "26012146",
+   "obchodniJmeno": "CHLAZENÍ HOLICE s.r.o.",
+   "sidlo": {
+    "nazevObce": "Holice",
+    "nazevOkresu": "Pardubice"
+   },
+   "datumVzniku": "2004-06-10",
+   "czNace": [
+    "71120",
+    "28250",
+    "28130",
+    "47780"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "26052377",
+   "obchodniJmeno": "AISIN EUROPE MANUFACTURING CZECH s.r.o.",
+   "sidlo": {
+    "nazevObce": "Písek",
+    "nazevOkresu": "Písek"
+   },
+   "datumVzniku": "2002-11-06",
+   "czNace": [
+    "28130",
+    "00",
+    "28990",
+    "46900",
+    "25530",
+    "52",
+    "245"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "26071363",
+   "obchodniJmeno": "Kompresory PEMA, s.r.o.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "2004-03-22",
+   "czNace": [
+    "47780",
+    "25530",
+    "25210",
+    "28130",
+    "72100",
+    "772",
+    "95310",
+    "252",
+    "25620",
+    "28120",
+    "28990",
+    "46900",
+    "4322"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "26221454",
+   "obchodniJmeno": "TATSUNO EUROPE a.s.",
+   "sidlo": {
+    "nazevObce": "Blansko",
+    "nazevOkresu": "Blansko"
+   },
+   "datumVzniku": "2000-08-15",
+   "czNace": [
+    "281",
+    "38",
+    "43340",
+    "62",
+    "00",
+    "432",
+    "256",
+    "952",
+    "G",
+    "255",
+    "33200",
+    "28130",
+    "69200",
+    "72100",
+    "74",
+    "461",
+    "22"
+   ],
+   "pravniForma": "121"
+  },
+  {
+   "ico": "26364450",
+   "obchodniJmeno": "Faiveley Transport Plzeň s.r.o.",
+   "sidlo": {
+    "nazevObce": "Přehýšov",
+    "nazevOkresu": "Plzeň-sever"
+   },
+   "datumVzniku": "2003-12-03",
+   "czNace": [
+    "52",
+    "00",
+    "46900",
+    "28130",
+    "47"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "26461498",
+   "obchodniJmeno": "Edwards, s.r.o.",
+   "sidlo": {
+    "nazevObce": "Lutín",
+    "nazevOkresu": "Olomouc"
+   },
+   "datumVzniku": "2001-06-25",
+   "czNace": [
+    "28130",
+    "32990",
+    "G",
+    "28",
+    "72",
+    "52",
+    "52260",
+    "71120",
+    "82100",
+    "71200"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "26504685",
+   "obchodniJmeno": "Valeo Compressor Europe s.r.o.",
+   "sidlo": {
+    "nazevObce": "Humpolec",
+    "nazevOkresu": "Pelhřimov"
+   },
+   "datumVzniku": "2002-01-16",
+   "czNace": [
+    "28130",
+    "95310",
+    "00",
+    "G",
+    "72",
+    "71200",
+    "71120"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "27315541",
+   "obchodniJmeno": "Pivní servis s.r.o.",
+   "sidlo": {
+    "nazevObce": "Ústí nad Labem",
+    "nazevOkresu": "Ústí nad Labem"
+   },
+   "datumVzniku": "2007-02-19",
+   "czNace": [
+    "47250",
+    "711",
+    "56110",
+    "28130"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "27331661",
+   "obchodniJmeno": "CNC TVAR s.r.o.",
+   "sidlo": {
+    "nazevObce": "Stráž nad Nisou",
+    "nazevOkresu": "Liberec"
+   },
+   "datumVzniku": "2007-08-30",
+   "czNace": [
+    "28130",
+    "25530"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "27333841",
+   "obchodniJmeno": "AQ SPOL, s.r.o.",
+   "sidlo": {
+    "nazevObce": "Roudnice nad Labem",
+    "nazevOkresu": "Litoměřice"
+   },
+   "datumVzniku": "2007-09-19",
+   "czNace": [
+    "471",
+    "28130",
+    "72100",
+    "46900",
+    "47780"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "27450911",
+   "obchodniJmeno": "FERMAT Machine Tool, s.r.o.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "2006-05-10",
+   "czNace": [
+    "28410",
+    "28140",
+    "28990",
+    "46900",
+    "71200",
+    "773",
+    "273",
+    "68200",
+    "28920",
+    "6210",
+    "62900",
+    "28130",
+    "72100",
+    "711",
+    "74990",
+    "251",
+    "28150",
+    "28110",
+    "28950",
+    "25510",
+    "25620",
+    "28120",
+    "28420",
+    "461",
+    "70200"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "27622819",
+   "obchodniJmeno": "MOTORPAL, a.s.",
+   "sidlo": {
+    "nazevObce": "Jihlava",
+    "nazevOkresu": "Jihlava"
+   },
+   "datumVzniku": "2006-11-23",
+   "czNace": [
+    "68200",
+    "25510",
+    "43210",
+    "49410",
+    "70200",
+    "62",
+    "00",
+    "35120",
+    "38210",
+    "259",
+    "289",
+    "29320",
+    "352",
+    "8559",
+    "35301",
+    "28130",
+    "35150",
+    "69200",
+    "72100",
+    "74",
+    "95310"
+   ],
+   "pravniForma": "121"
+  },
+  {
+   "ico": "27853128",
+   "obchodniJmeno": "KLIMA solution s.r.o.",
+   "sidlo": {
+    "nazevObce": "Velká Lhota",
+    "nazevOkresu": "Vsetín"
+   },
+   "datumVzniku": "2008-08-07",
+   "czNace": [
+    "28",
+    "25",
+    "41000",
+    "71200",
+    "77220",
+    "71120",
+    "74990",
+    "28250",
+    "55",
+    "68200",
+    "81230",
+    "255",
+    "43120",
+    "52",
+    "28130",
+    "47",
+    "461"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "27925188",
+   "obchodniJmeno": "APPM trade s.r.o.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "2007-07-11",
+   "czNace": [
+    "25620",
+    "33140",
+    "25110",
+    "25530",
+    "68310",
+    "461",
+    "46900",
+    "28130",
+    "52100",
+    "27900",
+    "33200"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "28149700",
+   "obchodniJmeno": "PEMA Energo, s.r.o.",
+   "sidlo": {
+    "nazevObce": "Polná",
+    "nazevOkresu": "Jihlava"
+   },
+   "datumVzniku": "2013-02-07",
+   "czNace": [
+    "G",
+    "33200",
+    "461",
+    "74990",
+    "33130",
+    "28290",
+    "71200",
+    "28210",
+    "28130",
+    "33120",
+    "72100",
+    "26510",
+    "46900"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "28776984",
+   "obchodniJmeno": "Tapflo s.r.o.",
+   "sidlo": {
+    "nazevObce": "Brno",
+    "nazevOkresu": "Brno-město"
+   },
+   "datumVzniku": "2009-09-16",
+   "czNace": [
+    "461",
+    "71120",
+    "28130",
+    "32990",
+    "52",
+    "331",
+    "81230",
+    "46640",
+    "8559",
+    "62",
+    "73110",
+    "71200",
+    "77220",
+    "22"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "28821068",
+   "obchodniJmeno": "Instalatérství Bidmon s.r.o.",
+   "sidlo": {
+    "nazevObce": "Jevíčko",
+    "nazevOkresu": "Svitavy"
+   },
+   "datumVzniku": "2011-08-02",
+   "czNace": [
+    "25620",
+    "49410",
+    "28130",
+    "4322",
+    "00",
+    "25630",
+    "41000",
+    "71200"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "46995919",
+   "obchodniJmeno": "Adast Systems, a.s.",
+   "sidlo": {
+    "nazevObce": "Adamov",
+    "nazevOkresu": "Blansko"
+   },
+   "datumVzniku": "1993-01-01",
+   "czNace": [
+    "256",
+    "41000",
+    "71200",
+    "77220",
+    "952",
+    "26",
+    "28130",
+    "69200",
+    "95310",
+    "71110",
+    "71120",
+    "00",
+    "28",
+    "432",
+    "95220",
+    "G",
+    "255",
+    "33200",
+    "43340",
+    "68200",
+    "49410"
+   ],
+   "pravniForma": "121"
+  },
+  {
+   "ico": "48265578",
+   "obchodniJmeno": "HOERBIGER CZ SK s.r.o.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "1993-03-12",
+   "czNace": [
+    "25620",
+    "74990",
+    "25610",
+    "47780",
+    "46900",
+    "28130",
+    "69200",
+    "72100"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "49100327",
+   "obchodniJmeno": "DELTA HL, spol. s r.o.",
+   "sidlo": {
+    "nazevObce": "Jablonné v Podještědí",
+    "nazevOkresu": "Liberec"
+   },
+   "datumVzniku": "1993-10-11",
+   "czNace": [
+    "47780",
+    "28130",
+    "683",
+    "25510",
+    "25620"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "49618407",
+   "obchodniJmeno": "AQUACENTRUM PRAHA spol. s r.o.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "1993-11-05",
+   "czNace": [
+    "29320",
+    "25620",
+    "25630",
+    "46900",
+    "28130",
+    "4322",
+    "25530"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "60066563",
+   "obchodniJmeno": "B & SPOL., s.r.o.",
+   "sidlo": {
+    "nazevObce": "Pelhřimov",
+    "nazevOkresu": "Pelhřimov"
+   },
+   "datumVzniku": "1993-11-03",
+   "czNace": [
+    "28130",
+    "74",
+    "711",
+    "255",
+    "33200",
+    "46640",
+    "952",
+    "00",
+    "432",
+    "47780",
+    "331",
+    "64923",
+    "25",
+    "77220"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "60471158",
+   "obchodniJmeno": "Danfoss s.r.o.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "1994-01-12",
+   "czNace": [
+    "33140",
+    "70200",
+    "711",
+    "27900",
+    "62",
+    "471",
+    "56300",
+    "26300",
+    "46900",
+    "26110",
+    "28",
+    "28130"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "60775840",
+   "obchodniJmeno": "ZAHAS s.r.o.",
+   "sidlo": {
+    "nazevObce": "Lipník nad Bečvou",
+    "nazevOkresu": "Přerov"
+   },
+   "datumVzniku": "1994-04-13",
+   "czNace": [
+    "14210",
+    "22",
+    "28250",
+    "28290",
+    "29",
+    "28130",
+    "32990",
+    "26300",
+    "46900",
+    "952",
+    "47120"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "62363191",
+   "obchodniJmeno": "BBA HRANICE, spol. s r.o.",
+   "sidlo": {
+    "nazevObce": "Bělotín",
+    "nazevOkresu": "Přerov"
+   },
+   "datumVzniku": "1995-02-16",
+   "czNace": [
+    "289",
+    "28130"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "63149885",
+   "obchodniJmeno": "EURO TOPOZ, spol. s r.o.",
+   "sidlo": {
+    "nazevObce": "Krásná Lípa",
+    "nazevOkresu": "Děčín"
+   },
+   "datumVzniku": "1995-10-12",
+   "czNace": [
+    "28130",
+    "172",
+    "471",
+    "68200"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "63471949",
+   "obchodniJmeno": "Brunnbauer-Moravia, s.r.o.",
+   "sidlo": {
+    "nazevObce": "Uherský Brod",
+    "nazevOkresu": "Uherské Hradiště"
+   },
+   "datumVzniku": "1995-08-14",
+   "czNace": [
+    "471",
+    "25530",
+    "28130"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "64608212",
+   "obchodniJmeno": "SIGMA 1868 spol. s r.o.",
+   "sidlo": {
+    "nazevObce": "Hranice",
+    "nazevOkresu": "Přerov"
+   },
+   "datumVzniku": "1996-01-01",
+   "czNace": [
+    "25530",
+    "32500",
+    "4322",
+    "25510",
+    "25620",
+    "281",
+    "28130"
+   ],
+   "pravniForma": "112"
+  },
+  {
+   "ico": "67799108",
+   "obchodniJmeno": "Česká společnost pro svařování produktů, z.s.",
+   "sidlo": {
+    "nazevObce": "Praha",
+    "nazevOkresu": null
+   },
+   "datumVzniku": "1998-11-23",
+   "czNace": [
+    "28130",
+    "72100",
+    "9499",
+    "28290",
+    "00",
+    "26510",
+    "28140",
+    "71200"
+   ],
+   "pravniForma": "706"
+  },
+  {
+   "ico": "70647976",
+   "obchodniJmeno": "Miroslav Haluza",
+   "sidlo": {
+    "nazevObce": "Janov",
+    "nazevOkresu": "Rakovník"
+   },
+   "datumVzniku": "2020-12-09",
+   "czNace": [
+    "28130",
+    "00",
+    "016",
+    "471"
+   ],
+   "pravniForma": "101"
+  }
+ ]
+}

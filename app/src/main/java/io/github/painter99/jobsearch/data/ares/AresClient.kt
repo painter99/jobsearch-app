@@ -4,8 +4,10 @@ import io.github.painter99.jobsearch.core.model.Company
 import io.github.painter99.jobsearch.data.FetchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -16,10 +18,12 @@ import org.json.JSONObject
  * - detail: GET {base}/ekonomicke-subjekty/{ico}?detail=2
  * - VR:     GET {base}/ekonomicke-subjekty-vr/{ico}?detail=2
  *   (předměty podnikání na cestě zaznamy[].cinnosti.predmetPodnikani[].hodnota)
+ * - vyhledat: POST {base}/ekonomicke-subjekty/vyhledat
+ *   (tělo {"czNace": [...], "pocet": N}; odpověď = {pocetCelkem, ekonomickeSubjekty[]})
  *
- * Vyhledat POST (dávky 100 IČO) až M1.3 (resolver) — scope tight.
- * Gotcha: sidlo nemá klíč `obec` s názvem — název obce nese `nazevObce`
- * (ověřeno na živé odpovědi 7. 10. 2026).
+ * Vyhledat POST (dávky po NACE) — M1.3 (resolver). Gotchy: sidlo nemá klíč
+ * `obec` s názvem — název obce nese `nazevObce` (ověřeno na živé odpovědi
+ * 7. 10. 2026); czNace kód = komprimovaný formát (28.13 → "28130").
  */
 class AresClient(
     private val client: OkHttpClient,
@@ -43,6 +47,28 @@ class AresClient(
             is FetchResult.ParseError -> r
         }
 
+    /**
+     * POST vyhledat podle CZ-NACE (komprimované kódy). Obec se filtruje
+     * client-side (sidlo filtr umí jen číselné RÚIAN kódy). Vrací seznam
+     * firem z odpovědi (bez [pocetCelkem] — ten řeší volající přes raw
+     * odpověď, pokud ho potřebuje).
+     */
+    suspend fun search(czNace: List<String>): FetchResult<List<Company>> {
+        if (czNace.isEmpty()) {
+            return FetchResult.ParseError("czNace list is empty — ARES would return unfiltered")
+        }
+        val body = JSONObject().apply {
+            put("czNace", JSONArray(czNace))
+            put("pocet", SEARCH_PAGE_SIZE)
+        }
+        return when (val r = postJson("ekonomicke-subjekty/vyhledat", body)) {
+            is FetchResult.Success -> FetchResult.Success(parseSearchItems(r.data))
+            is FetchResult.HttpError -> r
+            is FetchResult.NetworkError -> r
+            is FetchResult.ParseError -> r
+        }
+    }
+
     private suspend fun getJson(path: String): FetchResult<JSONObject> =
         withContext(Dispatchers.IO) {
             try {
@@ -53,6 +79,28 @@ class AresClient(
                         ?: return@withContext FetchResult.NetworkError("empty response body")
                     try {
                         FetchResult.Success(JSONObject(body))
+                    } catch (e: Exception) {
+                        FetchResult.ParseError("invalid JSON: ${e.message}")
+                    }
+                }
+            } catch (e: Exception) {
+                FetchResult.NetworkError(e.message ?: e.javaClass.simpleName)
+            }
+        }
+
+    private suspend fun postJson(path: String, body: JSONObject): FetchResult<JSONObject> =
+        withContext(Dispatchers.IO) {
+            try {
+                val request = Request.Builder()
+                    .url("$baseUrl/$path")
+                    .post(body.toString().toRequestBody("application/json".toMediaType()))
+                    .build()
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) return@withContext FetchResult.HttpError(response.code)
+                    val responseBody = response.body?.string()
+                        ?: return@withContext FetchResult.NetworkError("empty response body")
+                    try {
+                        FetchResult.Success(JSONObject(responseBody))
                     } catch (e: Exception) {
                         FetchResult.ParseError("invalid JSON: ${e.message}")
                     }
@@ -77,6 +125,27 @@ class AresClient(
             return FetchResult.ParseError("detail bez ico i obchodniJmeno")
         }
         return FetchResult.Success(company)
+    }
+
+    private fun parseSearchItems(json: JSONObject): List<Company> {
+        val items = json.optJSONArray("ekonomickeSubjekty") ?: return emptyList()
+        val result = mutableListOf<Company>()
+        for (i in 0 until items.length()) {
+            val s = items.optJSONObject(i) ?: continue
+            val sidlo = s.optJSONObject("sidlo")
+            result.add(
+                Company(
+                    ico = s.optStringOrNull("ico") ?: "",
+                    businessName = s.optStringOrNull("obchodniJmeno") ?: "",
+                    municipality = sidlo?.optStringOrNull("nazevObce"),
+                    districtName = sidlo?.optStringOrNull("nazevOkresu"),
+                    foundedOn = s.optStringOrNull("datumVzniku"),
+                    czNace = s.optJSONArray("czNace").toStringList(),
+                    legalForm = s.optStringOrNull("pravniForma"),
+                )
+            )
+        }
+        return result
     }
 
     private fun parseVrActivities(json: JSONObject): List<String> {
@@ -114,5 +183,8 @@ class AresClient(
 
     companion object {
         const val DEFAULT_BASE = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest"
+
+        /** ARES vyhledat: max počet záznamů na stránku (dost pro resolver). */
+        const val SEARCH_PAGE_SIZE = 500
     }
 }
