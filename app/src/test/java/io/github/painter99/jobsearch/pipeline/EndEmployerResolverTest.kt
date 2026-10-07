@@ -64,7 +64,7 @@ class EndEmployerResolverTest {
         }
         assertEquals(44, companies.size)
 
-        val candidates = EndEmployerResolver(AresClientStub).score(companies, hints)
+        val candidates = EndEmployerResolver(deadAres).score(companies, hints)
 
         // ISH PUMPS = top kandidát (sídlo Olomouc + NACE), score 4.0 jako v oracle
         val ish = candidates.first { it.company.ico == "25272365" }
@@ -83,7 +83,7 @@ class EndEmployerResolverTest {
     @Test
     fun `obec shoda +2, okres shoda +1 (bez obce)`() {
         val c = company("1", "A s.r.o.", municipality = "Olomouc", districtName = "Olomouc", czNace = listOf("28130"))
-        val r = EndEmployerResolver(AresClientStub).score(listOf(c), hints)
+        val r = EndEmployerResolver(deadAres).score(listOf(c), hints)
         assertEquals(1, r.size)
         assertEquals(4.0, r[0].score, 0.001) // obec 2 + NACE 2 (okres se nepřičítá, když sedí obec)
         assertEquals(listOf("sídlo v hledané obci (Olomouc)", "hlavní NACE odpovídá oboru (28130)"), r[0].reasons)
@@ -92,7 +92,7 @@ class EndEmployerResolverTest {
     @Test
     fun `okres-only shoda +1, obec mimo`() {
         val c = company("2", "B s.r.o.", municipality = "Hranice", districtName = "Přerov", czNace = listOf("28130"))
-        val r = EndEmployerResolver(AresClientStub).score(listOf(c), hints)
+        val r = EndEmployerResolver(deadAres).score(listOf(c), hints)
         assertEquals(1, r.size)
         assertEquals(3.0, r[0].score, 0.001) // okres 1 + NACE 2
     }
@@ -103,7 +103,7 @@ class EndEmployerResolverTest {
         val as_ = company("4", "D a.s.", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "121")
         val osvc = company("5", "E", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "70653")
         val akciovaNeznama = company("6", "F a.s.", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "999")
-        val r = EndEmployerResolver(AresClientStub).score(listOf(sro, as_, osvc, akciovaNeznama), hints)
+        val r = EndEmployerResolver(deadAres).score(listOf(sro, as_, osvc, akciovaNeznama), hints)
         assertEquals(4.0, r.first { it.company.ico == "3" }.score, 0.001)
         assertEquals(4.0, r.first { it.company.ico == "4" }.score, 0.001)
         assertEquals(4.0, r.first { it.company.ico == "5" }.score, 0.001)
@@ -118,7 +118,7 @@ class EndEmployerResolverTest {
         val old = company("7", "G s.r.o.", municipality = "Olomouc", czNace = listOf("28130"), foundedOn = "2005-01-01")
         val new = company("8", "H s.r.o.", municipality = "Olomouc", czNace = listOf("28130"), foundedOn = "2024-06-01")
         val h = hints.copy(foundedUntilYear = 2010)
-        val r = EndEmployerResolver(AresClientStub).score(listOf(old, new), h)
+        val r = EndEmployerResolver(deadAres).score(listOf(old, new), h)
         assertEquals(4.5, r.first { it.company.ico == "7" }.score, 0.001)
         assertEquals(4.0, r.first { it.company.ico == "8" }.score, 0.001)
     }
@@ -126,7 +126,7 @@ class EndEmployerResolverTest {
     @Test
     fun `score 0 se zahazuje - NACE mimo zájem`() {
         val c = company("9", "I s.r.o.", municipality = "Brno", districtName = "Brno-město", czNace = listOf("62010"))
-        val r = EndEmployerResolver(AresClientStub).score(listOf(c), hints)
+        val r = EndEmployerResolver(deadAres).score(listOf(c), hints)
         assertTrue(r.isEmpty())
     }
 
@@ -135,7 +135,7 @@ class EndEmployerResolverTest {
         val cs = (1..10).map { i ->
             company("$i", "Firma $i", municipality = "Olomouc", czNace = listOf("28130"), legalForm = "112")
         }
-        val r = EndEmployerResolver(AresClientStub, maxCandidates = 3).score(cs, hints)
+        val r = EndEmployerResolver(deadAres, maxCandidates = 3).score(cs, hints)
         assertEquals(3, r.size)
         // všechny mají stejné skóre 5.0 → sekundární řazení dle businessName (abecedně)
         assertEquals(listOf("Firma 1", "Firma 10", "Firma 2"), r.map { it.company.businessName })
@@ -144,14 +144,19 @@ class EndEmployerResolverTest {
     @Test
     fun `N7 - kandidát vždy nese reasons a score (nikdy fakt)`() {
         val c = company("10", "J s.r.o.", municipality = "Olomouc", czNace = listOf("28130"))
-        val r = EndEmployerResolver(AresClientStub).score(listOf(c), hints)
+        val r = EndEmployerResolver(deadAres).score(listOf(c), hints)
         assertEquals(1, r.size)
         assertTrue(r[0].reasons.isNotEmpty())
         assertTrue(r[0].score > 0.0)
     }
 
-    /** Stub — resolver scoring testy nevolají síť (score() je čistá funkce). */
-    private object AresClientStub : io.github.painter99.jobsearch.data.ares.AresClient(
+    /**
+     * Nepoužitá instance AresClientu — scoring testy volají jen čistou
+     * funkci score() a síť nikdy nevolají (fixture/oracle first). Instanci
+     * nelze nahradit stubem (třída je final), síťová adresa je mrtvá
+     * (127.0.0.1:1) — kdyby test omylem volal síť, test selže.
+     */
+    private val deadAres = io.github.painter99.jobsearch.data.ares.AresClient(
         client = okhttp3.OkHttpClient(),
         baseUrl = "http://127.0.0.1:1/stub",
     )
