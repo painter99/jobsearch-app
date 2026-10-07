@@ -1,4 +1,4 @@
-# CI run 30 — commit 717f0e3 — m1.6-ui-dossier
+# CI run 31 — commit 13e751c — m1.6-ui-dossier
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -29,9 +29,9 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebugUnitTest
 > Task :app:javaPreCompileDebug
+> Task :app:processDebugManifestForPackage
 > Task :app:processDebugResources
 > Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
@@ -45,11 +45,11 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:kspDebugUnitTestKotlin
 
 > Task :app:compileDebugUnitTestKotlin
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:71:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:83:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:198:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:268:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:287:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:73:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:85:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:204:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:277:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:296:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/locations/LocationsViewModelTest.kt:50:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/locations/LocationsViewModelTest.kt:57:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/locations/LocationsViewModelTest.kt:94:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
@@ -68,22 +68,16 @@ w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/git
 
 > Task :app:testDebugUnitTest
 
-DossierViewModelTest > load - nabídka bez IČO → UNDETERMINED, žádná síťová sekce FAILED
-    java.lang.AssertionError at DossierViewModelTest.kt:251
-
 DossierViewModelTest > load - neagenturní nabídka nemá kandidáty resolveru (N7 sekce jen u agentur) FAILED
-    java.lang.AssertionError at DossierViewModelTest.kt:237
+    java.lang.AssertionError at DossierViewModelTest.kt:243
 
 DossierViewModelTest > load - vytvoří dossier s OPEN verdiktem a předvyplní auto položky FAILED
-    java.lang.AssertionError at DossierViewModelTest.kt:209
-
-DossierViewModelTest > toggleChecklist - odškrtnutí auto položky přepíše stav v DB FAILED
-    java.util.NoSuchElementException at DossierViewModelTest.kt:277
+    java.lang.AssertionError at DossierViewModelTest.kt:215
 
 DossierViewModelTest > setVerdict a setNotes se uloží do DB FAILED
-    java.lang.NullPointerException at DossierViewModelTest.kt:261
+    org.junit.ComparisonFailure at DossierViewModelTest.kt:267
 
-177 tests completed, 5 failed
+177 tests completed, 3 failed
 
 > Task :app:testDebugUnitTest FAILED
 
@@ -315,37 +309,35 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 
 
-BUILD FAILED in 2m 25s
+BUILD FAILED in 2m 56s
 30 actionable tasks: 30 executed
 
 ===== junit summary =====
-<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:30" hostname="runnervmmprz5" time="0.03">
-<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:30" hostname="runnervmmprz5" time="0.008">
-<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:30" hostname="runnervmmprz5" time="0.018">
-<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:30" hostname="runnervmmprz5" time="0.0">
-<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:30" hostname="runnervmmprz5" time="0.006">
-<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:30" hostname="runnervmmprz5" time="0.523">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.01">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.FileOfferStoreTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.113">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.IncrementParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.005">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.036">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.03">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvOffersClientTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.055">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MunicipalityRepositoryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.056">
-<testsuite name="io.github.painter99.jobsearch.data.pracecz.PraceCzClientTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.085">
-<testsuite name="io.github.painter99.jobsearch.data.storage.DataStoreStoresTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:31" hostname="runnervmmprz5" time="0.424">
-<testsuite name="io.github.painter99.jobsearch.data.storage.ProfileStoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:32" hostname="runnervmmprz5" time="0.114">
-<testsuite name="io.github.painter99.jobsearch.db.RoomDatabasesTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:32" hostname="runnervmmprz5" time="7.134">
-<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:39" hostname="runnervmmprz5" time="0.089">
-<testsuite name="io.github.painter99.jobsearch.pipeline.EndEmployerResolverTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:39" hostname="runnervmmprz5" time="0.016">
-<testsuite name="io.github.painter99.jobsearch.pipeline.OfferDedupeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:39" hostname="runnervmmprz5" time="0.001">
-<testsuite name="io.github.painter99.jobsearch.pipeline.OfferSyncEngineTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:39" hostname="runnervmmprz5" time="0.164">
-<testsuite name="io.github.painter99.jobsearch.ui.dossier.ChecklistTemplateTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:39" hostname="runnervmmprz5" time="0.002">
-<testsuite name="io.github.painter99.jobsearch.ui.dossier.DossierViewModelTest" tests="6" skipped="0" failures="5" errors="0" timestamp="2026-10-07T16:23:39" hostname="runnervmmprz5" time="0.289">
-    <failure message="java.lang.AssertionError: expected:&lt;UNDETERMINED&gt; but was:&lt;null&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;UNDETERMINED&gt; but was:&lt;null&gt;
+<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:50" hostname="runnervm8df0l" time="0.05">
+<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:50" hostname="runnervm8df0l" time="0.026">
+<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:50" hostname="runnervm8df0l" time="0.021">
+<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:50" hostname="runnervm8df0l" time="0.001">
+<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:50" hostname="runnervm8df0l" time="0.011">
+<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:50" hostname="runnervm8df0l" time="0.649">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.008">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.FileOfferStoreTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.11">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.IncrementParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.009">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.035">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.031">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvOffersClientTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.046">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MunicipalityRepositoryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.064">
+<testsuite name="io.github.painter99.jobsearch.data.pracecz.PraceCzClientTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.095">
+<testsuite name="io.github.painter99.jobsearch.data.storage.DataStoreStoresTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:51" hostname="runnervm8df0l" time="0.46">
+<testsuite name="io.github.painter99.jobsearch.data.storage.ProfileStoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:52" hostname="runnervm8df0l" time="0.122">
+<testsuite name="io.github.painter99.jobsearch.db.RoomDatabasesTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:33:52" hostname="runnervm8df0l" time="9.369">
+<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:34:01" hostname="runnervm8df0l" time="0.096">
+<testsuite name="io.github.painter99.jobsearch.pipeline.EndEmployerResolverTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:34:01" hostname="runnervm8df0l" time="0.021">
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferDedupeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:34:01" hostname="runnervm8df0l" time="0.003">
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferSyncEngineTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:34:01" hostname="runnervm8df0l" time="0.17">
+<testsuite name="io.github.painter99.jobsearch.ui.dossier.ChecklistTemplateTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:34:02" hostname="runnervm8df0l" time="0.002">
+<testsuite name="io.github.painter99.jobsearch.ui.dossier.DossierViewModelTest" tests="6" skipped="0" failures="3" errors="0" timestamp="2026-10-07T16:34:02" hostname="runnervm8df0l" time="0.631">
     <failure message="java.lang.AssertionError: expected:&lt;NOT_AGENCY&gt; but was:&lt;null&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;NOT_AGENCY&gt; but was:&lt;null&gt;
     <failure message="java.lang.AssertionError" type="java.lang.AssertionError">java.lang.AssertionError
-    <failure message="java.util.NoSuchElementException: Collection contains no element matching the predicate." type="java.util.NoSuchElementException">java.util.NoSuchElementException: Collection contains no element matching the predicate.
-    <failure message="java.lang.NullPointerException" type="java.lang.NullPointerException">java.lang.NullPointerException
-<testsuite name="io.github.painter99.jobsearch.ui.locations.LocationsViewModelTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:40" hostname="runnervmmprz5" time="0.385">
-<testsuite name="io.github.painter99.jobsearch.ui.offers.OffersViewModelTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:23:40" hostname="runnervmmprz5" time="0.135">
+    <failure message="org.junit.ComparisonFailure: expected:&lt;[CONDITIONAL]&gt; but was:&lt;[OPEN]&gt;" type="org.junit.ComparisonFailure">org.junit.ComparisonFailure: expected:&lt;[CONDITIONAL]&gt; but was:&lt;[OPEN]&gt;
+<testsuite name="io.github.painter99.jobsearch.ui.locations.LocationsViewModelTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:34:02" hostname="runnervm8df0l" time="0.374">
+<testsuite name="io.github.painter99.jobsearch.ui.offers.OffersViewModelTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-07T16:34:03" hostname="runnervm8df0l" time="0.16">
