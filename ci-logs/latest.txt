@@ -1,4 +1,4 @@
-# CI run 33 — commit 04eeb58 — main
+# CI run 34 — commit dda3702 — m1.6-t6-docs
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -28,16 +28,12 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest
 > Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
 > Task :app:processDebugResources
-
 > Task :app:kspDebugKotlin
-e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
-    1. Kotlin compile daemon is ready
-
 > Task :app:compileDebugKotlin
 > Task :app:compileDebugJavaWithJavac
 > Task :app:hiltAggregateDepsDebug
@@ -73,7 +69,7 @@ w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/git
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
 
-BUILD SUCCESSFUL in 3m 14s
+BUILD SUCCESSFUL in 2m 35s
 30 actionable tasks: 30 executed
 
 ===== apk_build_output.txt =====
@@ -128,32 +124,32 @@ Unable to strip the following libraries, packaging them as they are: libandroidx
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 48s
+BUILD SUCCESSFUL in 56s
 40 actionable tasks: 19 executed, 21 up-to-date
 
 ===== junit summary =====
-<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:40" hostname="runnervmmprz5" time="0.024">
-<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:40" hostname="runnervmmprz5" time="0.031">
-<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:40" hostname="runnervmmprz5" time="0.032">
-<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.001">
-<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.009">
-<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.558">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.002">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.FileOfferStoreTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.069">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.IncrementParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.008">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.033">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.04">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvOffersClientTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.063">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MunicipalityRepositoryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.069">
-<testsuite name="io.github.painter99.jobsearch.data.pracecz.PraceCzClientTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:41" hostname="runnervmmprz5" time="0.104">
-<testsuite name="io.github.painter99.jobsearch.data.storage.DataStoreStoresTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:42" hostname="runnervmmprz5" time="0.446">
-<testsuite name="io.github.painter99.jobsearch.data.storage.ProfileStoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:42" hostname="runnervmmprz5" time="0.122">
-<testsuite name="io.github.painter99.jobsearch.db.RoomDatabasesTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:42" hostname="runnervmmprz5" time="9.188">
-<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:51" hostname="runnervmmprz5" time="0.102">
-<testsuite name="io.github.painter99.jobsearch.pipeline.EndEmployerResolverTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:52" hostname="runnervmmprz5" time="0.02">
-<testsuite name="io.github.painter99.jobsearch.pipeline.OfferDedupeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:52" hostname="runnervmmprz5" time="0.001">
-<testsuite name="io.github.painter99.jobsearch.pipeline.OfferSyncEngineTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:52" hostname="runnervmmprz5" time="0.169">
-<testsuite name="io.github.painter99.jobsearch.ui.dossier.ChecklistTemplateTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:52" hostname="runnervmmprz5" time="0.003">
-<testsuite name="io.github.painter99.jobsearch.ui.dossier.DossierViewModelTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:52" hostname="runnervmmprz5" time="1.459">
-<testsuite name="io.github.painter99.jobsearch.ui.locations.LocationsViewModelTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:53" hostname="runnervmmprz5" time="0.356">
-<testsuite name="io.github.painter99.jobsearch.ui.offers.OffersViewModelTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:05:54" hostname="runnervmmprz5" time="0.143">
+<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:05" hostname="runnervm8df0l" time="0.053">
+<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:05" hostname="runnervm8df0l" time="0.015">
+<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:05" hostname="runnervm8df0l" time="0.027">
+<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:05" hostname="runnervm8df0l" time="0.0">
+<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:05" hostname="runnervm8df0l" time="0.009">
+<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:05" hostname="runnervm8df0l" time="0.46">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.004">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.FileOfferStoreTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.08">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.IncrementParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.007">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.035">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.04">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvOffersClientTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.081">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MunicipalityRepositoryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.066">
+<testsuite name="io.github.painter99.jobsearch.data.pracecz.PraceCzClientTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.121">
+<testsuite name="io.github.painter99.jobsearch.data.storage.DataStoreStoresTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:06" hostname="runnervm8df0l" time="0.465">
+<testsuite name="io.github.painter99.jobsearch.data.storage.ProfileStoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:07" hostname="runnervm8df0l" time="0.12">
+<testsuite name="io.github.painter99.jobsearch.db.RoomDatabasesTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:07" hostname="runnervm8df0l" time="8.295">
+<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:15" hostname="runnervm8df0l" time="0.12">
+<testsuite name="io.github.painter99.jobsearch.pipeline.EndEmployerResolverTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:15" hostname="runnervm8df0l" time="0.024">
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferDedupeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:15" hostname="runnervm8df0l" time="0.002">
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferSyncEngineTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:15" hostname="runnervm8df0l" time="0.178">
+<testsuite name="io.github.painter99.jobsearch.ui.dossier.ChecklistTemplateTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:16" hostname="runnervm8df0l" time="0.007">
+<testsuite name="io.github.painter99.jobsearch.ui.dossier.DossierViewModelTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:16" hostname="runnervm8df0l" time="1.486">
+<testsuite name="io.github.painter99.jobsearch.ui.locations.LocationsViewModelTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:17" hostname="runnervm8df0l" time="0.354">
+<testsuite name="io.github.painter99.jobsearch.ui.offers.OffersViewModelTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-07T17:11:18" hostname="runnervm8df0l" time="0.146">
