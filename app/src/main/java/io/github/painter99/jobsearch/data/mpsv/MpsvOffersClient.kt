@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
 import java.time.LocalDate
-import java.util.GZIPInputStream
+import java.util.zip.GZIPInputStream
 
 /**
  * Klient MPSV „Volná místa" (data.mpsv.cz/od/soubory/):
@@ -44,10 +44,14 @@ class MpsvOffersClient(
                 val tmp = File(targetFile.parentFile, targetFile.name + ".tmp")
                 tmp.parentFile?.mkdirs()
                 try {
-                    body.source().use { source ->
+                    body.byteStream().use { input ->
                         tmp.outputStream().use { out ->
-                            val sink = okio.OutputStreamSink(out, okio.Timeout.NONE)
-                            sink.writeAll(source)
+                            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                            while (true) {
+                                val read = input.read(buffer)
+                                if (read == -1) break
+                                out.write(buffer, 0, read)
+                            }
                         }
                     }
                 } catch (e: Exception) {
@@ -81,12 +85,9 @@ class MpsvOffersClient(
                 if (!response.isSuccessful) return@withContext FetchResult.HttpError(response.code)
                 val body = response.body ?: return@withContext FetchResult.NetworkError("empty response body")
                 try {
-                    val raw = body.byteStream().use { input ->
-                        GZIPInputStream(input).use { gz ->
-                            gz.readBytes()
-                        }
+                    val text = GZIPInputStream(body.byteStream()).use { gz ->
+                        gz.readBytes().toString(Charsets.UTF_8)
                     }
-                    val text = raw.toString(Charsets.UTF_8)
                     if (text.isBlank()) {
                         return@withContext FetchResult.ParseError("empty increment payload")
                     }
