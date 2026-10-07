@@ -14,16 +14,16 @@ import io.github.painter99.jobsearch.data.mpsv.OfferStore
 import io.github.painter99.jobsearch.data.storage.ApiKeyStore
 import io.github.painter99.jobsearch.data.storage.CriteriaStore
 import io.github.painter99.jobsearch.data.storage.DataStoreSyncAnchorStore
+import io.github.painter99.jobsearch.data.storage.ProfileStore
 import io.github.painter99.jobsearch.data.storage.jobsearchDataStore
 import io.github.painter99.jobsearch.pipeline.SyncAnchorStore
-import java.io.File
 import javax.inject.Singleton
 
 /**
- * Hilt bindings storage vrstvy (M1.5):
+ * Hilt bindings storage vrstvy (M1.5 + M1.6 vlna A):
  * - Room databáze + DAOs (dossier/checklist/seen),
- * - jeden sdílený DataStore + obálky (latka, API klíč, sync kotva),
- * - [OfferStore] → [FileOfferStore] nad `filesDir/offers.json` (reálné umístění, dosud test-only).
+ * - jeden sdílený DataStore + obálky (latka, profil lokalit, API klíč, sync kotva),
+ * - [OfferStore] → [FileOfferStore] nad `filesDir/offers.json` (soubor via [OffersFile]).
  */
 @Module
 @InstallIn(SingletonComponent::class)
@@ -60,11 +60,14 @@ object StorageModule {
 
     @Provides
     @Singleton
-    fun provideSyncAnchorStore(dataStore: DataStore<Preferences>): SyncAnchorStore =
-        DataStoreSyncAnchorStore(dataStore)
+    fun provideProfileStore(dataStore: DataStore<Preferences>): ProfileStore = ProfileStore(dataStore)
 
     @Provides
     @Singleton
-    fun provideOfferStore(@ApplicationContext context: Context): OfferStore =
-        FileOfferStore(File(context.filesDir, "offers.json"))
+    fun provideOfferStore(@OffersFile offersFile: java.io.File): OfferStore = FileOfferStore(offersFile)
+
+    @Provides
+    @Singleton
+    fun provideSyncAnchorStore(dataStore: DataStore<Preferences>): SyncAnchorStore =
+        DataStoreSyncAnchorStore(dataStore)
 }

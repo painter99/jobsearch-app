@@ -13,13 +13,21 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 /**
+ * Read-only přístup k látce [UserCriteria] (mzda + směnnost) — kontrakt pro
+ * ViewModels (M1.6): testy fákují provider, DataStore implementace = [CriteriaStore].
+ */
+interface CriteriaProvider {
+    suspend fun load(): UserCriteria
+}
+
+/**
  * Perzistence Pavlovy latky [UserCriteria] (mzda + směnnost) — DataStore Preferences (M1.5).
  *
  * Výchozí hodnoty = Pavlův profil dle PRD (otázka 5): minimální mzda 40 000 Kč,
  * jen jednosměnné. Výchozí hodnota se vrací i při chybě čtení (poškozený soubor,
  * prakticky nedosažitelné) — appka nespadne, jen ukáže výchozí latku.
  */
-class CriteriaStore(private val dataStore: DataStore<Preferences>) {
+class CriteriaStore(private val dataStore: DataStore<Preferences>) : CriteriaProvider {
 
     /** Aktuální latka (suspend — jednorázové čtení pro sync/pipeline). */
     suspend fun load(): UserCriteria {
