@@ -1,4 +1,4 @@
-# CI run 14 — commit 619e985 — m1.4-data-sync
+# CI run 15 — commit 416012d — m1.4-data-sync
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -29,29 +29,15 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest
 > Task :app:processDebugManifestForPackage
+> Task :app:javaPreCompileDebugUnitTest
 > Task :app:javaPreCompileDebug
 > Task :app:processDebugResources
 > Task :app:kspDebugKotlin
 
 > Task :app:compileDebugKotlin FAILED
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/FileOfferStore.kt:132:40 Argument type mismatch: actual type is 'okio.Source', but 'okio.BufferedSource!' was expected.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:10:18 Unresolved reference 'GZIPInputStream'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:49:45 Cannot access 'class OutputStreamSink : Sink': it is private in file.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:50:34 Unresolved reference 'writeAll'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:84:49 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:84:49 Not enough information to infer type argument for 'R'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:84:53 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:85:25 Unresolved reference 'GZIPInputStream'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:85:48 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:85:48 Not enough information to infer type argument for 'R'.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:85:54 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/MpsvOffersClient.kt:86:32 Overload resolution ambiguity between candidates:
-fun File.readBytes(): ByteArray
-fun InputStream.readBytes(): ByteArray
-fun InputStream.readBytes(estimatedSize: Int = ...): ByteArray
-fun URL.readBytes(): ByteArray
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/FileOfferStore.kt:131:45 Unresolved reference 'buffer'.
+e: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/main/java/io/github/painter99/jobsearch/data/mpsv/FileOfferStore.kt:131:57 Unresolved reference 'source'.
 
 FAILURE: Build failed with an exception.
 
@@ -313,6 +299,6 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 	... 2 more
 
 
-BUILD FAILED in 1m 31s
+BUILD FAILED in 1m 41s
 17 actionable tasks: 17 executed
 
