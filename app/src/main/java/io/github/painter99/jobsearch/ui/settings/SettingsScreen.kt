@@ -25,11 +25,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.painter99.jobsearch.ui.dossier.openUrl
+import io.github.painter99.jobsearch.ui.theme.AppScreen
 
 /**
- * Settings obrazovka (M1.7 T5): OpenRouter BYOK klíč, modely per funkce
- * (D7), souhlas s ToS/Model Terms (§5.2), privacy doporučení (§6.1).
- * Klíč se ukládá jen do DataStore na zařízení (PRD §11 — repo je veřejný).
+ * Settings obrazovka (M1.7 T5; M1.6c U5 AppScreen rámec): OpenRouter BYOK
+ * klíč, modely per funkce (D7), souhlas s ToS/Model Terms (§5.2), privacy
+ * doporučení (§6.1). Klíč se ukládá jen do DataStore na zařízení (PRD §11).
  */
 @Composable
 fun SettingsRoute(
@@ -60,27 +61,28 @@ fun SettingsScreen(
     onSave: () -> Unit,
     onClearKey: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        TextButton(onClick = onBack) { Text(text = "← Zpět") }
-        Text(text = "Nastavení", style = MaterialTheme.typography.titleLarge)
-        if (state.loading) {
-            CircularProgressIndicator()
-            return@Column
+    AppScreen(title = "Nastavení", onBack = onBack) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            if (state.loading) {
+                CircularProgressIndicator()
+                return@Column
+            }
+            state.message?.let { Text(text = it, style = MaterialTheme.typography.bodySmall) }
+
+            ApiKeySection(state = state, onApiKeyInput = onApiKeyInput, onClearKey = onClearKey)
+            ModelsSection(state = state, onRankerModel = onRankerModel, onSummarizerModel = onSummarizerModel)
+            TosSection(state = state, onTosConsent = onTosConsent)
+            PrivacySection()
+
+            Button(onClick = onSave, enabled = !state.saving) { Text(text = "Uložit nastavení") }
         }
-        state.message?.let { Text(text = it, style = MaterialTheme.typography.bodySmall) }
-
-        ApiKeySection(state = state, onApiKeyInput = onApiKeyInput, onClearKey = onClearKey)
-        ModelsSection(state = state, onRankerModel = onRankerModel, onSummarizerModel = onSummarizerModel)
-        TosSection(state = state, onTosConsent = onTosConsent)
-        PrivacySection()
-
-        Button(onClick = onSave, enabled = !state.saving) { Text(text = "Uložit nastavení") }
     }
 }
 

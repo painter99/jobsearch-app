@@ -32,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.painter99.jobsearch.core.model.DossierVerdict
 import io.github.painter99.jobsearch.pipeline.AgencyStatus
 import io.github.painter99.jobsearch.pipeline.ResolverCandidate
+import io.github.painter99.jobsearch.ui.theme.AppScreen
 import io.github.painter99.jobsearch.ui.theme.shiftLabel
 
 /**
@@ -70,29 +71,31 @@ fun DossierDetailScreen(
     onRankWithAi: () -> Unit = {},
     onSummarizeWithAi: () -> Unit = {},
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        TextButton(onClick = onBack) { Text(text = "← Zpět na seznam") }
-        when {
-            state.loading -> CircularProgressIndicator()
-            state.loadError -> Text(text = "Nabídka nenalezena v lokální databázi ($offerKey).")
-            else -> {
-                val offer = state.offer
-                if (offer == null) {
-                    Text(text = "Nabídka nenalezena.")
-                } else {
-                    OfferHeader(state = state)
-                    ChecklistSection(state = state, onToggle = onToggleChecklist)
-                    NotesSection(notes = state.notes, onNotes = onNotes)
-                    VerdictSection(verdict = state.verdict, onVerdict = onVerdict)
-                    AgencySection(state = state, onRankWithAi = onRankWithAi)
-                    if (state.aiAvailable) {
-                        AiSummarySection(state = state, onSummarize = onSummarizeWithAi)
+    AppScreen(title = "Dossier", onBack = onBack) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            when {
+                state.loading -> CircularProgressIndicator()
+                state.loadError -> Text(text = "Nabídka nenalezena v lokální databázi ($offerKey).")
+                else -> {
+                    val offer = state.offer
+                    if (offer == null) {
+                        Text(text = "Nabídka nenalezena.")
+                    } else {
+                        OfferHeader(state = state)
+                        ChecklistSection(state = state, onToggle = onToggleChecklist)
+                        NotesSection(notes = state.notes, onNotes = onNotes)
+                        VerdictSection(verdict = state.verdict, onVerdict = onVerdict)
+                        AgencySection(state = state, onRankWithAi = onRankWithAi)
+                        if (state.aiAvailable) {
+                            AiSummarySection(state = state, onSummarize = onSummarizeWithAi)
+                        }
                     }
                 }
             }

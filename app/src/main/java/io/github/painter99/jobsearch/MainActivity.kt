@@ -3,10 +3,14 @@ package io.github.painter99.jobsearch
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.painter99.jobsearch.ui.JobsearchApp
 
@@ -17,6 +21,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
+                // M1.6c U1 (WSW Round 5 vzor): targetSdk 35 vynucuje
+                // edge-to-edge — na světlém pozadí musí systém malovat
+                // TMAVÉ ikony stavové lišty, jinak jsou neviditelné.
+                val view = LocalView.current
+                if (!view.isInEditMode) {
+                    SideEffect {
+                        WindowCompat
+                            .getInsetsController(window, view)
+                            .isAppearanceLightStatusBars = !isSystemInDarkTheme()
+                    }
+                }
                 Surface(modifier = Modifier.fillMaxSize()) {
                     JobsearchApp()
                 }

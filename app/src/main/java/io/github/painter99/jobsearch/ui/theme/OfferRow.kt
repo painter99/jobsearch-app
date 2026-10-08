@@ -1,14 +1,14 @@
 package io.github.painter99.jobsearch.ui.theme
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Badge
-import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +23,8 @@ import io.github.painter99.jobsearch.core.model.ShiftPattern
 fun JobOffer.key(): String = OfferKeys.mpsv(portalId)
 
 /**
- * Řádek nabídky v seznamu (M1.6 vlna A): profese, zaměstnavatel, mzda,
+ * Řádek nabídky v seznamu (M1.6 vlna A; M1.6c U2 redesign dle WSW
+ * StationCard vzoru): ElevatedCard, profese, zaměstnavatel, mzda,
  * směnnost; badge „viděno" pro dedup sweepů.
  */
 @Composable
@@ -32,8 +33,11 @@ fun OfferRow(
     seen: Boolean,
     onClick: () -> Unit,
 ) {
-    Card(modifier = Modifier.fillMaxWidth().clickable(onClick = onClick)) {
-        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+    ElevatedCard(modifier = Modifier.fillMaxWidth().clickable(onClick = onClick)) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = offer.profession,
