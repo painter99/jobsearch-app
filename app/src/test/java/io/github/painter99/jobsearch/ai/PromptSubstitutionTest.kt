@@ -21,7 +21,7 @@ class PromptSubstitutionTest {
     }
 
     @Test
-    fun `substitute - nezsubstituovaný placeholder hází IllegalStateException`() {
+    fun `substitute - placeholder v raw bez parametru hází IllegalStateException`() {
         val raw = "Profese: {{profession}}, {{missing}}."
         try {
             PromptSubstitution.substitute(raw, mapOf("profession" to "lakýrník"))
@@ -33,7 +33,8 @@ class PromptSubstitutionTest {
 
     @Test
     fun `substitute - hodnota obsahující placeholdery se dál neexpanduje`() {
-        // hodnota parametru se NEinterpretuje jako šablona (žádný rekurzivní expand)
+        // hodnota parametru se NEinterpretuje jako šablona (žádný rekurzivní
+        // expand) — literal {{y}} uvnitř hodnoty projde bez výjimky
         val result = PromptSubstitution.substitute(
             "X: {{x}}",
             mapOf("x" to "literal {{y}}"),

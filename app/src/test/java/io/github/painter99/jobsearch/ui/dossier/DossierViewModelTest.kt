@@ -11,7 +11,6 @@ import io.github.painter99.jobsearch.core.model.WorkLocation
 import io.github.painter99.jobsearch.ai.AiCandidateRanker
 import io.github.painter99.jobsearch.ai.DossierSummarizer
 import io.github.painter99.jobsearch.ai.PromptLoader
-import io.github.painter99.jobsearch.ai.PromptSubstitution
 import io.github.painter99.jobsearch.data.ai.OpenRouterClient
 import io.github.painter99.jobsearch.data.ares.AresClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient
@@ -188,9 +187,13 @@ class DossierViewModelTest {
             client = ok,
             obceUrl = server.url("/od/soubory/ciselniky/obce.json").toString(),
         )
+        // Fake loader pro VM test: vrací jen hodnoty parametrů (VM test neověřuje
+        // kontrakt promptu — ten pokrývá PromptSubstitutionTest; lekce CI #37:
+        // šablona s cizími placeholdery vyhodila IllegalStateException uvnitř
+        // viewModelScope a test uvízl v aiRankingLoading).
         val promptLoader = object : PromptLoader {
             override fun load(name: String, params: Map<String, String>): String =
-                PromptSubstitution.substitute("{{dossier}} {{candidates}} {{profession}} {{municipality}} {{agency}}", params)
+                params.values.joinToString(" | ")
         }
         val openRouter = OpenRouterClient(
             client = ok,
@@ -387,9 +390,10 @@ class DossierViewModelTest {
         val ranked = org.json.JSONObject()
             .put("ranked", org.json.JSONArray()
                 .put(org.json.JSONObject().put("ico", "00527149").put("reason", "obor i lokalita")))
+            .toString()
         server.enqueue(
             MockResponse().setBody(
-                """{"choices":[{"message":{"content":${org.json.JSONObject.quote(ranked.toString())}}}]}""",
+                """{"choices":[{"message":{"content":${org.json.JSONObject.quote(ranked)}}}]}""",
             ).setHeader("Content-Type", "application/json"),
         )
         val store = offerStore(offer(9L))
@@ -403,15 +407,22 @@ class DossierViewModelTest {
         assertTrue(vm.state.value.resolverCandidates.isNotEmpty())
 
         vm.rankWithAi()
+        // D6: volání běží na viewModelScope (Main=test dispatcher) + reálné IO
+        // síti — čeká se na start (aiRankingLoading) a pak na konec (výsledek).
         val deadline = System.nanoTime() + 10_000_000_000
         var state = vm.state.value
-        while (System.nanoTime() < deadline) {
+        while (System.nanoTime() < deadline && !state.aiRankingLoading) {
             advanceUntilIdle()
             state = vm.state.value
-            if (!state.aiRankingLoading && state.aiRanking.isNotEmpty()) break
-            if (state.aiRankingError) break
             Thread.sleep(20)
         }
+        while (System.nanoTime() < deadline && state.aiRankingLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        advanceUntilIdle()
+        state = vm.state.value
         assertFalse(state.aiRankingError)
         assertEquals(listOf("00527149"), state.aiRanking.map { it.candidate.company.ico })
         assertEquals("obor i lokalita", state.aiRanking[0].aiReason)
@@ -433,12 +444,18 @@ class DossierViewModelTest {
         vm.rankWithAi()
         val deadline = System.nanoTime() + 10_000_000_000
         var state = vm.state.value
-        while (System.nanoTime() < deadline) {
+        while (System.nanoTime() < deadline && !state.aiRankingLoading) {
             advanceUntilIdle()
             state = vm.state.value
-            if (!state.aiRankingLoading && state.aiRankingError) break
             Thread.sleep(20)
         }
+        while (System.nanoTime() < deadline && state.aiRankingLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        advanceUntilIdle()
+        state = vm.state.value
         assertTrue(state.aiRankingError)
         assertTrue(state.aiRanking.isEmpty())
         assertTrue(state.resolverCandidates.isNotEmpty()) // jádro dál funkční
@@ -449,10 +466,10 @@ class DossierViewModelTest {
         enqueueAgentury()
         enqueueAresDetail("17181879")
         enqueueAresVyhledat()
-        val summary = org.json.JSONObject().put("summary", "• Mzda sedí\n• Ověřit recenze")
+        val summary = org.json.JSONObject().put("summary", "• Mzda sedí\n• Ověřit recenze").toString()
         server.enqueue(
             MockResponse().setBody(
-                """{"choices":[{"message":{"content":${org.json.JSONObject.quote(summary.toString())}}}]}""",
+                """{"choices":[{"message":{"content":${org.json.JSONObject.quote(summary)}}}]}""",
             ).setHeader("Content-Type", "application/json"),
         )
         val store = offerStore(offer(11L))
@@ -465,13 +482,18 @@ class DossierViewModelTest {
         vm.summarizeWithAi()
         val deadline = System.nanoTime() + 10_000_000_000
         var state = vm.state.value
-        while (System.nanoTime() < deadline) {
+        while (System.nanoTime() < deadline && !state.aiSummaryLoading) {
             advanceUntilIdle()
             state = vm.state.value
-            if (!state.aiSummaryLoading && state.aiSummary != null) break
-            if (state.aiSummaryError) break
             Thread.sleep(20)
         }
+        while (System.nanoTime() < deadline && state.aiSummaryLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        advanceUntilIdle()
+        state = vm.state.value
         assertFalse(state.aiSummaryError)
         assertEquals("• Mzda sedí\n• Ověřit recenze", state.aiSummary)
     }

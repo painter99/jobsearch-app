@@ -73,7 +73,8 @@ class DossierSummarizerTest {
 
     @Test
     fun `summarize - success vrací summary`() = runTest {
-        server.enqueue(MockResponse().setBody(aiBody("• Mzda sedí\n• Ověřit recenze")))
+        val summaryJson = org.json.JSONObject().put("summary", "• Mzda sedí\n• Ověřit recenze").toString()
+        server.enqueue(MockResponse().setBody(aiBody(summaryJson)))
         val result = summarizer().summarize(
             apiKey = "sk",
             model = "m",
@@ -95,9 +96,8 @@ class DossierSummarizerTest {
 
     @Test
     fun `summarize - summary ve fence se toleruje`() = runTest {
-        server.enqueue(
-            MockResponse().setBody(aiBody("```json\n{\"summary\":\"• bod\"}\n```")),
-        )
+        val fenced = "```json\n" + org.json.JSONObject().put("summary", "• bod").toString() + "\n```"
+        server.enqueue(MockResponse().setBody(aiBody(fenced)))
         val result = summarizer().summarize("sk", "m", offer(), checklist(), DossierVerdict.GO, "", null, emptyList())
         assertEquals("• bod", (result as FetchResult.Success).data)
     }

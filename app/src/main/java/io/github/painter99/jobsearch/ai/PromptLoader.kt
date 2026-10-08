@@ -30,11 +30,18 @@ object PromptSubstitution {
         for ((key, value) in params) {
             result = result.replace("{{$key}}", value)
         }
-        PLACEHOLDER.find(result)?.let {
-            throw IllegalStateException(
-                "Prompt obsahuje nezsubstituovaný placeholder ${it.value} " +
-                    "(dostupné parametry: ${params.keys})",
-            )
+        // Kontrola proti PŮVODNÍ šabloně: placeholder v raw bez odpovídajícího
+        // parametru = chyba kontraktu promptu. Hodnoty parametrů se
+        // NEinterpretují jako šablona (žádný rekurzivní expand) — literal
+        // `{{y}}` uvnitř hodnoty je legální text.
+        PLACEHOLDER.findAll(raw).forEach { match ->
+            val key = match.value.removePrefix("{{").removeSuffix("}}")
+            if (key !in params) {
+                throw IllegalStateException(
+                    "Prompt obsahuje nezsubstituovaný placeholder ${match.value} " +
+                        "(dostupné parametry: ${params.keys})",
+                )
+            }
         }
         return result
     }

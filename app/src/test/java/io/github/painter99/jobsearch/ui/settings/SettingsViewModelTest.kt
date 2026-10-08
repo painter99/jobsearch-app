@@ -112,8 +112,17 @@ class SettingsViewModelTest {
         apiKeyStore.set("sk-or-v1-existing")
         val vm = viewModel()
         awaitLoaded(vm)
+        assertTrue(vm.state.value.hasKey)
         vm.clearKey()
-        val state = awaitSettled(vm)
+        // clearKey běží na viewModelScope (Main=test dispatcher) + reálné IO
+        // DataStore — polluje se dokud se hasKey nepřepne (vzor awaitSettled).
+        val deadline = System.nanoTime() + 10_000_000_000
+        var state = vm.state.value
+        while (System.nanoTime() < deadline && state.hasKey) {
+            advanceUntilIdle()
+            state = vm.state.value
+            if (state.hasKey) Thread.sleep(20)
+        }
         assertFalse(state.hasKey)
         assertEquals("", state.apiKeyInput)
     }
