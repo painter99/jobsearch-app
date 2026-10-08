@@ -389,7 +389,7 @@ class DossierViewModelTest {
         // AI volání (MockWebServer) — ranked obráceně (IČO z fixture vyhledat)
         val ranked = org.json.JSONObject()
             .put("ranked", org.json.JSONArray()
-                .put(org.json.JSONObject().put("ico", "00527149").put("reason", "obor i lokalita")))
+                .put(org.json.JSONObject().put("ico", "17978351").put("reason", "obor i lokalita")))
             .toString()
         server.enqueue(
             MockResponse().setBody(
@@ -424,7 +424,7 @@ class DossierViewModelTest {
         advanceUntilIdle()
         state = vm.state.value
         assertFalse(state.aiRankingError)
-        assertEquals(listOf("00527149"), state.aiRanking.map { it.candidate.company.ico })
+        assertEquals(listOf("17978351"), state.aiRanking.map { it.candidate.company.ico })
         assertEquals("obor i lokalita", state.aiRanking[0].aiReason)
     }
 
