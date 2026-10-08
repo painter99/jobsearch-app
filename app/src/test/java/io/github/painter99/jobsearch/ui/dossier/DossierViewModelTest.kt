@@ -8,6 +8,11 @@ import io.github.painter99.jobsearch.core.model.Employer
 import io.github.painter99.jobsearch.core.model.JobOffer
 import io.github.painter99.jobsearch.core.model.ShiftPattern
 import io.github.painter99.jobsearch.core.model.WorkLocation
+import io.github.painter99.jobsearch.ai.AiCandidateRanker
+import io.github.painter99.jobsearch.ai.DossierSummarizer
+import io.github.painter99.jobsearch.ai.PromptLoader
+import io.github.painter99.jobsearch.ai.PromptSubstitution
+import io.github.painter99.jobsearch.data.ai.OpenRouterClient
 import io.github.painter99.jobsearch.data.ares.AresClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClient
@@ -16,6 +21,8 @@ import io.github.painter99.jobsearch.data.mpsv.ChangeType
 import io.github.painter99.jobsearch.data.mpsv.FileOfferStore
 import io.github.painter99.jobsearch.data.mpsv.IncrementRecord
 import io.github.painter99.jobsearch.data.mpsv.OfferStore
+import io.github.painter99.jobsearch.data.storage.AiSettings
+import io.github.painter99.jobsearch.data.storage.AiSettingsProvider
 import io.github.painter99.jobsearch.data.storage.CriteriaProvider
 import io.github.painter99.jobsearch.data.storage.LocationProfile
 import io.github.painter99.jobsearch.data.storage.ProfileProvider
@@ -166,6 +173,7 @@ class DossierViewModelTest {
         criteria: io.github.painter99.jobsearch.core.filter.UserCriteria =
             io.github.painter99.jobsearch.core.filter.UserCriteria(40_000, true),
         profile: LocationProfile = LocationProfile(municipalityIds = setOf("Obec/503657")),
+        aiSettings: AiSettings = AiSettings(),
     ): DossierViewModel {
         val ok = OkHttpClient()
         val ares = AresClient(
@@ -179,6 +187,14 @@ class DossierViewModelTest {
         val ciselniky = MpsvCiselnikyClient(
             client = ok,
             obceUrl = server.url("/od/soubory/ciselniky/obce.json").toString(),
+        )
+        val promptLoader = object : PromptLoader {
+            override fun load(name: String, params: Map<String, String>): String =
+                PromptSubstitution.substitute("{{dossier}} {{candidates}} {{profession}} {{municipality}} {{agency}}", params)
+        }
+        val openRouter = OpenRouterClient(
+            client = ok,
+            baseUrl = server.url("/api/v1").toString(),
         )
         return DossierViewModel(
             offerStore = store,
@@ -195,6 +211,11 @@ class DossierViewModelTest {
             aresClient = ares,
             municipalityRepository = MunicipalityRepository(ciselniky),
             clock = Clock.fixed(Instant.parse("2026-10-07T12:00:00Z"), ZoneId.of("Europe/Prague")),
+            aiSettingsProvider = object : AiSettingsProvider {
+                override suspend fun load() = aiSettings
+            },
+            aiCandidateRanker = AiCandidateRanker(openRouter, promptLoader),
+            dossierSummarizer = DossierSummarizer(openRouter, promptLoader),
         )
     }
 
@@ -327,6 +348,132 @@ class DossierViewModelTest {
         val state = awaitSettled(vm)
         assertTrue(state.loadError)
         assertNull(state.offer)
+    }
+
+    // --- M1.7 AI (T3/T5) ---
+
+    @Test
+    fun `load - bez klíče AI sekce skrytá (AC4)`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        val store = offerStore(offer(7L))
+        val vm = viewModel(store, aiSettings = AiSettings(apiKey = null, tosConsent = true))
+        vm.load("mpsv/7")
+        val state = awaitSettled(vm)
+        assertFalse(state.aiAvailable)
+        assertTrue(state.aiRanking.isEmpty())
+        assertEquals(null, state.aiSummary)
+    }
+
+    @Test
+    fun `load - klíč bez souhlasu s ToS → AI sekce skrytá (§5.2)`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        val store = offerStore(offer(8L))
+        val vm = viewModel(store, aiSettings = AiSettings(apiKey = "sk-test", tosConsent = false))
+        vm.load("mpsv/8")
+        val state = awaitSettled(vm)
+        assertFalse(state.aiAvailable)
+    }
+
+    @Test
+    fun `rankWithAi - přeřadí kandidáty (D6 jen na tlačítko)`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        // AI volání (MockWebServer) — ranked obráceně (IČO z fixture vyhledat)
+        val ranked = org.json.JSONObject()
+            .put("ranked", org.json.JSONArray()
+                .put(org.json.JSONObject().put("ico", "00527149").put("reason", "obor i lokalita")))
+        server.enqueue(
+            MockResponse().setBody(
+                """{"choices":[{"message":{"content":${org.json.JSONObject.quote(ranked.toString())}}}]}""",
+            ).setHeader("Content-Type", "application/json"),
+        )
+        val store = offerStore(offer(9L))
+        val vm = viewModel(
+            store,
+            aiSettings = AiSettings(apiKey = "sk-test", tosConsent = true, rankerModel = "test/model"),
+        )
+        vm.load("mpsv/9")
+        awaitSettled(vm)
+        assertTrue(vm.state.value.aiAvailable)
+        assertTrue(vm.state.value.resolverCandidates.isNotEmpty())
+
+        vm.rankWithAi()
+        val deadline = System.nanoTime() + 10_000_000_000
+        var state = vm.state.value
+        while (System.nanoTime() < deadline) {
+            advanceUntilIdle()
+            state = vm.state.value
+            if (!state.aiRankingLoading && state.aiRanking.isNotEmpty()) break
+            if (state.aiRankingError) break
+            Thread.sleep(20)
+        }
+        assertFalse(state.aiRankingError)
+        assertEquals(listOf("00527149"), state.aiRanking.map { it.candidate.company.ico })
+        assertEquals("obor i lokalita", state.aiRanking[0].aiReason)
+    }
+
+    @Test
+    fun `rankWithAi - AI selže → error, deterministický seznam zůstává`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        server.enqueue(MockResponse().setResponseCode(429)) // AI rate limit
+        val store = offerStore(offer(10L))
+        val vm = viewModel(
+            store,
+            aiSettings = AiSettings(apiKey = "sk-test", tosConsent = true, rankerModel = "test/model"),
+        )
+        vm.load("mpsv/10")
+        awaitSettled(vm)
+        vm.rankWithAi()
+        val deadline = System.nanoTime() + 10_000_000_000
+        var state = vm.state.value
+        while (System.nanoTime() < deadline) {
+            advanceUntilIdle()
+            state = vm.state.value
+            if (!state.aiRankingLoading && state.aiRankingError) break
+            Thread.sleep(20)
+        }
+        assertTrue(state.aiRankingError)
+        assertTrue(state.aiRanking.isEmpty())
+        assertTrue(state.resolverCandidates.isNotEmpty()) // jádro dál funkční
+    }
+
+    @Test
+    fun `summarizeWithAi - vrátí summary s disclaimerem v UI stavu`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        val summary = org.json.JSONObject().put("summary", "• Mzda sedí\n• Ověřit recenze")
+        server.enqueue(
+            MockResponse().setBody(
+                """{"choices":[{"message":{"content":${org.json.JSONObject.quote(summary.toString())}}}]}""",
+            ).setHeader("Content-Type", "application/json"),
+        )
+        val store = offerStore(offer(11L))
+        val vm = viewModel(
+            store,
+            aiSettings = AiSettings(apiKey = "sk-test", tosConsent = true, summarizerModel = "test/model"),
+        )
+        vm.load("mpsv/11")
+        awaitSettled(vm)
+        vm.summarizeWithAi()
+        val deadline = System.nanoTime() + 10_000_000_000
+        var state = vm.state.value
+        while (System.nanoTime() < deadline) {
+            advanceUntilIdle()
+            state = vm.state.value
+            if (!state.aiSummaryLoading && state.aiSummary != null) break
+            if (state.aiSummaryError) break
+            Thread.sleep(20)
+        }
+        assertFalse(state.aiSummaryError)
+        assertEquals("• Mzda sedí\n• Ověřit recenze", state.aiSummary)
     }
 
 }

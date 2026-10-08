@@ -30,6 +30,7 @@ import io.github.painter99.jobsearch.ui.theme.key
 fun OffersRoute(
     onOpenDossier: (String) -> Unit,
     onManageLocations: () -> Unit,
+    onOpenSettings: () -> Unit,
     viewModel: OffersViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsState()
@@ -40,6 +41,7 @@ fun OffersRoute(
             onOpenDossier(offer.key())
         },
         onManageLocations = onManageLocations,
+        onOpenSettings = onOpenSettings,
         onSync = viewModel::syncDaily,
         onDownloadBootstrap = viewModel::downloadBootstrap,
         onRetry = viewModel::refresh,
@@ -54,6 +56,7 @@ fun OffersScreen(
     state: OffersUiState,
     onOpenDossier: (JobOffer) -> Unit,
     onManageLocations: () -> Unit,
+    onOpenSettings: () -> Unit,
     onSync: () -> Unit,
     onDownloadBootstrap: () -> Unit,
     onRetry: () -> Unit,
@@ -65,8 +68,13 @@ fun OffersScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(text = "Nabídky (${state.offers.size})", style = MaterialTheme.typography.titleLarge)
-            androidx.compose.material3.TextButton(onClick = onManageLocations) {
-                Text(text = "Lokality")
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                androidx.compose.material3.TextButton(onClick = onManageLocations) {
+                    Text(text = "Lokality")
+                }
+                androidx.compose.material3.TextButton(onClick = onOpenSettings) {
+                    Text(text = "Nastavení")
+                }
             }
         }
         Text(
