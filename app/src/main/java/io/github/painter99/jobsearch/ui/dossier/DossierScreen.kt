@@ -54,6 +54,8 @@ fun DossierDetailRoute(
         onVerdict = viewModel::setVerdict,
         onNotes = viewModel::setNotes,
         onToggleChecklist = viewModel::toggleChecklist,
+        onRankWithAi = viewModel::rankWithAi,
+        onSummarizeWithAi = viewModel::summarizeWithAi,
     )
 }
 
@@ -65,6 +67,8 @@ fun DossierDetailScreen(
     onVerdict: (DossierVerdict) -> Unit,
     onNotes: (String) -> Unit,
     onToggleChecklist: (String) -> Unit,
+    onRankWithAi: () -> Unit = {},
+    onSummarizeWithAi: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -86,7 +90,10 @@ fun DossierDetailScreen(
                     ChecklistSection(state = state, onToggle = onToggleChecklist)
                     NotesSection(notes = state.notes, onNotes = onNotes)
                     VerdictSection(verdict = state.verdict, onVerdict = onVerdict)
-                    AgencySection(state = state)
+                    AgencySection(state = state, onRankWithAi = onRankWithAi)
+                    if (state.aiAvailable) {
+                        AiSummarySection(state = state, onSummarize = onSummarizeWithAi)
+                    }
                 }
             }
         }
@@ -202,11 +209,45 @@ private fun VerdictSection(verdict: DossierVerdict, onVerdict: (DossierVerdict) 
 }
 
 /**
- * Agenturní sekce: status vždy (US1), kandidáti resolveru jen u agentur
- * (US2, N7 — „appka navrhuje, potvrzuje uživatel").
+ * AI shrnutí dossieru (T4) — jen s klíčem + souhlasem (AC4), tlačítkem (D6).
+ * Disclaimer ToS §16: AI doporučuje, nerozhoduje — vždy viditelný v UI.
  */
 @Composable
-private fun AgencySection(state: DossierUiState) {
+private fun AiSummarySection(state: DossierUiState, onSummarize: () -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(text = "AI shrnutí (volitelné)", style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = "AI doporučuje, nerozhoduje — verdikt je vždy tvůj.",
+                style = MaterialTheme.typography.bodySmall,
+            )
+            when {
+                state.aiSummaryLoading -> CircularProgressIndicator()
+                state.aiSummaryError -> Text(
+                    text = "AI shrnutí selhalo (síť/klíč/limit). Zkusit znovu tlačítkem.",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                state.aiSummary != null -> Text(
+                    text = state.aiSummary,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+            if (!state.aiSummaryLoading) {
+                TextButton(onClick = onSummarize) {
+                    Text(text = if (state.aiSummary == null) "Shrnutí AI (spotřebuje tokeny)" else "Znovu shrnout")
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Agenturní sekce: status vždy (US1), kandidáti resolveru jen u agentur
+ * (US2, N7 — „appka navrhuje, potvrzuje uživatel"). AI přeřazení (T3)
+ * jen s klíčem + souhlasem (AC4), tlačítkem (D6).
+ */
+@Composable
+private fun AgencySection(state: DossierUiState, onRankWithAi: () -> Unit = {}) {
     val status = state.agencyStatus ?: return
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -248,20 +289,53 @@ private fun AgencySection(state: DossierUiState) {
                     state.resolverCandidates.forEach { candidate ->
                         CandidateRow(candidate = candidate)
                     }
+                    if (state.aiAvailable && state.aiRanking.isNotEmpty()) {
+                        Text(
+                            text = "AI přeřazení (návrh, potvrzuješ ty):",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                        state.aiRanking.forEach { ranked ->
+                            CandidateRow(
+                                candidate = ranked.candidate,
+                                extraReason = ranked.aiReason,
+                            )
+                        }
+                    }
+                    if (state.aiAvailable) {
+                        if (state.aiRankingLoading) {
+                            CircularProgressIndicator()
+                        } else {
+                            TextButton(onClick = onRankWithAi) {
+                                Text(text = "Přeřadit AI (spotřebuje tokeny)")
+                            }
+                        }
+                        if (state.aiRankingError) {
+                            Text(
+                                text = "AI přeřazení selhalo (síť/klíč/limit). Kandidáti zůstávají dle skóre.",
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-/** Řádka kandidáta resolveru: skóre + název + zdůvodnění (N7). */
+/**
+ * Řádka kandidáta resolveru: skóre + název + zdůvodnění (N7).
+ * [extraReason] = AI zdůvodnění (M1.7 T3), jinak důvody resolveru.
+ */
 @Composable
-private fun CandidateRow(candidate: ResolverCandidate) {
+private fun CandidateRow(candidate: ResolverCandidate, extraReason: String? = null) {
     Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
         Text(
             text = "${candidate.company.businessName} (skóre ${candidate.score})",
             style = MaterialTheme.typography.bodyMedium,
         )
+        if (extraReason != null) {
+            Text(text = "• AI: $extraReason", style = MaterialTheme.typography.bodySmall)
+        }
         candidate.reasons.forEach { reason ->
             Text(text = "• $reason", style = MaterialTheme.typography.bodySmall)
         }

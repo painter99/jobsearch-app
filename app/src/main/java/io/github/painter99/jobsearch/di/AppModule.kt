@@ -96,4 +96,46 @@ object AppModule {
         aresClient: io.github.painter99.jobsearch.data.ares.AresClient,
     ): io.github.painter99.jobsearch.pipeline.EndEmployerResolver =
         io.github.painter99.jobsearch.pipeline.EndEmployerResolver(aresClient)
+
+    @Provides
+    @Singleton
+    fun provideAiSettingsStore(
+        dataStore: androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>,
+        apiKeyStore: io.github.painter99.jobsearch.data.storage.ApiKeyStore,
+    ): io.github.painter99.jobsearch.data.storage.AiSettingsStore =
+        io.github.painter99.jobsearch.data.storage.AiSettingsStore(dataStore, apiKeyStore)
+
+    @Provides
+    @Singleton
+    fun provideAiSettingsProvider(
+        store: io.github.painter99.jobsearch.data.storage.AiSettingsStore,
+    ): io.github.painter99.jobsearch.data.storage.AiSettingsProvider = store
+
+    @Provides
+    @Singleton
+    fun providePromptLoader(
+        @ApplicationContext context: Context,
+    ): io.github.painter99.jobsearch.ai.PromptLoader =
+        io.github.painter99.jobsearch.ai.AssetPromptLoader(context.assets)
+
+    @Provides
+    @Singleton
+    fun provideOpenRouterClient(client: OkHttpClient): io.github.painter99.jobsearch.data.ai.OpenRouterClient =
+        io.github.painter99.jobsearch.data.ai.OpenRouterClient(client)
+
+    @Provides
+    @Singleton
+    fun provideAiCandidateRanker(
+        client: io.github.painter99.jobsearch.data.ai.OpenRouterClient,
+        promptLoader: io.github.painter99.jobsearch.ai.PromptLoader,
+    ): io.github.painter99.jobsearch.ai.AiCandidateRanker =
+        io.github.painter99.jobsearch.ai.AiCandidateRanker(client, promptLoader)
+
+    @Provides
+    @Singleton
+    fun provideDossierSummarizer(
+        client: io.github.painter99.jobsearch.data.ai.OpenRouterClient,
+        promptLoader: io.github.painter99.jobsearch.ai.PromptLoader,
+    ): io.github.painter99.jobsearch.ai.DossierSummarizer =
+        io.github.painter99.jobsearch.ai.DossierSummarizer(client, promptLoader)
 }

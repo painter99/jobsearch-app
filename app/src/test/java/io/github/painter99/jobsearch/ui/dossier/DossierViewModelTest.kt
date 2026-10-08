@@ -8,6 +8,10 @@ import io.github.painter99.jobsearch.core.model.Employer
 import io.github.painter99.jobsearch.core.model.JobOffer
 import io.github.painter99.jobsearch.core.model.ShiftPattern
 import io.github.painter99.jobsearch.core.model.WorkLocation
+import io.github.painter99.jobsearch.ai.AiCandidateRanker
+import io.github.painter99.jobsearch.ai.DossierSummarizer
+import io.github.painter99.jobsearch.ai.PromptLoader
+import io.github.painter99.jobsearch.data.ai.OpenRouterClient
 import io.github.painter99.jobsearch.data.ares.AresClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClient
 import io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClient
@@ -16,6 +20,8 @@ import io.github.painter99.jobsearch.data.mpsv.ChangeType
 import io.github.painter99.jobsearch.data.mpsv.FileOfferStore
 import io.github.painter99.jobsearch.data.mpsv.IncrementRecord
 import io.github.painter99.jobsearch.data.mpsv.OfferStore
+import io.github.painter99.jobsearch.data.storage.AiSettings
+import io.github.painter99.jobsearch.data.storage.AiSettingsProvider
 import io.github.painter99.jobsearch.data.storage.CriteriaProvider
 import io.github.painter99.jobsearch.data.storage.LocationProfile
 import io.github.painter99.jobsearch.data.storage.ProfileProvider
@@ -166,6 +172,7 @@ class DossierViewModelTest {
         criteria: io.github.painter99.jobsearch.core.filter.UserCriteria =
             io.github.painter99.jobsearch.core.filter.UserCriteria(40_000, true),
         profile: LocationProfile = LocationProfile(municipalityIds = setOf("Obec/503657")),
+        aiSettings: AiSettings = AiSettings(),
     ): DossierViewModel {
         val ok = OkHttpClient()
         val ares = AresClient(
@@ -179,6 +186,18 @@ class DossierViewModelTest {
         val ciselniky = MpsvCiselnikyClient(
             client = ok,
             obceUrl = server.url("/od/soubory/ciselniky/obce.json").toString(),
+        )
+        // Fake loader pro VM test: vrací jen hodnoty parametrů (VM test neověřuje
+        // kontrakt promptu — ten pokrývá PromptSubstitutionTest; lekce CI #37:
+        // šablona s cizími placeholdery vyhodila IllegalStateException uvnitř
+        // viewModelScope a test uvízl v aiRankingLoading).
+        val promptLoader = object : PromptLoader {
+            override fun load(name: String, params: Map<String, String>): String =
+                params.values.joinToString(" | ")
+        }
+        val openRouter = OpenRouterClient(
+            client = ok,
+            baseUrl = server.url("/api/v1").toString(),
         )
         return DossierViewModel(
             offerStore = store,
@@ -195,6 +214,11 @@ class DossierViewModelTest {
             aresClient = ares,
             municipalityRepository = MunicipalityRepository(ciselniky),
             clock = Clock.fixed(Instant.parse("2026-10-07T12:00:00Z"), ZoneId.of("Europe/Prague")),
+            aiSettingsProvider = object : AiSettingsProvider {
+                override suspend fun load() = aiSettings
+            },
+            aiCandidateRanker = AiCandidateRanker(openRouter, promptLoader),
+            dossierSummarizer = DossierSummarizer(openRouter, promptLoader),
         )
     }
 
@@ -327,6 +351,152 @@ class DossierViewModelTest {
         val state = awaitSettled(vm)
         assertTrue(state.loadError)
         assertNull(state.offer)
+    }
+
+    // --- M1.7 AI (T3/T5) ---
+
+    @Test
+    fun `load - bez klíče AI sekce skrytá (AC4)`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        val store = offerStore(offer(7L))
+        val vm = viewModel(store, aiSettings = AiSettings(apiKey = null, tosConsent = true))
+        vm.load("mpsv/7")
+        val state = awaitSettled(vm)
+        assertFalse(state.aiAvailable)
+        assertTrue(state.aiRanking.isEmpty())
+        assertEquals(null, state.aiSummary)
+    }
+
+    @Test
+    fun `load - klíč bez souhlasu s ToS → AI sekce skrytá (souhlas chybí)`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        val store = offerStore(offer(8L))
+        val vm = viewModel(store, aiSettings = AiSettings(apiKey = "sk-test", tosConsent = false))
+        vm.load("mpsv/8")
+        val state = awaitSettled(vm)
+        assertFalse(state.aiAvailable)
+    }
+
+    @Test
+    fun `rankWithAi - přeřadí kandidáty (D6 jen na tlačítko)`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        // AI volání (MockWebServer) — IČO skutečného top-5 kandidáta resolveru
+        // (AISIN 26052377, score 3.0 — NACE shoda + rodinná právní forma)
+        val ranked = org.json.JSONObject()
+            .put("ranked", org.json.JSONArray()
+                .put(org.json.JSONObject().put("ico", "26052377").put("reason", "obor i lokalita")))
+            .toString()
+        server.enqueue(
+            MockResponse().setBody(
+                """{"choices":[{"message":{"content":${org.json.JSONObject.quote(ranked)}}}]}""",
+            ).setHeader("Content-Type", "application/json"),
+        )
+        val store = offerStore(offer(9L))
+        val vm = viewModel(
+            store,
+            aiSettings = AiSettings(apiKey = "sk-test", tosConsent = true, rankerModel = "test/model"),
+        )
+        vm.load("mpsv/9")
+        awaitSettled(vm)
+        assertTrue(vm.state.value.aiAvailable)
+        assertTrue(vm.state.value.resolverCandidates.isNotEmpty())
+
+        vm.rankWithAi()
+        // D6: volání běží na viewModelScope (Main=test dispatcher) + reálné IO
+        // síti — čeká se na start (aiRankingLoading) a pak na konec (výsledek).
+        val deadline = System.nanoTime() + 10_000_000_000
+        var state = vm.state.value
+        while (System.nanoTime() < deadline && !state.aiRankingLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        while (System.nanoTime() < deadline && state.aiRankingLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        advanceUntilIdle()
+        state = vm.state.value
+        assertFalse(state.aiRankingError)
+        assertEquals(listOf("26052377"), state.aiRanking.map { it.candidate.company.ico })
+        assertEquals("obor i lokalita", state.aiRanking[0].aiReason)
+    }
+
+    @Test
+    fun `rankWithAi - AI selže → error, deterministický seznam zůstává`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        server.enqueue(MockResponse().setResponseCode(429)) // AI rate limit
+        val store = offerStore(offer(10L))
+        val vm = viewModel(
+            store,
+            aiSettings = AiSettings(apiKey = "sk-test", tosConsent = true, rankerModel = "test/model"),
+        )
+        vm.load("mpsv/10")
+        awaitSettled(vm)
+        vm.rankWithAi()
+        val deadline = System.nanoTime() + 10_000_000_000
+        var state = vm.state.value
+        while (System.nanoTime() < deadline && !state.aiRankingLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        while (System.nanoTime() < deadline && state.aiRankingLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        advanceUntilIdle()
+        state = vm.state.value
+        assertTrue(state.aiRankingError)
+        assertTrue(state.aiRanking.isEmpty())
+        assertTrue(state.resolverCandidates.isNotEmpty()) // jádro dál funkční
+    }
+
+    @Test
+    fun `summarizeWithAi - vrátí summary s disclaimerem v UI stavu`() = runTest(dispatcher) {
+        enqueueAgentury()
+        enqueueAresDetail("17181879")
+        enqueueAresVyhledat()
+        val summary = org.json.JSONObject().put("summary", "• Mzda sedí\n• Ověřit recenze").toString()
+        server.enqueue(
+            MockResponse().setBody(
+                """{"choices":[{"message":{"content":${org.json.JSONObject.quote(summary)}}}]}""",
+            ).setHeader("Content-Type", "application/json"),
+        )
+        val store = offerStore(offer(11L))
+        val vm = viewModel(
+            store,
+            aiSettings = AiSettings(apiKey = "sk-test", tosConsent = true, summarizerModel = "test/model"),
+        )
+        vm.load("mpsv/11")
+        awaitSettled(vm)
+        vm.summarizeWithAi()
+        val deadline = System.nanoTime() + 10_000_000_000
+        var state = vm.state.value
+        while (System.nanoTime() < deadline && !state.aiSummaryLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        while (System.nanoTime() < deadline && state.aiSummaryLoading) {
+            advanceUntilIdle()
+            state = vm.state.value
+            Thread.sleep(20)
+        }
+        advanceUntilIdle()
+        state = vm.state.value
+        assertFalse(state.aiSummaryError)
+        assertEquals("• Mzda sedí\n• Ověřit recenze", state.aiSummary)
     }
 
 }

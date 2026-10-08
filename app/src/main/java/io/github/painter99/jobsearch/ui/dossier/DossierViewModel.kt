@@ -2,12 +2,16 @@ package io.github.painter99.jobsearch.ui.dossier
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.painter99.jobsearch.ai.AiCandidateRanker
+import io.github.painter99.jobsearch.ai.DossierSummarizer
+import io.github.painter99.jobsearch.ai.RankedCandidate
 import io.github.painter99.jobsearch.core.model.DossierVerdict
 import io.github.painter99.jobsearch.core.model.JobOffer
 import io.github.painter99.jobsearch.data.FetchResult
 import io.github.painter99.jobsearch.data.ares.AresClient
 import io.github.painter99.jobsearch.data.mpsv.MunicipalityRepository
 import io.github.painter99.jobsearch.data.mpsv.OfferStore
+import io.github.painter99.jobsearch.data.storage.AiSettingsProvider
 import io.github.painter99.jobsearch.data.storage.CriteriaProvider
 import io.github.painter99.jobsearch.data.storage.ProfileProvider
 import io.github.painter99.jobsearch.db.ChecklistDao
@@ -47,6 +51,18 @@ data class DossierUiState(
     val resolverError: Boolean = false,
     /** Proč kandidáty nenabízíme (bez oborové stopy) — null = důvod není. */
     val resolverNote: String? = null,
+    /** Lokalita použitá resolverem (pro AI prompt); null = neuvedena. */
+    val resolverMunicipality: String? = null,
+    /** AI dostupné = klíč uložen + souhlas s ToS (AC4/§5.2); jinak sekce skrytá. */
+    val aiAvailable: Boolean = false,
+    /** AI přeřazení kandidátů (T3); prázdný = ještě neběželo. */
+    val aiRanking: List<RankedCandidate> = emptyList(),
+    val aiRankingLoading: Boolean = false,
+    val aiRankingError: Boolean = false,
+    /** AI shrnutí dossieru (T4); null = ještě neběželo. */
+    val aiSummary: String? = null,
+    val aiSummaryLoading: Boolean = false,
+    val aiSummaryError: Boolean = false,
     val loadError: Boolean = false,
 )
 
@@ -75,6 +91,9 @@ class DossierViewModel @Inject constructor(
     private val aresClient: AresClient,
     private val municipalityRepository: MunicipalityRepository,
     private val clock: Clock,
+    private val aiSettingsProvider: AiSettingsProvider,
+    private val aiCandidateRanker: AiCandidateRanker,
+    private val dossierSummarizer: DossierSummarizer,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DossierUiState())
@@ -115,12 +134,14 @@ class DossierViewModel @Inject constructor(
                     autoFilled = autoFilled,
                 )
             }
+            val aiAvailable = aiSettingsProvider.load().aiAvailable
             _state.update {
                 it.copy(
                     offer = offer,
                     verdict = DossierVerdict.fromName(dossier.verdict),
                     notes = dossier.notes,
                     checklist = rows,
+                    aiAvailable = aiAvailable,
                 )
             }
             // Agenturní sekce běží ještě pod loading — první načtení je hotové
@@ -164,6 +185,64 @@ class DossierViewModel @Inject constructor(
                         if (it.item.key == key) it.copy(checked = newValue) else it
                     },
                 )
+            }
+        }
+    }
+
+    /**
+     * AI přeřazení kandidátů (T3, D6 — jen na explicitní tlačítko).
+     * Bez klíče/souhlasu se nezobrazí (AC4); AI výstup = stále návrh (N7).
+     */
+    fun rankWithAi() {
+        val offer = _state.value.offer ?: return
+        val candidates = _state.value.resolverCandidates
+        if (candidates.isEmpty() || _state.value.aiRankingLoading) return
+        viewModelScope.launch {
+            val settings = aiSettingsProvider.load()
+            val key = settings.apiKey
+            if (key.isNullOrBlank() || !settings.tosConsent) return@launch
+            _state.update { it.copy(aiRankingLoading = true, aiRankingError = false, aiRanking = emptyList()) }
+            when (
+                val r = aiCandidateRanker.rank(
+                    apiKey = key,
+                    model = settings.rankerModel,
+                    profession = offer.profession,
+                    municipality = _state.value.resolverMunicipality ?: "neuvedena",
+                    agencyName = _state.value.agencyName ?: offer.employer?.name ?: "neuvedena",
+                    candidates = candidates,
+                )
+            ) {
+                is FetchResult.Success ->
+                    _state.update { it.copy(aiRankingLoading = false, aiRanking = r.data) }
+                else -> _state.update { it.copy(aiRankingLoading = false, aiRankingError = true) }
+            }
+        }
+    }
+
+    /** AI shrnutí dossieru (T4, D6 — jen na explicitní tlačítko). */
+    fun summarizeWithAi() {
+        val offer = _state.value.offer ?: return
+        if (_state.value.aiSummaryLoading) return
+        viewModelScope.launch {
+            val settings = aiSettingsProvider.load()
+            val key = settings.apiKey
+            if (key.isNullOrBlank() || !settings.tosConsent) return@launch
+            _state.update { it.copy(aiSummaryLoading = true, aiSummaryError = false, aiSummary = null) }
+            when (
+                val r = dossierSummarizer.summarize(
+                    apiKey = key,
+                    model = settings.summarizerModel,
+                    offer = offer,
+                    checklist = _state.value.checklist,
+                    verdict = _state.value.verdict,
+                    notes = _state.value.notes,
+                    agencyName = _state.value.agencyName,
+                    candidates = _state.value.resolverCandidates,
+                )
+            ) {
+                is FetchResult.Success ->
+                    _state.update { it.copy(aiSummaryLoading = false, aiSummary = r.data) }
+                else -> _state.update { it.copy(aiSummaryLoading = false, aiSummaryError = true) }
             }
         }
     }
@@ -216,9 +295,16 @@ class DossierViewModel @Inject constructor(
             }
             return
         }
+        val municipalityName = hints.municipalityName
         when (val result = resolver.resolve(hints)) {
             is FetchResult.Success ->
-                _state.update { it.copy(resolverLoading = false, resolverCandidates = result.data) }
+                _state.update {
+                    it.copy(
+                        resolverLoading = false,
+                        resolverCandidates = result.data,
+                        resolverMunicipality = municipalityName,
+                    )
+                }
             else -> _state.update { it.copy(resolverLoading = false, resolverError = true) }
         }
     }
