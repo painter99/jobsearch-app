@@ -1,4 +1,4 @@
-# CI run 39 — commit fe84f4d — m1.7-ai
+# CI run 40 — commit c3ab4ab — m1.7-ai
 
 ===== build_output.txt =====
 Downloading https://services.gradle.org/distributions/gradle-8.9-bin.zip
@@ -28,10 +28,10 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
-> Task :app:javaPreCompileDebug
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
 > Task :app:javaPreCompileDebugUnitTest
+> Task :app:processDebugManifestForPackage
+> Task :app:javaPreCompileDebug
 > Task :app:processDebugResources
 > Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
@@ -52,15 +52,15 @@ w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/git
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:315:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:337:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:341:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:415:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:420:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:424:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:448:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:453:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:457:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:486:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:491:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
-w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:495:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:416:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:421:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:425:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:449:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:454:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:458:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:487:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:492:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/dossier/DossierViewModelTest.kt:496:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/locations/LocationsViewModelTest.kt:50:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/locations/LocationsViewModelTest.kt:57:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
 w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/github/painter99/jobsearch/ui/locations/LocationsViewModelTest.kt:94:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
@@ -81,220 +81,96 @@ w: file:///home/runner/work/jobsearch-app/jobsearch-app/app/src/test/java/io/git
 > Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
 > Task :app:processDebugUnitTestJavaRes
 > Task :app:transformDebugUnitTestClassesWithAsm
-
 > Task :app:testDebugUnitTest
 
-DossierViewModelTest > rankWithAi - přeřadí kandidáty (D6 jen na tlačítko) FAILED
-    java.lang.AssertionError at DossierViewModelTest.kt:385
-
-216 tests completed, 1 failed
-
-> Task :app:testDebugUnitTest FAILED
-
-FAILURE: Build failed with an exception.
-
-* What went wrong:
-Execution failed for task ':app:testDebugUnitTest'.
-> There were failing tests. See the report at: file:///home/runner/work/jobsearch-app/jobsearch-app/app/build/reports/tests/testDebugUnitTest/index.html
-
-* Try:
-> Run with --scan to get full insights.
-
-* Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:testDebugUnitTest'.
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
-	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
-	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
-	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
-	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
-	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
-	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
-	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
-	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
-	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
-	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
-	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There were failing tests. See the report at: file:///home/runner/work/jobsearch-app/jobsearch-app/app/build/reports/tests/testDebugUnitTest/index.html
-	at org.gradle.api.tasks.testing.AbstractTestTask.handleTestFailures(AbstractTestTask.java:705)
-	at org.gradle.api.tasks.testing.AbstractTestTask.handleCollectedResults(AbstractTestTask.java:539)
-	at org.gradle.api.tasks.testing.AbstractTestTask.executeTests(AbstractTestTask.java:534)
-	at org.gradle.api.tasks.testing.Test.executeTests(Test.java:715)
-	at com.android.build.gradle.tasks.factory.AndroidUnitTest.executeTests(AndroidUnitTest.java:171)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
-	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.doExecute(StandardTaskAction.java:58)
-	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:51)
-	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:29)
-	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:47)
-	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
-	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
-	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
-	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
-	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
-	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
-	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
-	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
-	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
-	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
-	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
-	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
-	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
-	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
-	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
-	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
-	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
-	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
-	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
-	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
-	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
-	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
-	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
-	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
-	at org.gradle.internal.Either$Right.fold(Either.java:175)
-	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
-	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
-	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
-	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
-	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
-	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
-	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
-	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
-	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
-	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
-	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
-	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
-	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
-	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
-	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
-	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
-	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
-	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:105)
-	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:54)
-	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
-	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
-	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
-	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:61)
-	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
-	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
-	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
-	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
-	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
-	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
-	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
-	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
-	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
-	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
-	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
-	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
-	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
-	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
-	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
-	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
-	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
-	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
-	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
-	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
-	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
-	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
-	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
-	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
-	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
-	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
-	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
-	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
-	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
-	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-
-
-BUILD FAILED in 1m 55s
+BUILD SUCCESSFUL in 2m 16s
 30 actionable tasks: 30 executed
 
+===== apk_build_output.txt =====
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:kspDebugKotlin UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:hiltAggregateDepsDebug UP-TO-DATE
+> Task :app:hiltJavaCompileDebug UP-TO-DATE
+> Task :app:transformDebugClassesWithAsm UP-TO-DATE
+> Task :app:dexBuilderDebug
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugGlobalSynthetics
+> Task :app:mergeDebugJniLibFolders
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugNativeLibs
+> Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJavaResource
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so.
+
+> Task :app:mergeProjectDexDebug
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeExtDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+BUILD SUCCESSFUL in 35s
+40 actionable tasks: 19 executed, 21 up-to-date
+
 ===== junit summary =====
-<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:21" hostname="runnervm8df0l" time="0.037">
-<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.012">
-<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.012">
-<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.001">
-<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.006">
-<testsuite name="io.github.painter99.jobsearch.ai.AiCandidateRankerTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.354">
-<testsuite name="io.github.painter99.jobsearch.ai.DossierSummarizerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.024">
-<testsuite name="io.github.painter99.jobsearch.ai.PromptSubstitutionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.002">
-<testsuite name="io.github.painter99.jobsearch.data.ai.OpenRouterClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.019">
-<testsuite name="io.github.painter99.jobsearch.data.ai.TolerantJsonTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.0">
-<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.059">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.002">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.FileOfferStoreTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.039">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.IncrementParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.004">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.025">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.029">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvOffersClientTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.043">
-<testsuite name="io.github.painter99.jobsearch.data.mpsv.MunicipalityRepositoryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.055">
-<testsuite name="io.github.painter99.jobsearch.data.pracecz.PraceCzClientTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.078">
-<testsuite name="io.github.painter99.jobsearch.data.storage.AiSettingsStoreTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.104">
-<testsuite name="io.github.painter99.jobsearch.data.storage.DataStoreStoresTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:22" hostname="runnervm8df0l" time="0.329">
-<testsuite name="io.github.painter99.jobsearch.data.storage.ProfileStoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:23" hostname="runnervm8df0l" time="0.109">
-<testsuite name="io.github.painter99.jobsearch.db.RoomDatabasesTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:23" hostname="runnervm8df0l" time="6.553">
-<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:30" hostname="runnervm8df0l" time="0.079">
-<testsuite name="io.github.painter99.jobsearch.pipeline.EndEmployerResolverTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:30" hostname="runnervm8df0l" time="0.013">
-<testsuite name="io.github.painter99.jobsearch.pipeline.OfferDedupeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:30" hostname="runnervm8df0l" time="0.005">
-<testsuite name="io.github.painter99.jobsearch.pipeline.OfferSyncEngineTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:30" hostname="runnervm8df0l" time="0.155">
-<testsuite name="io.github.painter99.jobsearch.ui.dossier.ChecklistTemplateTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:30" hostname="runnervm8df0l" time="0.001">
-<testsuite name="io.github.painter99.jobsearch.ui.dossier.DossierViewModelTest" tests="11" skipped="0" failures="1" errors="0" timestamp="2026-10-08T07:41:30" hostname="runnervm8df0l" time="2.967">
-    <failure message="java.lang.AssertionError" type="java.lang.AssertionError">java.lang.AssertionError
-<testsuite name="io.github.painter99.jobsearch.ui.locations.LocationsViewModelTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:33" hostname="runnervm8df0l" time="0.349">
-<testsuite name="io.github.painter99.jobsearch.ui.offers.OffersViewModelTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:33" hostname="runnervm8df0l" time="0.123">
-<testsuite name="io.github.painter99.jobsearch.ui.settings.SettingsViewModelTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:41:33" hostname="runnervm8df0l" time="0.51">
+<testsuite name="io.github.painter99.jobsearch.BenefitsChecklistTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:51" hostname="runnervmmprz5" time="0.02">
+<testsuite name="io.github.painter99.jobsearch.LocationFilterTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:51" hostname="runnervmmprz5" time="0.011">
+<testsuite name="io.github.painter99.jobsearch.MpsvRecordParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:51" hostname="runnervmmprz5" time="0.011">
+<testsuite name="io.github.painter99.jobsearch.SmokeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.001">
+<testsuite name="io.github.painter99.jobsearch.UserCriteriaTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.004">
+<testsuite name="io.github.painter99.jobsearch.ai.AiCandidateRankerTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.258">
+<testsuite name="io.github.painter99.jobsearch.ai.DossierSummarizerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.027">
+<testsuite name="io.github.painter99.jobsearch.ai.PromptSubstitutionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.003">
+<testsuite name="io.github.painter99.jobsearch.data.ai.OpenRouterClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.025">
+<testsuite name="io.github.painter99.jobsearch.data.ai.TolerantJsonTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.001">
+<testsuite name="io.github.painter99.jobsearch.data.ares.AresClientTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.083">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.AgencyParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.003">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.FileOfferStoreTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.057">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.IncrementParserTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.005">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvAgencyClientTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.023">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvCiselnikyClientTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.031">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MpsvOffersClientTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.055">
+<testsuite name="io.github.painter99.jobsearch.data.mpsv.MunicipalityRepositoryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.064">
+<testsuite name="io.github.painter99.jobsearch.data.pracecz.PraceCzClientTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.092">
+<testsuite name="io.github.painter99.jobsearch.data.storage.AiSettingsStoreTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.149">
+<testsuite name="io.github.painter99.jobsearch.data.storage.DataStoreStoresTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:52" hostname="runnervmmprz5" time="0.34">
+<testsuite name="io.github.painter99.jobsearch.data.storage.ProfileStoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:53" hostname="runnervmmprz5" time="0.112">
+<testsuite name="io.github.painter99.jobsearch.db.RoomDatabasesTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:45:53" hostname="runnervmmprz5" time="6.998">
+<testsuite name="io.github.painter99.jobsearch.pipeline.AgencyDetectorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:00" hostname="runnervmmprz5" time="0.09">
+<testsuite name="io.github.painter99.jobsearch.pipeline.EndEmployerResolverTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:00" hostname="runnervmmprz5" time="0.012">
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferDedupeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:00" hostname="runnervmmprz5" time="0.002">
+<testsuite name="io.github.painter99.jobsearch.pipeline.OfferSyncEngineTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:00" hostname="runnervmmprz5" time="0.172">
+<testsuite name="io.github.painter99.jobsearch.ui.dossier.ChecklistTemplateTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:00" hostname="runnervmmprz5" time="0.001">
+<testsuite name="io.github.painter99.jobsearch.ui.dossier.DossierViewModelTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:00" hostname="runnervmmprz5" time="3.036">
+<testsuite name="io.github.painter99.jobsearch.ui.locations.LocationsViewModelTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:03" hostname="runnervmmprz5" time="0.37">
+<testsuite name="io.github.painter99.jobsearch.ui.offers.OffersViewModelTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:04" hostname="runnervmmprz5" time="0.138">
+<testsuite name="io.github.painter99.jobsearch.ui.settings.SettingsViewModelTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:46:04" hostname="runnervmmprz5" time="0.556">
