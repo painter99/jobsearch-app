@@ -43,7 +43,7 @@ class AiSettingsStoreTest {
     }
 
     @Test
-    fun `klíč bez souhlasu - AI stále nedostupné (§5.2)`() = runTest {
+    fun `klíč bez souhlasu - AI stále nedostupné (souhlas ToS chybí)`() = runTest {
         val file = newTempFile()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         val dataStore = newDataStore(file, scope)
@@ -57,7 +57,7 @@ class AiSettingsStoreTest {
     }
 
     @Test
-    fun `klíč i souhlas - AI dostupné; modely per funkce perzistují`() = runTest {
+    fun `klíč i souhlas - AI dostupné, modely per funkce perzistují`() = runTest {
         val file = newTempFile()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         val dataStore = newDataStore(file, scope)

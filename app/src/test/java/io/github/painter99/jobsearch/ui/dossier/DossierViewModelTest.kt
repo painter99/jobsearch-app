@@ -367,7 +367,7 @@ class DossierViewModelTest {
     }
 
     @Test
-    fun `load - klíč bez souhlasu s ToS → AI sekce skrytá (§5.2)`() = runTest(dispatcher) {
+    fun `load - klíč bez souhlasu s ToS → AI sekce skrytá (souhlas chybí)`() = runTest(dispatcher) {
         enqueueAgentury()
         enqueueAresDetail("17181879")
         enqueueAresVyhledat()

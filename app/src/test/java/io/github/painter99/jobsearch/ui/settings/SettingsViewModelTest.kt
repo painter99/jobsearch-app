@@ -80,7 +80,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun `save - uloží klíč, modely i souhlas; input se vyčistí`() = runTest(dispatcher) {
+    fun `save - uloží klíč, modely i souhlas, input se vyčistí`() = runTest(dispatcher) {
         val vm = viewModel()
         awaitLoaded(vm)
         vm.onApiKeyInput("sk-or-v1-abc")
